@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 import { initializeDataSource } from '../../../lib/data-source';
 import { Alunos } from '../../../database/entities/alunos.entity';
 
@@ -15,18 +15,19 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  const { path, method, body } = await req.json();
+  const dbUrl = process.env.DATABASE_URL || "http://localhost:3000";
+  
   try {
-    const data = await req.json();
-    const ds = await initializeDataSource();
-    const repo = ds.getRepository(Alunos);
-    const aluno = repo.create(data as Partial<Alunos>);
-    const saved = await repo.save(aluno);
-    return NextResponse.json(saved, { status: 201 });
-  } catch (error) {
-    console.error('POST /api/alunos error:', error);
-    const message = error instanceof Error ? error.message : JSON.stringify(error);
-    return NextResponse.json({ error: message }, { status: 500 });
+    const res = await fetch(`${dbUrl}${path}`, {
+      method,
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json" },
+    });
+    return NextResponse.json(await res.json());
+  } catch (err) {
+    return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }
 

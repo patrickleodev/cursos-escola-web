@@ -7,10 +7,7 @@ import AuthGuard from "../../components/AuthGuard";
 type Aluno = { id: string; nome: string; email: string; cpf?: string; rg?: string; telefone?: string };
 
 function getApiUrl(path: string) {
-  const envBase = process.env.NEXT_PUBLIC_API_URL;
-  const clientBase = typeof window !== "undefined" ? window.location.origin : "";
-  const base = (envBase || clientBase || "").replace(/\/$/, "");
-  return base ? `${base}${path.startsWith("/") ? path : `/${path}`}` : path;
+  return `/api/proxy?path=${encodeURIComponent(path)}`;
 }
 
 export default function GerenciarAlunos() {
