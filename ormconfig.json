@@ -1,9 +1,5 @@
 {
     "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "postgres",
-    "password": "123",
-    "database": "escola_db",
+    "url": "postgresql://postgres:socket.io.js@db.bxbnnwwqjarszzdywhlv.supabase.co:5432/postgres",
     "synchronize": true
 }

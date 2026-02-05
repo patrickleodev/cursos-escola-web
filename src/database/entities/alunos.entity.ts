@@ -1,3 +1,5 @@
+import { Matches } from "class-validator";
+import { IsCPF } from "class-validator-cpf";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -17,20 +19,15 @@ export class Alunos {
   @Column({ length: 255, unique: true })
   email: string;
 
+
   @Column({ length: 20 })
   telefone: string;
 
-  @Column({ length: 255 })
-  endereco: string;
+  @IsCPF()
+  cpf: string;
 
-  @Column({ type: "date" })
-  dataNascimento: Date;
-
-  @Column({ length: 20 })
-  matricula: string;
-
-  @Column({ length: 50, default: "ativo" })
-  status: string;
+  @Matches(/^\d{1,2}\.?\d{3}\.?\d{3}-?[0-9Xx]$/)
+  rg: string;
 
   @CreateDateColumn()
   criadoEm: Date;
