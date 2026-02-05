@@ -7,7 +7,7 @@ import AuthGuard from "../../components/AuthGuard";
 type Aluno = { id: string; nome: string; email: string; cpf?: string; rg?: string; telefone?: string };
 
 function getApiUrl(path: string) {
-  return `/api/proxy?path=${encodeURIComponent(path)}`;
+  return path;
 }
 
 export default function GerenciarAlunos() {

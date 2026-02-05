@@ -16,22 +16,21 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const { path, method, body } = await req.json();
-  const dbUrl = process.env.DATABASE_URL || "http://localhost:3000";
-  
   try {
-    const res = await fetch(`${dbUrl}${path}`, {
-      method,
-      body: JSON.stringify(body),
-      headers: { "Content-Type": "application/json" },
-    });
-    return NextResponse.json(await res.json());
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    const data = await req.json();
+    const ds = await initializeDataSource();
+    const repo = ds.getRepository(Alunos);
+    const aluno = repo.create(data);
+    const saved = await repo.save(aluno);
+    return NextResponse.json(saved);
+  } catch (error) {
+    console.error('POST /api/alunos error:', error);
+    const message = error instanceof Error ? error.message : JSON.stringify(error);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-export async function PUT(req: Request) {
+export async function PUT(req: NextRequest) {
   try {
     const data = await req.json();
     const ds = await initializeDataSource();
@@ -48,7 +47,7 @@ export async function PUT(req: Request) {
   }
 }
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: NextRequest) {
   try {
     const data = await req.json();
     const ds = await initializeDataSource();
