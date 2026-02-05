@@ -1,6 +1,6 @@
 {
     "type": "postgres",
-    "url": "postgresql://postgres:socket_io_js@db.xiciajdltktmueykbswt.supabase.co:5432/postgres?uselibpqcompatsslmode=require",
+    "url": "postgresql://postgres.xiciajdltktmueykbswt:socket_io_js@aws-0-us-west-2.pooler.supabase.com:5432/postgres?uselibpqcompat=true&sslmode=require",
     "synchronize": true,
     "ssl": {
         "rejectUnauthorized": false
