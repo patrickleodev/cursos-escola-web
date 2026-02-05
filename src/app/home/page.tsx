@@ -3,125 +3,212 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-50">
+    <div className="bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black text-stone-900 dark:text-stone-50">
+      {/* Header */}
       <header className="mx-auto max-w-7xl px-6 py-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Image src="/logo.svg" alt="Logo" width={40} height={40} priority />
-          <span className="text-xl font-semibold">Escola de Cursos</span>
+          <div className="text-2xl font-bold text-amber-700">Vecchiato</div>
+          <span className="text-sm text-stone-600">Assessoria Educacional</span>
         </div>
         <nav className="hidden md:flex items-center gap-6">
-          <a href="#cursos" className="hover:underline">Cursos</a>
-          <a href="#sobre" className="hover:underline">Sobre</a>
-          <a href="#depoimentos" className="hover:underline">Depoimentos</a>
-          <Link href="#contato" className="rounded-full border px-4 py-2">Contato</Link>
+          <a href="#sobre" className="hover:underline text-stone-700">Sobre</a>
+          <a href="#oferecemos" className="hover:underline text-stone-700">O que oferecemos</a>
+          <a href="#areas" className="hover:underline text-stone-700">Áreas</a>
+          <a href="#contato" className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 hover:bg-stone-100 transition">Contato</a>
         </nav>
       </header>
 
       <main className="mx-auto max-w-7xl px-6">
-        {/* Hero */}
-        <section className="grid gap-8 md:grid-cols-2 items-center py-16">
-          <div>
-            <h1 className="text-4xl font-extrabold leading-tight mb-4">Aprenda habilidades valiosas. Estude no seu ritmo.</h1>
-            <p className="text-zinc-600 dark:text-zinc-400 mb-6">Cursos online práticos, instrutores experientes e certificação ao final. Transforme sua carreira com projetos reais e suporte contínuo.</p>
-            <div className="flex gap-4">
-              <a href="#cursos" className="rounded-full bg-foreground text-background px-6 py-3 font-medium">Ver Cursos</a>
-              <a href="#sobre" className="rounded-full border px-6 py-3">Saiba Mais</a>
-            </div>
-            <div className="mt-6 text-sm text-zinc-500 dark:text-zinc-400">Mais de <strong>12.000</strong> alunos formados • Garantia de 7 dias</div>
-          </div>
-          <div className="flex items-center justify-center">
-            <div className="w-full max-w-md rounded-xl bg-white/60 p-6 shadow-lg">
-              <Image src="/hero-courses.png" alt="Cursos" width={560} height={320} className="rounded-md" />
-            </div>
-          </div>
-        </section>
-
-        {/* Benefícios */}
-        <section className="py-12">
-          <h2 className="text-2xl font-semibold mb-6">O que oferecemos</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-lg border p-5 bg-white">
-              <h3 className="font-medium mb-2">Aulas Práticas</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Projetos passo a passo para consolidar conhecimento.</p>
-            </div>
-            <div className="rounded-lg border p-5 bg-white">
-              <h3 className="font-medium mb-2">Mentoria ao Vivo</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Sessões regulares com instrutores experientes.</p>
-            </div>
-            <div className="rounded-lg border p-5 bg-white">
-              <h3 className="font-medium mb-2">Certificado</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Receba um certificado ao concluir os cursos.</p>
-            </div>
-            <div className="rounded-lg border p-5 bg-white">
-              <h3 className="font-medium mb-2">Suporte</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Comunidade ativa e suporte técnico.</p>
-            </div>
+        {/* Hero Section */}
+        <section className="py-16 text-center">
+          <h1 className="text-5xl font-extrabold text-amber-900 mb-6 leading-tight">
+            Sua carreira na educação não pode depender da sorte.
+          </h1>
+          <p className="text-xl text-stone-700 mb-8 max-w-2xl mx-auto leading-relaxed">
+            Você dedica sua vida a ensinar, mas na hora de enfrentar um processo seletivo, 
+            sente que falta o direcionamento certo? Na Vecchiato, <span className="font-semibold">transformamos sua vocação em aprovação</span>.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <a href="#oferecemos" className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-8 py-4 font-semibold hover:shadow-lg transition">
+              Conheça nossos cursos
+            </a>
+            <a href="#contato" className="rounded-full border-2 border-amber-400 text-amber-700 px-8 py-4 font-semibold hover:bg-amber-50 transition">
+              Fale com um consultor
+            </a>
           </div>
         </section>
 
-        {/* Cursos */}
-        <section id="cursos" className="py-12">
-          <h2 className="text-2xl font-semibold mb-6">Cursos Populares</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <article className="rounded-lg border bg-white p-5">
-              <h3 className="font-medium mb-2">Desenvolvimento Web</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">HTML, CSS, JavaScript e frameworks modernos.</p>
-              <div className="flex items-center justify-between text-sm">
-                <span>40 aulas</span>
-                <a href="#" className="text-primary font-medium">Ver</a>
+        {/* Por que escolher */}
+        <section id="sobre" className="py-16 mb-12">
+          <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100">
+            <h2 className="text-3xl font-bold text-stone-800 mb-8 text-center">Por que escolher a Vecchiato?</h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
+                <h3 className="font-semibold text-amber-900 mb-3 text-lg">📚 Método Focado</h3>
+                <p className="text-stone-700">Conteúdo focado no que realmente cai nas provas da área da educação, sem enrolação.</p>
               </div>
-            </article>
-            <article className="rounded-lg border bg-white p-5">
-              <h3 className="font-medium mb-2">Design UX/UI</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">Crie interfaces intuitivas e bonitas.</p>
-              <div className="flex items-center justify-between text-sm">
-                <span>28 aulas</span>
-                <a href="#" className="text-primary font-medium">Ver</a>
+              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
+                <h3 className="font-semibold text-amber-900 mb-3 text-lg">📖 Material Apostilado</h3>
+                <p className="text-stone-700">Informações direto ao ponto com material apostilado de qualidade.</p>
               </div>
-            </article>
-            <article className="rounded-lg border bg-white p-5">
-              <h3 className="font-medium mb-2">Marketing Digital</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">Estratégias, anúncios e SEO para crescer online.</p>
-              <div className="flex items-center justify-between text-sm">
-                <span>18 aulas</span>
-                <a href="#" className="text-primary font-medium">Ver</a>
+              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
+                <h3 className="font-semibold text-amber-900 mb-3 text-lg">🎥 Vídeo Aulas</h3>
+                <p className="text-stone-700">Videoaulas conforme o curso adquirido para melhor aprendizado.</p>
               </div>
-            </article>
+              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
+                <h3 className="font-semibold text-amber-900 mb-3 text-lg">✅ Certificado com QR Code</h3>
+                <p className="text-stone-700">Certificado com QRCODE necessário para qualquer seletivo, prova de título.</p>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
+                <h3 className="font-semibold text-amber-900 mb-3 text-lg">⚡ Acesso Rápido</h3>
+                <p className="text-stone-700">Material e certificado liberado em 24 horas após conclusão.</p>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
+                <h3 className="font-semibold text-amber-900 mb-3 text-lg">💳 Pagamento Facilitado</h3>
+                <p className="text-stone-700">Pagamento facilitado via PIX para sua conveniência.</p>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Depoimentos */}
-        <section id="depoimentos" className="py-12">
-          <h2 className="text-2xl font-semibold mb-6">O que nossos alunos dizem</h2>
-          <div className="grid gap-6 sm:grid-cols-2">
-            <blockquote className="rounded-lg border bg-white p-6">
-              <p className="mb-3">"Os cursos me ajudaram a conseguir um novo emprego em apenas 3 meses."</p>
-              <cite className="text-sm text-zinc-500">— Ana, aluna</cite>
-            </blockquote>
-            <blockquote className="rounded-lg border bg-white p-6">
-              <p className="mb-3">"A mentoria e os projetos práticos fizeram toda a diferença."</p>
-              <cite className="text-sm text-zinc-500">— Carlos, aluna</cite>
-            </blockquote>
+        {/* O que oferecemos */}
+        <section id="oferecemos" className="py-16 mb-12">
+          <h2 className="text-3xl font-bold text-stone-800 mb-10 text-center">O que oferecemos</h2>
+          <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100 mb-8">
+            <p className="text-lg text-stone-700 leading-relaxed mb-6">
+              Na <span className="font-semibold text-amber-700">Vecchiato Assessoria Educacional</span>, você encontra tudo que precisa para se preparar:
+            </p>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-4">
+                <span className="bg-amber-400 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 font-bold">✓</span>
+                <span className="text-stone-700">Material apostilado com informações direto ao ponto (sem enrolação)</span>
+              </li>
+              <li className="flex items-start gap-4">
+                <span className="bg-amber-400 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 font-bold">✓</span>
+                <span className="text-stone-700">Videoaulas conforme curso adquirido</span>
+              </li>
+              <li className="flex items-start gap-4">
+                <span className="bg-amber-400 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 font-bold">✓</span>
+                <span className="text-stone-700">Certificado com QRCODE necessário para qualquer seletivo e prova de título</span>
+              </li>
+              <li className="flex items-start gap-4">
+                <span className="bg-amber-400 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 font-bold">✓</span>
+                <span className="text-stone-700">Material e certificado liberado em 24 horas</span>
+              </li>
+              <li className="flex items-start gap-4">
+                <span className="bg-amber-400 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-1 font-bold">✓</span>
+                <span className="text-stone-700">Pagamento facilitado via PIX</span>
+              </li>
+            </ul>
+            <p className="text-lg text-stone-700 mt-8 font-semibold text-center text-amber-900">
+              Pare de adiar o seu sonho da vaga própria. Garanta sua preparação agora e mude seu patamar profissional ainda este ano!
+            </p>
           </div>
         </section>
 
-        {/* CTA final */}
-        <section id="sobre" className="py-12 text-center">
-          <h2 className="text-2xl font-semibold mb-4">Pronto para começar?</h2>
-          <p className="text-zinc-600 dark:text-zinc-400 mb-6">Inscreva-se hoje e aproveite o primeiro módulo grátis.</p>
-          <div className="flex items-center justify-center gap-4">
-            <a href="#cursos" className="rounded-full bg-foreground text-background px-6 py-3 font-medium">Começar Agora</a>
-            <a href="#contato" className="rounded-full border px-6 py-3">Falar com um consultor</a>
+        {/* Nossa Visão */}
+        <section className="py-16 mb-12">
+          <div className="grid gap-8 md:grid-cols-2">
+            <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100">
+              <h3 className="text-2xl font-bold text-amber-900 mb-6">Nossa Visão</h3>
+              <p className="text-stone-700 leading-relaxed">
+                Capacitar os alunos por meio do ensino prático, acessível como o Ensino à Distância, 
+                desenvolvendo competências técnicas necessárias para que conquistem seu espaço no mercado profissional.
+              </p>
+            </div>
+            <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100">
+              <h3 className="text-2xl font-bold text-amber-900 mb-6">Nossa Proposta</h3>
+              <p className="text-stone-700 leading-relaxed">
+                A Vecchiato Assessoria Educacional é conhecida como uma das principais referências em Educação à Distância 
+                dentro e fora do Brasil, fortalecendo e impactando positivamente comunidades. Oferecemos mais de 1200 opções em 
+                cursos para capacitação, especialização técnica, horas complementares para universitários e menor aprendiz.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Áreas de Estudo */}
+        <section id="areas" className="py-16 mb-12">
+          <h2 className="text-3xl font-bold text-stone-800 mb-10 text-center">Áreas de Estudo</h2>
+          <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100">
+            <p className="text-lg text-stone-700 mb-8 font-semibold text-center">
+              Oferecemos mais de 1200 opções em cursos nas seguintes áreas:
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                'Educação', 'Estética', 'Direito', 'Administração',
+                'Enfermagem', 'Massagem', 'Psicologia', 'Engenharia',
+                'Nutrição', 'Segurança', 'Manicure/Pedicure', 'Cosmetologia',
+                'Terapia Holística', 'Serviços Gerais', 'Motorista', 'Cuidador de Idosos',
+                'Setor Imobiliário', 'E muito mais...'
+              ].map((area, idx) => (
+                <div key={idx} className="bg-gradient-to-br from-amber-50 to-stone-50 rounded-lg p-4 border border-amber-200 text-center">
+                  <p className="font-semibold text-stone-800">{area}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* O que fazemos */}
+        <section className="py-16 mb-12">
+          <h2 className="text-3xl font-bold text-stone-800 mb-10 text-center">Por que Escolher a Vecchiato?</h2>
+          <div className="grid gap-8 md:grid-cols-3">
+            <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100 text-center">
+              <h3 className="text-2xl font-bold text-amber-900 mb-4">O que fazemos?</h3>
+              <p className="text-stone-700 text-lg">Ensino EAD de qualidade</p>
+            </div>
+            <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100 text-center">
+              <h3 className="text-2xl font-bold text-amber-900 mb-4">Para quem fazemos?</h3>
+              <p className="text-stone-700 text-lg">Pessoas que buscam evolução ou flexibilidade</p>
+            </div>
+            <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100 text-center">
+              <h3 className="text-2xl font-bold text-amber-900 mb-4">Qual o impacto?</h3>
+              <p className="text-stone-700 text-lg">Transformação profissional ou pessoal</p>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Final */}
+        <section className="py-16 mb-12 text-center">
+          <div className="bg-gradient-to-r from-amber-400 to-orange-400 rounded-2xl shadow-xl p-12">
+            <h2 className="text-4xl font-bold text-white mb-6">Dê o próximo passo na sua carreira</h2>
+            <p className="text-xl text-white mb-8 max-w-2xl mx-auto">
+              Estude com quem é especialista em aprovar educadores. A edital saiu e agora? 
+              Não basta apenas "passar", é preciso estar entre os primeiros para ser convocado rápido!
+            </p>
+            <a href="#contato" className="inline-block rounded-full bg-white text-amber-700 px-10 py-4 font-bold text-lg hover:shadow-lg transition">
+              Comece Agora
+            </a>
           </div>
         </section>
       </main>
 
-      <footer id="contato" className="mt-12 border-t bg-transparent py-8">
-        <div className="mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-zinc-600 dark:text-zinc-400">© {new Date().getFullYear()} Escola de Cursos. Todos os direitos reservados.</div>
-          <div className="flex gap-4">
-            <a href="#" className="text-sm hover:underline">Termos</a>
-            <a href="#" className="text-sm hover:underline">Privacidade</a>
+      {/* Footer com Contato */}
+      <footer id="contato" className="border-t border-amber-200 bg-gradient-to-t from-amber-50 to-stone-50 py-12">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid gap-8 md:grid-cols-3 mb-8">
+            <div>
+              <h3 className="text-lg font-bold text-amber-900 mb-4">Vecchiato Assessoria</h3>
+              <p className="text-stone-700">Transformando vidas através da educação de qualidade e acessível.</p>
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-amber-900 mb-4">Navegação</h3>
+              <ul className="space-y-2 text-stone-700">
+                <li><a href="#sobre" className="hover:underline">Sobre</a></li>
+                <li><a href="#oferecemos" className="hover:underline">O que oferecemos</a></li>
+                <li><a href="#areas" className="hover:underline">Áreas de estudo</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-amber-900 mb-4">Entre em Contato</h3>
+              <a href="https://wa.me/5515996842152" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-3 font-semibold transition">
+                💬 WhatsApp: (15) 99684-2152
+              </a>
+            </div>
+          </div>
+          <div className="border-t border-amber-200 pt-8 text-center text-stone-600">
+            <p>© {new Date().getFullYear()} Vecchiato Assessoria Educacional. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>

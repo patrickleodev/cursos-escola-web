@@ -1,4 +1,4 @@
-import { Matches } from "class-validator";
+import { IsEmail, Matches } from "class-validator";
 import { IsCPF } from "class-validator-cpf";
 import {
   Entity,
@@ -6,6 +6,8 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
 
 @Entity()
@@ -13,25 +15,27 @@ export class Alunos {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 255 })
+  @Column({ length: 255, unique: true })
   nome: string;
 
-  @Column({ length: 255, unique: true })
+  @IsEmail()
+  @Column()
   email: string;
-
 
   @Column({ length: 20 })
   telefone: string;
 
   @IsCPF()
+  @Column({ unique: true })
   cpf: string;
-
-  @Matches(/^\d{1,2}\.?\d{3}\.?\d{3}-?[0-9Xx]$/)
-  rg: string;
 
   @CreateDateColumn()
   criadoEm: Date;
 
   @UpdateDateColumn()
   atualizadoEm: Date;
+
+  @ManyToMany(() => require("./cursos.entity").Cursos, (curso) => curso.alunos)
+  @JoinTable()
+  cursos: any[];
 }

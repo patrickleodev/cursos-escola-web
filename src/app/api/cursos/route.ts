@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { initializeDataSource } from '../../../lib/data-source';
-import { Alunos } from '../../../database/entities/alunos.entity';
+import { Cursos } from '../../../database/entities/cursos.entity';
 
 export async function GET() {
   try {
     const ds = await initializeDataSource();
-    const repo = ds.getRepository(Alunos);
+    const repo = ds.getRepository(Cursos);
     const list = await repo.find();
     return NextResponse.json(list);
   } catch (error) {
-    console.error('GET /api/alunos error:', error);
+    console.error('GET /api/cursos error:', error);
     const message = error instanceof Error ? error.message : JSON.stringify(error);
     return NextResponse.json({ error: message }, { status: 500 });
   }
@@ -19,12 +19,12 @@ export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
     const ds = await initializeDataSource();
-    const repo = ds.getRepository(Alunos);
-    const aluno = repo.create(data);
-    const saved = await repo.save(aluno);
+    const repo = ds.getRepository(Cursos);
+    const curso = repo.create(data);
+    const saved = await repo.save(curso);
     return NextResponse.json(saved);
   } catch (error) {
-    console.error('POST /api/alunos error:', error);
+    console.error('POST /api/cursos error:', error);
     const message = error instanceof Error ? error.message : JSON.stringify(error);
     return NextResponse.json({ error: message }, { status: 500 });
   }
@@ -34,14 +34,14 @@ export async function PUT(req: NextRequest) {
   try {
     const data = await req.json();
     const ds = await initializeDataSource();
-    const repo = ds.getRepository(Alunos);
-    const aluno = await repo.findOneBy({ id: String(data.id) });
-    if (!aluno) return NextResponse.json({ error: 'Aluno não encontrado' }, { status: 404 });
-    repo.merge(aluno, data);
-    const saved = await repo.save(aluno);
+    const repo = ds.getRepository(Cursos);
+    const curso = await repo.findOneBy({ id: String(data.id) });
+    if (!curso) return NextResponse.json({ error: 'Curso não encontrado' }, { status: 404 });
+    repo.merge(curso, data);
+    const saved = await repo.save(curso);
     return NextResponse.json(saved);
   } catch (error) {
-    console.error('PUT /api/alunos error:', error);
+    console.error('PUT /api/cursos error:', error);
     const message = error instanceof Error ? error.message : JSON.stringify(error);
     return NextResponse.json({ error: message }, { status: 500 });
   }
@@ -51,13 +51,13 @@ export async function DELETE(req: NextRequest) {
   try {
     const data = await req.json();
     const ds = await initializeDataSource();
-    const repo = ds.getRepository(Alunos);
-    const aluno = await repo.findOneBy({ id: String(data.id) });
-    if (!aluno) return NextResponse.json({ error: 'Aluno não encontrado' }, { status: 404 });
-    await repo.remove(aluno);
+    const repo = ds.getRepository(Cursos);
+    const curso = await repo.findOneBy({ id: String(data.id) });
+    if (!curso) return NextResponse.json({ error: 'Curso não encontrado' }, { status: 404 });
+    await repo.remove(curso);
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error('DELETE /api/alunos error:', error);
+    console.error('DELETE /api/cursos error:', error);
     const message = error instanceof Error ? error.message : JSON.stringify(error);
     return NextResponse.json({ error: message }, { status: 500 });
   }

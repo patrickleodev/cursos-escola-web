@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Alunos } from "../database/entities/alunos.entity";
+import { Cursos } from "../database/entities/cursos.entity";
 import fs from "fs";
 import path from "path";
 
@@ -18,7 +19,7 @@ const databaseUrl = process.env.DATABASE_URL || ormConfig.url || undefined;
 
 const options: any = {
   type: "postgres",
-  entities: [Alunos],
+  entities: [Alunos, Cursos],
   synchronize: ormConfig.synchronize ?? true,
   ssl: ormConfig.ssl || { rejectUnauthorized: false },
   // extra: { ssl: ormConfig.ssl || { rejectUnauthorized: false } },
