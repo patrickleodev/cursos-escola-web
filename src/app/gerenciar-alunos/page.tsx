@@ -1,9 +1,17 @@
+// ...existing code...
 "use client";
 
 import React, { useEffect, useState } from "react";
 import AuthGuard from "../../components/AuthGuard";
 
 type Aluno = { id: string; nome: string; email: string; cpf?: string; rg?: string; telefone?: string };
+
+function getApiUrl(path: string) {
+  const envBase = process.env.NEXT_PUBLIC_API_URL;
+  const clientBase = typeof window !== "undefined" ? window.location.origin : "";
+  const base = (envBase || clientBase || "").replace(/\/$/, "");
+  return base ? `${base}${path.startsWith("/") ? path : `/${path}`}` : path;
+}
 
 export default function GerenciarAlunos() {
     const [alunos, setAlunos] = useState<Aluno[]>([]);
@@ -17,7 +25,7 @@ export default function GerenciarAlunos() {
 
     async function fetchAlunos() {
         try {
-            const res = await fetch('/api/alunos');
+            const res = await fetch(getApiUrl('/api/alunos'));
             const data = await res.json();
             if (Array.isArray(data)) {
                 setAlunos(data);
@@ -41,13 +49,13 @@ export default function GerenciarAlunos() {
         const payload = { nome, email, cpf, rg, telefone };
         if (editingId) {
             try {
-                const res = await fetch('/api/alunos', { method: 'PUT', body: JSON.stringify({ id: editingId, ...payload }), headers: { 'Content-Type': 'application/json' } });
+                const res = await fetch(getApiUrl('/api/alunos'), { method: 'PUT', body: JSON.stringify({ id: editingId, ...payload }), headers: { 'Content-Type': 'application/json' } });
                 if (!res.ok) console.error('Erro ao atualizar aluno', await res.text());
             } catch (err) { console.error(err); }
             setEditingId(null);
         } else {
             try {
-                const res = await fetch('/api/alunos', { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'application/json' } });
+                const res = await fetch(getApiUrl('/api/alunos'), { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'application/json' } });
                 if (!res.ok) console.error('Erro ao criar aluno', await res.text());
             } catch (err) { console.error(err); }
         }
@@ -67,7 +75,7 @@ export default function GerenciarAlunos() {
     async function handleDelete(id: string) {
         if (!confirm('Excluir este aluno?')) return;
         try {
-            const res = await fetch('/api/alunos', { method: 'DELETE', body: JSON.stringify({ id }), headers: { 'Content-Type': 'application/json' } });
+            const res = await fetch(getApiUrl('/api/alunos'), { method: 'DELETE', body: JSON.stringify({ id }), headers: { 'Content-Type': 'application/json' } });
             if (!res.ok) console.error('Erro ao excluir aluno', await res.text());
         } catch (err) { console.error(err); }
         fetchAlunos();
@@ -126,3 +134,4 @@ export default function GerenciarAlunos() {
         </AuthGuard>
     );
 }
+// ...existing code...
