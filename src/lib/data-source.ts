@@ -1,34 +1,40 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Alunos } from "../database/entities/alunos.entity";
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-const ormconfigPath = path.resolve(process.cwd(), 'ormconfig.json');
+const ormconfigPath = path.resolve(process.cwd(), "ormconfig.json");
 let ormConfig: any = {};
 if (fs.existsSync(ormconfigPath)) {
-  ormConfig = JSON.parse(fs.readFileSync(ormconfigPath, 'utf8'));
+  try {
+    ormConfig = JSON.parse(fs.readFileSync(ormconfigPath, "utf8"));
+  } catch (e) {
+    console.error("Failed to parse ormconfig.json", e);
+  }
 }
 
-const databaseUrl = process.env.DATABASE_URL || ormConfig.url || null;
+const databaseUrl = process.env.DATABASE_URL || ormConfig.url || undefined;
 
-const dataSourceOptions: any = {
-  type: 'postgres',
+const options: any = {
+  type: "postgres",
   entities: [Alunos],
   synchronize: ormConfig.synchronize ?? true,
+  ssl: ormConfig.ssl || { rejectUnauthorized: false },
+  extra: { ssl: ormConfig.ssl || { rejectUnauthorized: false } },
 };
 
 if (databaseUrl) {
-  dataSourceOptions.url = databaseUrl;
+  options.url = databaseUrl;
 } else {
-  dataSourceOptions.host = ormConfig.host || 'localhost';
-  dataSourceOptions.port = ormConfig.port || 5432;
-  dataSourceOptions.username = ormConfig.username || 'postgres';
-  dataSourceOptions.password = ormConfig.password || '';
-  dataSourceOptions.database = ormConfig.database || 'escola_db';
+  options.host = ormConfig.host || process.env.TYPEORM_HOST || "localhost";
+  options.port = ormConfig.port || Number(process.env.TYPEORM_PORT) || 5432;
+  options.username = ormConfig.username || process.env.TYPEORM_USERNAME || "postgres";
+  options.password = ormConfig.password || process.env.TYPEORM_PASSWORD || "";
+  options.database = ormConfig.database || process.env.TYPEORM_DATABASE || "postgres";
 }
 
-export const AppDataSource = new DataSource(dataSourceOptions);
+export const AppDataSource = new DataSource(options);
 
 let initialized = false;
 export async function initializeDataSource() {
