@@ -4,6 +4,7 @@ import { Alunos } from '../../../database/entities/alunos.entity';
 
 export async function GET() {
   try {
+    console.log("Handling GET /api/alunos");
     const ds = await initializeDataSource();
     const repo = ds.getRepository(Alunos);
     const list = await repo.find();

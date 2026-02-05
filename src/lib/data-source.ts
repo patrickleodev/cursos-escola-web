@@ -21,7 +21,7 @@ const options: any = {
   entities: [Alunos],
   synchronize: ormConfig.synchronize ?? true,
   ssl: ormConfig.ssl || { rejectUnauthorized: false },
-  extra: { ssl: ormConfig.ssl || { rejectUnauthorized: false } },
+  // extra: { ssl: ormConfig.ssl || { rejectUnauthorized: false } },
 };
 
 if (databaseUrl) {
