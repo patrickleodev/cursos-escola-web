@@ -44,6 +44,10 @@ export default function GerenciarAlunos() {
     async function handleSave(e: React.FormEvent) {
         e.preventDefault();
         const payload = { nome, email, cpf, rg, telefone };
+
+        // PAREI AQUI DIA 04/02
+        console.log(payload);
+
         if (editingId) {
             try {
                 const res = await fetch(getApiUrl('/api/alunos'), { method: 'PUT', body: JSON.stringify({ id: editingId, ...payload }), headers: { 'Content-Type': 'application/json' } });
