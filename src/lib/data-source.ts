@@ -3,14 +3,22 @@ import { DataSource } from "typeorm";
 import fs from "fs";
 import path from "path";
 
-// CRÍTICO: Importar as entidades DEPOIS de reflect-metadata
-// para garantir que os decoradores sejam registrados
-import { Alunos } from "../database/entities/alunos.entity";
-import { Cursos } from "../database/entities/cursos.entity";
-import { Matriculas } from "../database/entities/matriculas.entity";
+// Determinar se está em produção
+const isProduction = process.env.NODE_ENV === "production";
 
-// Garantir que as classes estejam registradas no reflect-metadata
-const entities = [Alunos, Cursos, Matriculas];
+// Carregar entidades usando require para melhor compatibilidade
+let entities: any[];
+
+if (isProduction) {
+  // Em produção, usar glob patterns para evitar problemas com minificação
+  entities = ["dist/database/entities/**/*.entity.js"];
+} else {
+  // Em desenvolvimento, usar require para garantir que metadados sejam registrados
+  const Alunos = require("../database/entities/alunos.entity").Alunos;
+  const Cursos = require("../database/entities/cursos.entity").Cursos;
+  const Matriculas = require("../database/entities/matriculas.entity").Matriculas;
+  entities = [Alunos, Cursos, Matriculas];
+}
 
 const ormconfigPath = path.resolve(process.cwd(), "ormconfig.json");
 let ormConfig: any = {};
