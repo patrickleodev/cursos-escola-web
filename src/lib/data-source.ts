@@ -3,22 +3,9 @@ import { DataSource } from "typeorm";
 import fs from "fs";
 import path from "path";
 
-// Determinar se está em produção
-const isProduction = process.env.NODE_ENV === "production";
-
-// Carregar entidades usando require para melhor compatibilidade
-let entities: any[];
-
-if (isProduction) {
-  // Em produção, usar glob patterns para evitar problemas com minificação
-  entities = ["dist/database/entities/**/*.entity.js"];
-} else {
-  // Em desenvolvimento, usar require para garantir que metadados sejam registrados
-  const Alunos = require("../database/entities/alunos.entity").Alunos;
-  const Cursos = require("../database/entities/cursos.entity").Cursos;
-  const Matriculas = require("../database/entities/matriculas.entity").Matriculas;
-  entities = [Alunos, Cursos, Matriculas];
-}
+// Importar todas as entidades de um único arquivo centralizado
+// Isso garante que os metadados sejam registrados juntos
+import { ENTITIES } from "../database/entities/index";
 
 const ormconfigPath = path.resolve(process.cwd(), "ormconfig.json");
 let ormConfig: any = {};
@@ -34,7 +21,7 @@ const databaseUrl = process.env.DATABASE_URL || ormConfig.url || undefined;
 
 const options: any = {
   type: "postgres",
-  entities: entities,
+  entities: ENTITIES,
   synchronize: ormConfig.synchronize ?? true,
   ssl: ormConfig.ssl || { rejectUnauthorized: false },
   logging: false,
