@@ -126,14 +126,14 @@ export default function GerenciarCursos() {
               placeholder="Nome do Curso"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
-              className="rounded-lg border border-stone-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
             <input
               placeholder="Duração (horas)"
               type="number"
               value={duracao}
               onChange={(e) => setDuracao(e.target.value)}
-              className="rounded-lg border border-stone-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
             <div className="flex gap-3">
               <button className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition">

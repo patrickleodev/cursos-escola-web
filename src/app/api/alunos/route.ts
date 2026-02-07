@@ -6,8 +6,12 @@ export async function GET() {
   try {
     const ds = await initializeDataSource();
     const repo = ds.getRepository(Alunos);
-    const list = await repo.find();
-    return NextResponse.json(list);
+    const list = await repo.find({ relations: ['matriculas', 'matriculas.curso'] });
+    const mapped = list.map((aluno: any) => ({
+      ...aluno,
+      cursos: aluno.matriculas ? aluno.matriculas.map((m: any) => m.curso) : [],
+    }));
+    return NextResponse.json(mapped);
   } catch (error) {
     console.error('GET /api/alunos error:', error);
     const message = error instanceof Error ? error.message : JSON.stringify(error);

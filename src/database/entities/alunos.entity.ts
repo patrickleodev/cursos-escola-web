@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { IsEmail, Matches } from "class-validator";
 import { IsCPF } from "class-validator-cpf";
 import {
@@ -6,8 +7,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
-  JoinTable,
+  OneToMany,
 } from "typeorm";
 
 @Entity()
@@ -35,7 +35,6 @@ export class Alunos {
   @UpdateDateColumn()
   atualizadoEm: Date;
 
-  @ManyToMany(() => require("./cursos.entity").Cursos, (curso) => curso.alunos)
-  @JoinTable()
-  cursos: any[];
+  @OneToMany("Matriculas", (matricula: any) => matricula.aluno)
+  matriculas: any[];
 }

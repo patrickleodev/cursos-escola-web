@@ -8,6 +8,9 @@ type Curso = {
   id: string;
   nome: string;
   duracao: number;
+  dataInicio?: string;
+  dataFim?: string;
+  duracaoCustomizada?: number;
 };
 
 type Aluno = { 
@@ -30,6 +33,9 @@ export default function AlunoDetalhes() {
   const [aluno, setAluno] = useState<Aluno | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [unlocked, setUnlocked] = useState(false);
+  const [pin, setPin] = useState('');
+  const [attemptError, setAttemptError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchAluno() {
@@ -90,26 +96,72 @@ export default function AlunoDetalhes() {
     );
   }
 
+  // Se o aluno foi carregado mas não foi desbloqueado, mostrar formulário para digitar os 3 primeiros dígitos do CPF
+  const sanitizedCpf = (aluno?.cpf || '').replace(/\D/g, '');
+  const firstThreeCpf = sanitizedCpf.slice(0, 3);
+
+  if (!unlocked) {
+    return (
+      <AuthGuard>
+        <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8 flex items-center justify-center">
+          <div className="mx-auto max-w-md bg-white rounded-2xl shadow-lg p-8">
+            <h2 className="text-2xl font-semibold text-stone-800 mb-4">Protegido</h2>
+            <p className="text-stone-600 mb-4">Digite os 3 primeiros dígitos do CPF do aluno para visualizar os detalhes.</p>
+            {!aluno?.cpf ? (
+              <div className="text-red-600 mb-4">CPF não disponível para verificação.</div>
+            ) : null}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setAttemptError(null);
+                if (!aluno?.cpf) {
+                  setAttemptError('CPF do aluno não disponível');
+                  return;
+                }
+                const entered = (pin || '').replace(/\D/g, '');
+                if (entered === firstThreeCpf) {
+                  setUnlocked(true);
+                } else {
+                  setAttemptError('Código incorreto. Tente novamente.');
+                  setPin('');
+                }
+              }}
+            >
+              <input
+                aria-label="Três primeiros dígitos do CPF"
+                value={pin}
+                onChange={(e) => setPin(e.target.value)}
+                maxLength={3}
+                className="w-full border border-stone-200 rounded-lg px-4 py-3 mb-3 text-stone-800 placeholder:text-stone-600"
+                placeholder="Ex: 123"
+              />
+              {attemptError ? <div className="text-red-600 mb-3">{attemptError}</div> : null}
+              <button
+                type="submit"
+                disabled={!aluno?.cpf}
+                className="w-full rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition"
+              >
+                Desbloquear
+              </button>
+            </form>
+          </div>
+        </div>
+      </AuthGuard>
+    );
+  }
+
   const formatDate = (dateString?: string) => {
     if (!dateString) return '-';
     return new Date(dateString).toLocaleDateString('pt-BR');
   };
 
-  const totalHoras = aluno.cursos?.reduce((acc, curso) => acc + curso.duracao, 0) || 0;
+  const totalHoras = aluno.cursos?.reduce((acc, curso) => acc + (curso.duracaoCustomizada ?? curso.duracao), 0) || 0;
 
   return (
     <AuthGuard>
       <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
         <div className="mx-auto max-w-2xl bg-white rounded-2xl shadow-lg p-8">
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-semibold text-stone-800">Detalhes do Aluno</h1>
-            <button
-              onClick={handleVoltar}
-              className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition font-medium"
-            >
-              Voltar
-            </button>
-          </div>
+          <h1 className="text-3xl font-semibold text-stone-800 mb-8">Detalhes do Aluno</h1>
 
           <div className="space-y-4 mb-8">
             <div className="border-b border-stone-200 pb-4">
@@ -139,16 +191,28 @@ export default function AlunoDetalhes() {
             
             {aluno.cursos && aluno.cursos.length > 0 ? (
               <div className="space-y-3">
-                {aluno.cursos.map((curso) => (
+                {aluno.cursos.map((curso) => {
+                  const duracaoFinal = curso.duracaoCustomizada ?? curso.duracao;
+                  return (
                   <div key={curso.id} className="bg-white rounded-lg p-4 border border-stone-200">
                     <div className="flex justify-between items-start">
                       <div>
                         <div className="font-semibold text-stone-800">{curso.nome}</div>
-                        <div className="text-sm text-stone-600">{curso.duracao} horas</div>
+                        <div className="text-sm text-stone-600">{duracaoFinal} horas</div>
+                        {(curso.dataInicio || curso.dataFim) && (
+                          <div className="text-sm text-stone-500 mt-2 space-y-1">
+                            {curso.dataInicio && (
+                              <div>Início: {formatDate(curso.dataInicio)}</div>
+                            )}
+                            {curso.dataFim && (
+                              <div>Conclusão: {formatDate(curso.dataFim)}</div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
-                ))}
+                )})}
                 <div className="bg-white rounded-lg p-4 border-2 border-amber-200 mt-4">
                   <div className="font-semibold text-stone-800">
                     Total de horas: <span className="text-amber-600">{totalHoras} horas</span>

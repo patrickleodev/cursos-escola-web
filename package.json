@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:reset": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} reset-db.ts"
   },
   "dependencies": {
     "class-transformer": "^0.5.1",
@@ -17,6 +18,7 @@
     "qrcode": "^1.5.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-icons": "^5.5.0",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.28"
   },
@@ -28,6 +30,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

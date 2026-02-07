@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
           <a href="#oferecemos" className="hover:underline text-stone-700">O que oferecemos</a>
           <a href="#areas" className="hover:underline text-stone-700">Áreas</a>
           <a href="#contato" className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 hover:bg-stone-100 transition">Contato</a>
+          <a href="/gerenciar-alunos" className="text-xs text-stone-500 hover:text-stone-700 transition">👤</a>
         </nav>
       </header>
 
@@ -26,7 +28,7 @@ export default function Home() {
           </h1>
           <p className="text-xl text-stone-700 mb-8 max-w-2xl mx-auto leading-relaxed">
             Você dedica sua vida a ensinar, mas na hora de enfrentar um processo seletivo, 
-            sente que falta o direcionamento certo? Na Vecchiato, <span className="font-semibold">transformamos sua vocação em aprovação</span>.
+            sente que falta o direcionamento certo? Na <span className="font-semibold">Vecchiato Assessoria Educacional</span>, transformamos sua vocação em aprovação.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <a href="#oferecemos" className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-8 py-4 font-semibold hover:shadow-lg transition">
@@ -41,7 +43,7 @@ export default function Home() {
         {/* Por que escolher */}
         <section id="sobre" className="py-16 mb-12">
           <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100">
-            <h2 className="text-3xl font-bold text-stone-800 mb-8 text-center">Por que escolher a Vecchiato?</h2>
+            <h2 className="text-3xl font-bold text-stone-800 mb-8 text-center">Por que escolher a Vecchiato Assessoria Educacional?</h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
                 <h3 className="font-semibold text-amber-900 mb-3 text-lg">📚 Método Focado</h3>
@@ -112,7 +114,7 @@ export default function Home() {
             <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100">
               <h3 className="text-2xl font-bold text-amber-900 mb-6">Nossa Visão</h3>
               <p className="text-stone-700 leading-relaxed">
-                Capacitar os alunos por meio do ensino prático, acessível como o Ensino à Distância, 
+                Capacitar os alunos por meio do ensino prático, acessível através do Ensino à Distância, 
                 desenvolvendo competências técnicas necessárias para que conquistem seu espaço no mercado profissional.
               </p>
             </div>
@@ -121,7 +123,7 @@ export default function Home() {
               <p className="text-stone-700 leading-relaxed">
                 A Vecchiato Assessoria Educacional é conhecida como uma das principais referências em Educação à Distância 
                 dentro e fora do Brasil, fortalecendo e impactando positivamente comunidades. Oferecemos mais de 1200 opções em 
-                cursos para capacitação, especialização técnica, horas complementares para universitários e menor aprendiz.
+                cursos para a capacitação, especialização técnica, horas complementares para universitários e menor aprendiz.
               </p>
             </div>
           </div>
@@ -160,11 +162,11 @@ export default function Home() {
             </div>
             <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100 text-center">
               <h3 className="text-2xl font-bold text-amber-900 mb-4">Para quem fazemos?</h3>
-              <p className="text-stone-700 text-lg">Pessoas que buscam evolução ou flexibilidade</p>
+              <p className="text-stone-700 text-lg">Pessoas que buscam evolução, flexibilidade</p>
             </div>
             <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100 text-center">
               <h3 className="text-2xl font-bold text-amber-900 mb-4">Qual o impacto?</h3>
-              <p className="text-stone-700 text-lg">Transformação profissional ou pessoal</p>
+              <p className="text-stone-700 text-lg">Transformação profissional, pessoal</p>
             </div>
           </div>
         </section>
@@ -189,8 +191,8 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid gap-8 md:grid-cols-3 mb-8">
             <div>
-              <h3 className="text-lg font-bold text-amber-900 mb-4">Vecchiato Assessoria</h3>
-              <p className="text-stone-700">Transformando vidas através da educação de qualidade e acessível.</p>
+              <h3 className="text-lg font-bold text-amber-900 mb-4">Vecchiato Assessoria Educacional</h3>
+              <p className="text-stone-700">Transformando vidas através da educação a distância desde 2017.</p>
             </div>
             <div>
               <h3 className="text-lg font-bold text-amber-900 mb-4">Navegação</h3>
@@ -202,9 +204,14 @@ export default function Home() {
             </div>
             <div>
               <h3 className="text-lg font-bold text-amber-900 mb-4">Entre em Contato</h3>
-              <a href="https://wa.me/5515996842152" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-3 font-semibold transition">
-                💬 WhatsApp: (15) 99684-2152
-              </a>
+              <div className="flex items-center gap-6">
+                <a href="https://wa.me/5515996842152" target="_blank" rel="noopener noreferrer" className="text-4xl text-green-500 hover:text-green-600 hover:scale-110 transition" title="WhatsApp">
+                  <FaWhatsapp />
+                </a>
+                <a href="https://www.instagram.com/vecchiatoassessoriaeducacional" target="_blank" rel="noopener noreferrer" className="text-4xl text-pink-500 hover:text-pink-600 hover:scale-110 transition" title="Instagram">
+                  <FaInstagram />
+                </a>
+              </div>
             </div>
           </div>
           <div className="border-t border-amber-200 pt-8 text-center text-stone-600">

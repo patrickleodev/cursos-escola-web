@@ -208,10 +208,10 @@ export default function GerenciarAlunos() {
                     </div>
 
                     <form onSubmit={handleSave} className="mb-8 grid gap-3 sm:grid-cols-4 bg-gradient-to-br from-amber-50 to-stone-50 p-6 rounded-xl">
-                        <input placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400" />
-                        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400" />
-                        <input placeholder="CPF" value={cpf} onChange={(e) => setCpf(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400" />
-                        <input placeholder="Telefone" value={telefone} onChange={(e) => setTelefone(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 sm:col-span-2 focus:outline-none focus:ring-2 focus:ring-amber-400" />
+                        <input placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" />
+                        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" />
+                        <input placeholder="CPF" value={cpf} onChange={(e) => setCpf(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" />
+                        <input placeholder="Telefone" value={telefone} onChange={(e) => setTelefone(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 sm:col-span-2 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" />
                         <div className="sm:col-span-2 flex gap-3">
                             <button className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition">{editingId ? 'Salvar' : 'Criar'}</button>
                             {editingId && <button type="button" onClick={() => { setEditingId(null); setNome(''); setEmail(''); setCpf(''); setTelefone(''); }} className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition">Cancelar</button>}

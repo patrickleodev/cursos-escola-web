@@ -1,11 +1,11 @@
+import "reflect-metadata";
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
-  JoinTable,
+  OneToMany,
 } from "typeorm";
 
 @Entity()
@@ -25,6 +25,6 @@ export class Cursos {
   @UpdateDateColumn()
   atualizadoEm: Date;
 
-  @ManyToMany(() => require("./alunos.entity").Alunos, (aluno) => aluno.cursos)
-  alunos: any[];
+  @OneToMany("Matriculas", (matricula: any) => matricula.curso)
+  matriculas: any[];
 }

@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Alunos } from "../database/entities/alunos.entity";
 import { Cursos } from "../database/entities/cursos.entity";
+import { Matriculas } from "../database/entities/matriculas.entity";
 import fs from "fs";
 import path from "path";
 
@@ -19,7 +20,7 @@ const databaseUrl = process.env.DATABASE_URL || ormConfig.url || undefined;
 
 const options: any = {
   type: "postgres",
-  entities: [Alunos, Cursos],
+  entities: [Alunos, Cursos, Matriculas],
   synchronize: ormConfig.synchronize ?? true,
   ssl: ormConfig.ssl || { rejectUnauthorized: false },
   // extra: { ssl: ormConfig.ssl || { rejectUnauthorized: false } },
@@ -38,11 +39,29 @@ if (databaseUrl) {
 export const AppDataSource = new DataSource(options);
 
 let initialized = false;
+let initPromise: Promise<typeof AppDataSource> | null = null;
+
 export async function initializeDataSource() {
   if (initialized) return AppDataSource;
-  if (!AppDataSource.isInitialized) {
-    await AppDataSource.initialize();
+  if (AppDataSource.isInitialized) {
+    initialized = true;
+    return AppDataSource;
   }
-  initialized = true;
-  return AppDataSource;
+
+  if (initPromise) {
+    return await initPromise;
+  }
+
+  initPromise = AppDataSource.initialize()
+    .then((ds) => {
+      initialized = true;
+      initPromise = null;
+      return ds;
+    })
+    .catch((err) => {
+      initPromise = null;
+      throw err;
+    });
+
+  return await initPromise;
 }
