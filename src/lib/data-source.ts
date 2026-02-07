@@ -3,11 +3,14 @@ import { DataSource } from "typeorm";
 import fs from "fs";
 import path from "path";
 
-// É CRÍTICO importar as entidades DEPOIS de importar reflect-metadata
-// para que os decoradores sejam registrados com sucesso
+// CRÍTICO: Importar as entidades DEPOIS de reflect-metadata
+// para garantir que os decoradores sejam registrados
 import { Alunos } from "../database/entities/alunos.entity";
 import { Cursos } from "../database/entities/cursos.entity";
 import { Matriculas } from "../database/entities/matriculas.entity";
+
+// Garantir que as classes estejam registradas no reflect-metadata
+const entities = [Alunos, Cursos, Matriculas];
 
 const ormconfigPath = path.resolve(process.cwd(), "ormconfig.json");
 let ormConfig: any = {};
@@ -23,10 +26,10 @@ const databaseUrl = process.env.DATABASE_URL || ormConfig.url || undefined;
 
 const options: any = {
   type: "postgres",
-  entities: [Alunos, Cursos, Matriculas],
+  entities: entities,
   synchronize: ormConfig.synchronize ?? true,
   ssl: ormConfig.ssl || { rejectUnauthorized: false },
-  logging: process.env.NODE_ENV === "production" ? false : false,
+  logging: false,
 };
 
 if (databaseUrl) {
