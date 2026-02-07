@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import AuthGuard from "../../../components/AuthGuard";
 
 type Curso = {
   id: string;
@@ -66,33 +65,29 @@ export default function AlunoDetalhes() {
 
   if (loading) {
     return (
-      <AuthGuard>
-        <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-lg text-stone-600">Carregando...</div>
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-lg text-stone-600">Carregando...</div>
         </div>
-      </AuthGuard>
+      </div>
     );
   }
 
   if (error || !aluno) {
     return (
-      <AuthGuard>
-        <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
-          <div className="mx-auto max-w-2xl bg-white rounded-2xl shadow-lg p-8">
-            <div className="text-center">
-              <div className="text-red-600 mb-6 text-lg font-medium">{error || 'Aluno não encontrado'}</div>
-              <button
-                onClick={handleVoltar}
-                className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition"
-              >
-                Voltar para Gerenciamento
-              </button>
-            </div>
+      <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
+        <div className="mx-auto max-w-2xl bg-white rounded-2xl shadow-lg p-8">
+          <div className="text-center">
+            <div className="text-red-600 mb-6 text-lg font-medium">{error || 'Aluno não encontrado'}</div>
+            <button
+              onClick={handleVoltar}
+              className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition"
+            >
+              Voltar para Gerenciamento
+            </button>
           </div>
         </div>
-      </AuthGuard>
+      </div>
     );
   }
 
@@ -102,8 +97,7 @@ export default function AlunoDetalhes() {
 
   if (!unlocked) {
     return (
-      <AuthGuard>
-        <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8 flex items-center justify-center">
           <div className="mx-auto max-w-md bg-white rounded-2xl shadow-lg p-8">
             <h2 className="text-2xl font-semibold text-stone-800 mb-4">Protegido</h2>
             <p className="text-stone-600 mb-4">Digite os 3 primeiros dígitos do CPF do aluno para visualizar os detalhes.</p>
@@ -146,7 +140,6 @@ export default function AlunoDetalhes() {
             </form>
           </div>
         </div>
-      </AuthGuard>
     );
   }
 
@@ -158,8 +151,7 @@ export default function AlunoDetalhes() {
   const totalHoras = aluno.cursos?.reduce((acc, curso) => acc + (curso.duracaoCustomizada ?? curso.duracao), 0) || 0;
 
   return (
-    <AuthGuard>
-      <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
         <div className="mx-auto max-w-2xl bg-white rounded-2xl shadow-lg p-8">
           <h1 className="text-3xl font-semibold text-stone-800 mb-8">Detalhes do Aluno</h1>
 
@@ -227,6 +219,5 @@ export default function AlunoDetalhes() {
           </div>
         </div>
       </div>
-    </AuthGuard>
   );
 }
