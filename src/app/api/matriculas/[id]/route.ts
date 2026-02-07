@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { NextRequest, NextResponse } from "next/server";
 import { initializeDataSource } from '../../../../lib/data-source';
 import { Matriculas } from '../../../../database/entities/matriculas.entity';

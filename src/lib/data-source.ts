@@ -1,10 +1,12 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
+import fs from "fs";
+import path from "path";
+
+// Importar as entidades com reflect-metadata já carregado
 import { Alunos } from "../database/entities/alunos.entity";
 import { Cursos } from "../database/entities/cursos.entity";
 import { Matriculas } from "../database/entities/matriculas.entity";
-import fs from "fs";
-import path from "path";
 
 const ormconfigPath = path.resolve(process.cwd(), "ormconfig.json");
 let ormConfig: any = {};
@@ -23,7 +25,7 @@ const options: any = {
   entities: [Alunos, Cursos, Matriculas],
   synchronize: ormConfig.synchronize ?? true,
   ssl: ormConfig.ssl || { rejectUnauthorized: false },
-  // extra: { ssl: ormConfig.ssl || { rejectUnauthorized: false } },
+  logging: false,
 };
 
 if (databaseUrl) {
