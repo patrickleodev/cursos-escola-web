@@ -9,21 +9,12 @@ const nextConfig: NextConfig = {
   // Configurar webpack para preservar nomes de classes em produção
   webpack: (config, { isServer }) => {
     if (isServer) {
-      // Preservar nomes de classes para TypeORM
-      if (config.optimization?.minimizer) {
-        config.optimization.minimizer.forEach((minimizer: any) => {
-          if (minimizer.constructor.name === 'TerserPlugin') {
-            minimizer.options = {
-              ...minimizer.options,
-              terserOptions: {
-                ...minimizer.options?.terserOptions,
-                keep_classnames: true,
-                keep_fnames: true,
-              },
-            };
-          }
-        });
-      }
+      // DESABILITAR COMPLETAMENTE minificação no server-side
+      // para preservar nomes de classes TypeORM
+      config.optimization = {
+        ...config.optimization,
+        minimize: false,
+      };
     }
     return config;
   },
