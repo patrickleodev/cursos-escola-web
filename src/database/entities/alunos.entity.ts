@@ -10,7 +10,7 @@ import {
   OneToMany,
 } from "typeorm";
 
-@Entity()
+@Entity("alunos")
 export class Alunos {
   @PrimaryGeneratedColumn('uuid')
   id: string;
