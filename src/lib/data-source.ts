@@ -3,7 +3,8 @@ import { DataSource } from "typeorm";
 import fs from "fs";
 import path from "path";
 
-// Importar as entidades com reflect-metadata já carregado
+// É CRÍTICO importar as entidades DEPOIS de importar reflect-metadata
+// para que os decoradores sejam registrados com sucesso
 import { Alunos } from "../database/entities/alunos.entity";
 import { Cursos } from "../database/entities/cursos.entity";
 import { Matriculas } from "../database/entities/matriculas.entity";
@@ -25,7 +26,7 @@ const options: any = {
   entities: [Alunos, Cursos, Matriculas],
   synchronize: ormConfig.synchronize ?? true,
   ssl: ormConfig.ssl || { rejectUnauthorized: false },
-  logging: false,
+  logging: process.env.NODE_ENV === "production" ? false : false,
 };
 
 if (databaseUrl) {
@@ -62,6 +63,7 @@ export async function initializeDataSource() {
     })
     .catch((err) => {
       initPromise = null;
+      console.error("Failed to initialize DataSource:", err);
       throw err;
     });
 
