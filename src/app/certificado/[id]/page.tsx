@@ -4,45 +4,47 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import QRCode from "qrcode";
 import AuthGuard from "../../../components/AuthGuard";
+import type { Aluno, Curso, Matricula } from "../../../types";
 
-type Curso = {
-  id: string;
-  nome: string;
-  duracao: number;
-};
+// Funções de formatação para exibição
+function formatCPF(cpf: string) {
+    const numbers = cpf.replace(/\D/g, '');
+    if (numbers.length === 11) {
+        return `${numbers.slice(0, 3)}.${numbers.slice(3, 6)}.${numbers.slice(6, 9)}-${numbers.slice(9, 11)}`;
+    }
+    return cpf;
+}
 
-type Matricula = {
-  id: string;
-  dataInicio: string;
-  dataFim: string;
-  duracaoCustomizada?: number;
-  curso: Curso;
-};
+function formatTelefone(tel: string) {
+    const numbers = tel.replace(/\D/g, '');
+    if (numbers.length === 11) {
+        return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
+    }
+    if (numbers.length === 10) {
+        return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6, 10)}`;
+    }
+    return tel;
+}
 
-type Aluno = {
-  id: string;
-  nome: string;
-  email: string;
-  telefone?: string;
-  cpf?: string;
-  rg?: string;
-  criadoEm?: string;
-  atualizadoEm?: string;
-  matriculas?: Matricula[];
-};
+function formatRG(rg: string) {
+    const numbers = rg.replace(/\D/g, '');
+    if (numbers.length === 9) {
+        return `${numbers.slice(0, 2)}.${numbers.slice(2, 5)}.${numbers.slice(5, 8)}-${numbers.slice(8, 9)}`;
+    }
+    return rg;
+}
 
 export default function Certificado() {
-  const params = useParams();
+  const { id } = useParams();
   const router = useRouter();
-  const id = params.id as string;
-
   const [aluno, setAluno] = useState<Aluno | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [qrCodeUrl, setQrCodeUrl] = useState<string>("");
+  const [error, setError] = useState("");
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const [qrCodeSegundaPagina, setQrCodeSegundaPagina] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editingDuracao, setEditingDuracao] = useState<string | null>(null);
   const [editDates, setEditDates] = useState<Record<string, { dataInicio: string; dataFim: string }>>({});
+  const [editingDuracao, setEditingDuracao] = useState<string | null>(null);
   const [editDuracoes, setEditDuracoes] = useState<Record<string, number>>({});
   const [saving, setSaving] = useState(false);
   const certificateRef = useRef<HTMLDivElement>(null);
@@ -57,6 +59,9 @@ export default function Certificado() {
         }
         const data = await res.json();
         setAluno(data);
+
+        // Definir o título da página para o nome do arquivo ao salvar
+        document.title = `CERTIFICADO ${data.nome}`;
 
         // Gerar QR Code para a página do aluno
         const qrUrl = await QRCode.toDataURL(
@@ -111,7 +116,6 @@ export default function Certificado() {
         throw new Error("Erro ao atualizar datas");
       }
 
-      // Atualizar o estado do aluno
       if (aluno && aluno.matriculas) {
         const updatedMatriculas = aluno.matriculas.map((m) =>
           m.id === matriculaId
@@ -151,7 +155,6 @@ export default function Certificado() {
         throw new Error("Erro ao atualizar duração");
       }
 
-      // Atualizar o estado do aluno
       if (aluno && aluno.matriculas) {
         const updatedMatriculas = aluno.matriculas.map((m) =>
           m.id === matriculaId
@@ -184,7 +187,6 @@ export default function Certificado() {
         throw new Error("Erro ao remover curso");
       }
 
-      // Atualizar o estado do aluno removendo a matrícula
       if (aluno && aluno.matriculas) {
         const updatedMatriculas = aluno.matriculas.filter((m) => m.id !== matriculaId);
         setAluno({ ...aluno, matriculas: updatedMatriculas });
@@ -195,6 +197,17 @@ export default function Certificado() {
       alert(err instanceof Error ? err.message : "Erro ao remover curso");
     } finally {
       setSaving(false);
+    }
+  }
+
+  function handleQrCodeUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setQrCodeSegundaPagina(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   }
 
@@ -234,8 +247,271 @@ export default function Certificado() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
-        <div className="mx-auto max-w-4xl">
+      <style>{`
+        /* Estilos gerais para o certificado (desktop e print) */
+        .certificado-print {
+          background: linear-gradient(135deg, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%) !important;
+          position: relative;
+          overflow: hidden;
+          width: 210mm;
+          height: 297mm;
+          margin: 0 auto;
+          padding: 40mm 30mm;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+        }
+
+        .certificado-border-top,
+        .certificado-border-bottom {
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 40px;
+          background-image: 
+            repeating-linear-gradient(
+              135deg,
+              #1e3a8a 0px,
+              #1e3a8a 20px,
+              #f5f1e8 20px,
+              #f5f1e8 40px
+            );
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+        }
+
+        .certificado-border-top {
+          top: 0;
+        }
+
+        .certificado-border-bottom {
+          bottom: 0;
+        }
+
+        .qr-code-container {
+          position: absolute;
+          top: 60px;
+          right: 40px;
+          width: 140px;
+          height: 140px;
+          border: 2px solid #1e3a8a !important;
+          background: white !important;
+          padding: 5px;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+        }
+
+        .qr-code-container img {
+          width: 100%;
+          height: 100%;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+        }
+
+        .logo-container {
+          position: absolute;
+          top: 60px;
+          left: 40px;
+          width: 160px;
+          height: 160px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+        }
+
+        .logo-container img {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+        }
+
+        .certificado-titulo {
+          color: #1e3a8a !important;
+          font-weight: 900 !important;
+          font-size: 48px !important;
+          letter-spacing: 2px !important;
+          margin-top: 20px;
+        }
+
+        .instituicao-nome {
+          color: #374151 !important;
+          font-size: 16px !important;
+          font-weight: 500;
+          margin: 10px 0 20px 0;
+          letter-spacing: 0.5px;
+        }
+
+        .certificado-nome {
+          color: #1f2937 !important;
+          font-size: 36px !important;
+          font-weight: bold !important;
+          margin: 20px 0;
+          letter-spacing: 1px;
+        }
+
+        .info-aluno {
+          color: #374151 !important;
+          font-size: 14px !important;
+          margin: 15px 0;
+          letter-spacing: 0.5px;
+          font-weight: 500;
+        }
+
+        .descricao-curso {
+          color: #1f2937 !important;
+          font-size: 14px !important;
+          font-weight: 600;
+          margin: 25px 0;
+          letter-spacing: 0.5px;
+          line-height: 1.6;
+        }
+
+        .assinatura-container {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 60px;
+          padding-top: 30px;
+        }
+
+        .assinatura-item {
+          text-align: center;
+          flex: 0 0 45%;
+        }
+
+        .assinatura-linha {
+          border-top: 2px solid #1e3a8a;
+          margin: 8px 0;
+          width: 100%;
+        }
+
+        .assinatura-titulo {
+          color: #1f2937 !important;
+          font-weight: 600;
+          font-size: 12px !important;
+          margin-top: 5px;
+        }
+
+        .segunda-pagina {
+          background: linear-gradient(135deg, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%) !important;
+          position: relative;
+          overflow: hidden;
+          width: 210mm;
+          height: 297mm;
+          margin: 20px auto 0;
+          padding: 40mm 30mm;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+          page-break-before: always;
+        }
+
+        .qr-code-central {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 200px;
+          height: 200px;
+          border: 3px solid #1e3a8a !important;
+          background: white !important;
+          padding: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+        }
+
+        .qr-code-central img {
+          width: 100%;
+          height: 100%;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+        }
+
+        .qr-code-placeholder {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #1e3a8a;
+          font-size: 14px;
+          font-weight: 600;
+          text-align: center;
+        }
+
+        @page {
+          margin: 0;
+          size: A4;
+        }
+
+        @media print {
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+
+          body {
+            background: white !important;
+            margin: 0;
+            padding: 0;
+          }
+
+          html {
+            margin: 0;
+            padding: 0;
+          }
+
+          .certificate-container {
+            page-break-after: avoid;
+            padding: 0 !important;
+            background: white !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            color-adjust: exact;
+          }
+
+          .certificado-print {
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            padding: 40mm 30mm;
+            box-shadow: none !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            color-adjust: exact;
+          }
+
+          .segunda-pagina {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 !important;
+            padding: 40mm 30mm;
+            box-shadow: none !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            color-adjust: exact;
+          }
+        }
+      `}</style>
+
+      <div className="certificate-container min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
+        <div className="mx-auto" style={{ maxWidth: '210mm' }}>
           {/* Botões de ação */}
           <div className="flex gap-3 mb-6 print:hidden">
             <button
@@ -255,113 +531,202 @@ export default function Certificado() {
           {/* Certificado */}
           <div
             ref={certificateRef}
-            className="bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100 rounded-2xl shadow-2xl p-12 max-w-3xl mx-auto"
+            className="certificado-print relative bg-white mx-auto"
           >
-            {/* Bordas decorativas */}
-            <div className="absolute top-6 left-6 w-12 h-12 border-l-4 border-t-4 border-amber-400 rounded-sm"></div>
-            <div className="absolute top-6 right-6 w-12 h-12 border-r-4 border-t-4 border-amber-400 rounded-sm"></div>
-            <div className="absolute bottom-6 left-6 w-12 h-12 border-l-4 border-b-4 border-amber-400 rounded-sm"></div>
-            <div className="absolute bottom-6 right-6 w-12 h-12 border-r-4 border-b-4 border-amber-400 rounded-sm"></div>
+            {/* Bordas decorativas padrão triangular */}
+            <div className="certificado-border-top"></div>
+            <div className="certificado-border-bottom"></div>
 
-            {/* Cabeçalho */}
-            <div className="text-center mb-12">
-              <h1 className="text-5xl font-bold text-amber-900 mb-2">
-                CERTIFICADO
-              </h1>
-              <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto"></div>
+            {/* Logo */}
+            <div className="logo-container">
+              <img src="/logo.png" alt="Logo" />
             </div>
 
-            {/* Conteúdo */}
-            <div className="text-center mb-12">
-              <p className="text-stone-700 text-lg mb-6">Certificamos que</p>
-              <p className="text-3xl font-bold text-amber-900 mb-8">
-                {aluno.nome}
-              </p>
-              <p className="text-stone-700 text-lg mb-2">
-                Com CPF: <span className="font-semibold">{aluno.cpf || "-"}</span>
-              </p>
-              <p className="text-stone-700 text-lg mb-2">
-                E-mail: <span className="font-semibold">{aluno.email || "-"}</span>
-              </p>
-              <p className="text-stone-700 text-lg mb-8">
-                Telefone: <span className="font-semibold">{aluno.telefone || "-"}</span>
-              </p>
-              <p className="text-stone-700 text-lg mb-8">
-                Concluiu com sucesso os seguintes cursos:
-              </p>
-              
-              {/* Cursos */}
-              {aluno.matriculas && aluno.matriculas.length > 0 ? (
-                <div className="mb-8 text-left max-w-2xl mx-auto">
-                  {aluno.matriculas.map((matricula) => {
-                    const duracaoFinal = matricula.duracaoCustomizada ?? matricula.curso.duracao;
-                    return (
-                    <div key={matricula.id} className="mb-4 p-4 border border-amber-200 rounded-lg bg-white">
-                      <p className="font-semibold text-amber-900 mb-2">
-                        {matricula.curso.nome} ({duracaoFinal}h)
-                      </p>
-                      
+            {/* QR Code */}
+            {qrCodeUrl && (
+              <div className="qr-code-container">
+                <img src={qrCodeUrl} alt="QR Code" />
+              </div>
+            )}
+
+            {/* Conteúdo do certificado */}
+            <div className="relative z-10 h-full flex flex-col justify-between" style={{ paddingTop: '60px' }}>
+              {/* Cabeçalho */}
+              <div className="text-center">
+                <h1 className="certificado-titulo">CERTIFICADO</h1>
+                <p className="instituicao-nome">Vecchiato Assessoria Educacional</p>
+              </div>
+
+              {/* Nome do aluno */}
+              <div className="text-center mt-8 mb-6">
+                <p className="certificado-nome">{aluno.nome}</p>
+              </div>
+
+              {/* Informações do aluno - CPF e RG na mesma linha */}
+              <div className="text-center mb-8">
+                <p className="info-aluno">
+                  CPF: {formatCPF(aluno.cpf || "")} RG: {aluno.rg ? formatRG(aluno.rg) : "Ausente"}
+                </p>
+              </div>
+
+              {/* Descrição do curso */}
+              <div className="text-center mb-12">
+                {aluno.matriculas && aluno.matriculas.length > 0 ? (
+                  <>
+                    {aluno.matriculas.map((matricula) => {
+                      const duracaoFinal = matricula.duracaoCustomizada ?? matricula.curso.duracao;
+                      const dataInicio = new Date(matricula.dataInicio).toLocaleDateString('pt-BR');
+                      const dataFim = new Date(matricula.dataFim).toLocaleDateString('pt-BR');
+                      return (
+                        <div key={matricula.id} className="descricao-curso">
+                          <p className="font-bold">CONCLUIU COM ÊXITO AO CURSO DE {matricula.curso.nome.toUpperCase()} COM {duracaoFinal}H</p>
+                          <p>REALIZADO DE {dataInicio} A {dataFim}</p>
+                        </div>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <p className="descricao-curso">Nenhum curso encontrado</p>
+                )}
+              </div>
+
+              {/* Seção de assinatura */}
+              <div className="assinatura-container">
+                <div className="assinatura-item">
+                  <div style={{ height: '50px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+                    <p className="text-sm font-semibold mb-0">{aluno.nome}</p>
+                  </div>
+                  <div className="assinatura-linha"></div>
+                  <p className="text-xs mt-1 mb-0">{formatCPF(aluno.cpf || "")}</p>
+                </div>
+                <div className="assinatura-item">
+                  <div style={{ height: '50px' }}></div>
+                  <div className="assinatura-linha"></div>
+                  <p className="assinatura-titulo mb-0">DIRETORA EDUCACIONAL</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Segunda Página do Certificado */}
+          <div className="segunda-pagina relative bg-white mx-auto">
+            {/* Bordas decorativas padrão triangular */}
+            <div className="certificado-border-top"></div>
+            <div className="certificado-border-bottom"></div>
+
+            {/* QR Code central - será adicionado futuramente */}
+            <div className="qr-code-central">
+              {qrCodeSegundaPagina ? (
+                <img src={qrCodeSegundaPagina} alt="QR Code Segunda Página" />
+              ) : (
+                <div className="qr-code-placeholder">
+                  QR Code a ser anexado
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Seção de edição de cursos - visível apenas na tela */}
+          {aluno.matriculas && aluno.matriculas.length > 0 && (
+            <div className="mt-8 print:hidden" style={{ maxWidth: '210mm', margin: '2rem auto 0' }}>
+              {/* Upload QR Code Segunda Página */}
+              <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                <h2 className="text-2xl font-semibold text-stone-800 mb-4">QR Code da Segunda Página</h2>
+                <div className="flex flex-col gap-3">
+                  <label className="block text-sm font-semibold text-stone-700">
+                    Anexar QR Code para a segunda página
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleQrCodeUpload}
+                    className="block w-full text-sm text-stone-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  />
+                  {qrCodeSegundaPagina && (
+                    <div className="mt-2">
+                      <p className="text-sm text-green-600 font-medium">✓ QR Code anexado com sucesso</p>
+                      <button
+                        onClick={() => setQrCodeSegundaPagina("")}
+                        className="mt-2 text-sm text-red-600 hover:text-red-700 font-medium"
+                      >
+                        Remover QR Code
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h2 className="text-2xl font-semibold text-stone-800 mb-6">Editar Certificado</h2>
+                {aluno.matriculas.map((matricula) => {
+                  const duracaoFinal = matricula.duracaoCustomizada ?? matricula.curso.duracao;
+                  return (
+                    <div key={matricula.id} className="border-t pt-6 mt-6">
+                      <p className="font-semibold text-stone-700 mb-4">{matricula.curso.nome}</p>
+
                       {editingId === matricula.id ? (
-                        <div className="space-y-3 print:hidden">
-                          <div>
-                            <label className="block text-xs font-semibold text-stone-700 mb-1">
-                              Data de Início
-                            </label>
-                            <input
-                              type="date"
-                              value={editDates[matricula.id]?.dataInicio || ""}
-                              onChange={(e) =>
-                                setEditDates({
-                                  ...editDates,
-                                  [matricula.id]: {
-                                    ...editDates[matricula.id],
-                                    dataInicio: e.target.value,
-                                  },
-                                })
-                              }
-                              className="w-full border border-stone-300 rounded px-2 py-1 text-sm text-stone-800 placeholder:text-stone-600"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-xs font-semibold text-stone-700 mb-1">
-                              Data de Conclusão
-                            </label>
-                            <input
-                              type="date"
-                              value={editDates[matricula.id]?.dataFim || ""}
-                              onChange={(e) =>
-                                setEditDates({
-                                  ...editDates,
-                                  [matricula.id]: {
-                                    ...editDates[matricula.id],
-                                    dataFim: e.target.value,
-                                  },
-                                })
-                              }
-                              className="w-full border border-stone-300 rounded px-2 py-1 text-sm text-stone-800 placeholder:text-stone-600"
-                            />
+                        <div className="space-y-3 mb-4">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-sm font-semibold text-stone-700 mb-1">
+                                Data de Início
+                              </label>
+                              <input
+                                type="date"
+                                value={editDates[matricula.id]?.dataInicio || ""}
+                                onChange={(e) =>
+                                  setEditDates({
+                                    ...editDates,
+                                    [matricula.id]: {
+                                      ...editDates[matricula.id],
+                                      dataInicio: e.target.value,
+                                    },
+                                  })
+                                }
+                                className="w-full border border-stone-300 rounded px-3 py-2 text-stone-800"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-semibold text-stone-700 mb-1">
+                                Data de Conclusão
+                              </label>
+                              <input
+                                type="date"
+                                value={editDates[matricula.id]?.dataFim || ""}
+                                onChange={(e) =>
+                                  setEditDates({
+                                    ...editDates,
+                                    [matricula.id]: {
+                                      ...editDates[matricula.id],
+                                      dataFim: e.target.value,
+                                    },
+                                  })
+                                }
+                                className="w-full border border-stone-300 rounded px-3 py-2 text-stone-800"
+                              />
+                            </div>
                           </div>
                           <div className="flex gap-2">
                             <button
                               onClick={() => saveDates(matricula.id)}
                               disabled={saving}
-                              className="flex-1 bg-green-500 hover:bg-green-600 text-white rounded px-3 py-1 text-sm font-medium transition disabled:opacity-50"
+                              className="flex-1 bg-green-500 hover:bg-green-600 text-white rounded px-3 py-2 font-medium transition disabled:opacity-50"
                             >
                               {saving ? "Salvando..." : "Salvar"}
                             </button>
                             <button
                               onClick={() => setEditingId(null)}
                               disabled={saving}
-                              className="flex-1 border border-stone-300 hover:bg-stone-100 rounded px-3 py-1 text-sm font-medium transition disabled:opacity-50"
+                              className="flex-1 border border-stone-300 hover:bg-stone-100 rounded px-3 py-2 font-medium transition"
                             >
                               Cancelar
                             </button>
                           </div>
                         </div>
                       ) : editingDuracao === matricula.id ? (
-                        <div className="space-y-3 print:hidden">
+                        <div className="space-y-3 mb-4">
                           <div>
-                            <label className="block text-xs font-semibold text-stone-700 mb-1">
+                            <label className="block text-sm font-semibold text-stone-700 mb-1">
                               Duração (horas)
                             </label>
                             <input
@@ -374,118 +739,67 @@ export default function Certificado() {
                                   [matricula.id]: parseInt(e.target.value) || 0,
                                 })
                               }
-                              className="w-full border border-stone-300 rounded px-2 py-1 text-sm text-stone-800 placeholder:text-stone-600"
+                              className="w-full border border-stone-300 rounded px-3 py-2 text-stone-800"
                             />
                           </div>
                           <div className="flex gap-2">
                             <button
                               onClick={() => saveDuracao(matricula.id)}
                               disabled={saving}
-                              className="flex-1 bg-green-500 hover:bg-green-600 text-white rounded px-3 py-1 text-sm font-medium transition disabled:opacity-50"
+                              className="flex-1 bg-green-500 hover:bg-green-600 text-white rounded px-3 py-2 font-medium transition disabled:opacity-50"
                             >
                               {saving ? "Salvando..." : "Salvar"}
                             </button>
                             <button
                               onClick={() => setEditingDuracao(null)}
                               disabled={saving}
-                              className="flex-1 border border-stone-300 hover:bg-stone-100 rounded px-3 py-1 text-sm font-medium transition disabled:opacity-50"
+                              className="flex-1 border border-stone-300 hover:bg-stone-100 rounded px-3 py-2 font-medium transition"
                             >
                               Cancelar
                             </button>
                           </div>
                         </div>
                       ) : (
-                        <div className="print:invisible">
-                          <p className="text-sm text-stone-700 mb-1">
+                        <div className="mb-4">
+                          <p className="text-sm text-stone-600 mb-1">
                             <span className="font-semibold">Início:</span> {new Date(matricula.dataInicio).toLocaleDateString("pt-BR")}
                           </p>
-                          <p className="text-sm text-stone-700 mb-3">
+                          <p className="text-sm text-stone-600 mb-1">
                             <span className="font-semibold">Conclusão:</span> {new Date(matricula.dataFim).toLocaleDateString("pt-BR")}
+                          </p>
+                          <p className="text-sm text-stone-600 mb-3">
+                            <span className="font-semibold">Duração:</span> {duracaoFinal}h
                           </p>
                           <div className="flex gap-2 flex-wrap">
                             <button
                               onClick={() => startEditing(matricula.id, matricula.dataInicio, matricula.dataFim)}
-                              className="text-sm bg-amber-100 hover:bg-amber-200 text-amber-900 px-3 py-1 rounded font-medium transition print:hidden"
+                              className="text-sm bg-amber-100 hover:bg-amber-200 text-amber-900 px-3 py-1 rounded font-medium transition"
                             >
                               Editar datas
                             </button>
                             <button
                               onClick={() => startEditingDuracao(matricula.id, duracaoFinal)}
-                              className="text-sm bg-blue-100 hover:bg-blue-200 text-blue-900 px-3 py-1 rounded font-medium transition print:hidden"
+                              className="text-sm bg-blue-100 hover:bg-blue-200 text-blue-900 px-3 py-1 rounded font-medium transition"
                             >
                               Editar horas
                             </button>
                             <button
                               onClick={() => removeCurso(matricula.id)}
-                              disabled={saving}
-                              className="text-sm bg-red-100 hover:bg-red-200 text-red-900 px-3 py-1 rounded font-medium transition print:hidden disabled:opacity-50"
+                              className="text-sm bg-red-100 hover:bg-red-200 text-red-900 px-3 py-1 rounded font-medium transition"
                             >
-                              Remover curso
+                              Remover
                             </button>
                           </div>
                         </div>
                       )}
-
-                      <p className="text-sm text-stone-700 mt-3 print:block hidden">
-                        <span className="font-semibold">Início:</span> {new Date(matricula.dataInicio).toLocaleDateString("pt-BR")}
-                      </p>
-                      <p className="text-sm text-stone-700 print:block hidden">
-                        <span className="font-semibold">Conclusão:</span> {new Date(matricula.dataFim).toLocaleDateString("pt-BR")}
-                      </p>
                     </div>
-                  )})}
-                  <div className="mt-4 pt-4 border-t border-amber-300">
-                    <p className="text-stone-700">
-                      <span className="font-semibold">Total:</span> {aluno.matriculas.reduce((acc, m) => acc + (m.duracaoCustomizada ?? m.curso.duracao), 0)} horas
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <p className="text-stone-600 mb-8 italic">
-                  (Nenhum curso designado ainda)
-                </p>
-              )}
-            </div>
-
-            {/* QR Code */}
-            <div className="flex flex-col items-center mb-12">
-              <p className="text-stone-600 text-sm mb-4">
-                Escaneie o código QR para verificar os detalhes:
-              </p>
-              <div className="bg-white p-4 rounded-xl border-2 border-amber-200">
-                <img
-                  src={qrCodeUrl}
-                  alt="QR Code"
-                  className="w-32 h-32"
-                />
+                  );
+                })}
               </div>
             </div>
-
-            {/* Rodapé */}
-            <div className="text-center border-t-2 border-amber-200 pt-8">
-              <p className="text-stone-600 text-sm mb-4">
-                Data de emissão: {new Date().toLocaleDateString("pt-BR")}
-              </p>
-              <p className="text-stone-500 text-xs">
-                Escola Web - Cursos Online de Excelência
-              </p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
-
-      <style>{`
-        @media print {
-          body {
-            background-color: white;
-            margin: 0;
-            padding: 0;
-          }
-          .print\\:hidden {
-            display: none !important;
-          }
-        }
-      `}</style>
     </AuthGuard>
   );
 }

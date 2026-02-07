@@ -29,6 +29,9 @@ export class Alunos {
   @Column({ unique: true })
   cpf: string;
 
+  @Column({ length: 20, nullable: true })
+  rg?: string;
+
   @CreateDateColumn()
   criadoEm: Date;
 

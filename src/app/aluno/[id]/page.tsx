@@ -2,27 +2,35 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import type { Aluno, Curso } from "../../../types";
 
-type Curso = {
-  id: string;
-  nome: string;
-  duracao: number;
-  dataInicio?: string;
-  dataFim?: string;
-  duracaoCustomizada?: number;
-};
+// Funções de formatação para exibição
+function formatCPF(cpf: string) {
+    const numbers = cpf.replace(/\D/g, '');
+    if (numbers.length === 11) {
+        return `${numbers.slice(0, 3)}.${numbers.slice(3, 6)}.${numbers.slice(6, 9)}-${numbers.slice(9, 11)}`;
+    }
+    return cpf;
+}
 
-type Aluno = { 
-  id: string; 
-  nome: string; 
-  email: string; 
-  cpf?: string; 
-  rg?: string; 
-  telefone?: string;
-  criadoEm?: string;
-  atualizadoEm?: string;
-  cursos?: Curso[];
-};
+function formatTelefone(tel: string) {
+    const numbers = tel.replace(/\D/g, '');
+    if (numbers.length === 11) {
+        return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
+    }
+    if (numbers.length === 10) {
+        return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6, 10)}`;
+    }
+    return tel;
+}
+
+function formatRG(rg: string) {
+    const numbers = rg.replace(/\D/g, '');
+    if (numbers.length === 9) {
+        return `${numbers.slice(0, 2)}.${numbers.slice(2, 5)}.${numbers.slice(5, 8)}-${numbers.slice(8, 9)}`;
+    }
+    return rg;
+}
 
 export default function AlunoDetalhes() {
   const params = useParams();
@@ -168,12 +176,17 @@ export default function AlunoDetalhes() {
 
             <div className="border-b border-stone-200 pb-4">
               <label className="block text-sm font-semibold text-stone-700">Telefone</label>
-              <div className="mt-2 text-lg text-stone-800">{aluno.telefone || '-'}</div>
+              <div className="mt-2 text-lg text-stone-800">{formatTelefone(aluno.telefone || '')}</div>
             </div>
 
             <div className="border-b border-stone-200 pb-4">
               <label className="block text-sm font-semibold text-stone-700">CPF</label>
-              <div className="mt-2 text-lg text-stone-800">{aluno.cpf || '-'}</div>
+              <div className="mt-2 text-lg text-stone-800">{formatCPF(aluno.cpf || '')}</div>
+            </div>
+
+            <div className="border-b border-stone-200 pb-4">
+              <label className="block text-sm font-semibold text-stone-700">RG</label>
+              <div className="mt-2 text-lg text-stone-800">{aluno.rg ? formatRG(aluno.rg) : 'Ausente'}</div>
             </div>
           </div>
 

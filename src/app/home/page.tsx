@@ -8,8 +8,7 @@ export default function Home() {
       {/* Header */}
       <header className="mx-auto max-w-7xl px-6 py-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="text-2xl font-bold text-amber-700">Vecchiato</div>
-          <span className="text-sm text-stone-600">Assessoria Educacional</span>
+          <Image src="/logo.png" alt="Vecchiato Assessoria Educacional" width={180} height={60} className="h-12 w-auto" priority />
         </div>
         <nav className="hidden md:flex items-center gap-6">
           <a href="#sobre" className="hover:underline text-stone-700">Sobre</a>

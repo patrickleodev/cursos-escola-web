@@ -2,25 +2,32 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { IMaskInput } from "react-imask";
 import AuthGuard from "../../components/AuthGuard";
-
-type Aluno = { 
-  id: string; 
-  nome: string; 
-  email: string; 
-  cpf: string; 
-  telefone: string;
-  cursos?: Curso[];
-};
-
-type Curso = { 
-  id: string; 
-  nome: string; 
-  duracao: number; 
-};
+import type { Aluno, Curso } from "../../types";
 
 function getApiUrl(path: string) {
     return path;
+}
+
+// Funções helper para formatar exibição
+function formatCPFDisplay(cpf: string) {
+    const numbers = cpf.replace(/\D/g, '');
+    if (numbers.length === 11) {
+        return `${numbers.slice(0, 3)}.${numbers.slice(3, 6)}.${numbers.slice(6, 9)}-${numbers.slice(9, 11)}`;
+    }
+    return cpf;
+}
+
+function formatTelefoneDisplay(tel: string) {
+    const numbers = tel.replace(/\D/g, '');
+    if (numbers.length === 11) {
+        return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
+    }
+    if (numbers.length === 10) {
+        return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6, 10)}`;
+    }
+    return tel;
 }
 
 export default function GerenciarAlunos() {
@@ -77,7 +84,14 @@ export default function GerenciarAlunos() {
 
     async function handleSave(e: React.FormEvent) {
         e.preventDefault();
-        const payload = { nome, email, cpf, telefone };
+        // Remover formatação antes de enviar
+        const payload = { 
+            nome, 
+            email, 
+            cpf: cpf.replace(/\D/g, ''), 
+            telefone: telefone.replace(/\D/g, ''), 
+            rg: rg ? rg.replace(/\D/g, '') : null 
+        };
 
         if (editingId) {
             try {
@@ -91,7 +105,7 @@ export default function GerenciarAlunos() {
                 if (!res.ok) console.error('Erro ao criar aluno', await res.text());
             } catch (err) { console.error(err); }
         }
-        setNome(''); setEmail(''); setCpf(''); setTelefone('');
+        setNome(''); setEmail(''); setCpf(''); setRg(''); setTelefone('');
         fetchAlunos();
     }
 
@@ -100,6 +114,7 @@ export default function GerenciarAlunos() {
         setNome(a.nome);
         setEmail(a.email);
         setCpf(a.cpf || '');
+        setRg(a.rg || '');
         setTelefone(a.telefone || '');
     }
 
@@ -210,11 +225,30 @@ export default function GerenciarAlunos() {
                     <form onSubmit={handleSave} className="mb-8 grid gap-3 sm:grid-cols-4 bg-gradient-to-br from-amber-50 to-stone-50 p-6 rounded-xl">
                         <input placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" />
                         <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" />
-                        <input placeholder="CPF" value={cpf} onChange={(e) => setCpf(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" />
-                        <input placeholder="Telefone" value={telefone} onChange={(e) => setTelefone(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 sm:col-span-2 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" />
+                        <IMaskInput 
+                            mask="000.000.000-00" 
+                            placeholder="CPF" 
+                            value={cpf} 
+                            onAccept={(value) => setCpf(value)} 
+                            className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" 
+                        />
+                        <IMaskInput 
+                            mask="00.000.000-0" 
+                            placeholder="RG (opcional)" 
+                            value={rg} 
+                            onAccept={(value) => setRg(value)} 
+                            className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" 
+                        />
+                        <IMaskInput 
+                            mask="(00) 00000-0000" 
+                            placeholder="Telefone" 
+                            value={telefone} 
+                            onAccept={(value) => setTelefone(value)} 
+                            className="rounded-lg border border-stone-300 px-4 py-3 sm:col-span-2 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" 
+                        />
                         <div className="sm:col-span-2 flex gap-3">
                             <button className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition">{editingId ? 'Salvar' : 'Criar'}</button>
-                            {editingId && <button type="button" onClick={() => { setEditingId(null); setNome(''); setEmail(''); setCpf(''); setTelefone(''); }} className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition">Cancelar</button>}
+                            {editingId && <button type="button" onClick={() => { setEditingId(null); setNome(''); setEmail(''); setCpf(''); setRg(''); setTelefone(''); }} className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition">Cancelar</button>}
                         </div>
                     </form>
 
@@ -225,8 +259,8 @@ export default function GerenciarAlunos() {
                                 <div className="flex-1">
                                     <div className="font-semibold text-stone-800">{a.nome}</div>
                                     <div className="text-sm text-stone-600">{a.email}</div>
-                                    <div className="text-sm text-stone-600">CPF: {a.cpf || '-'}</div>
-                                    <div className="text-sm text-stone-600">Telefone: {a.telefone || '-'}</div>
+                                    <div className="text-sm text-stone-600">CPF: {formatCPFDisplay(a.cpf || '')}</div>
+                                    <div className="text-sm text-stone-600">Telefone: {formatTelefoneDisplay(a.telefone || '')}</div>
                                     {a.cursos && a.cursos.length > 0 && (
                                         <div className="mt-2 text-xs text-amber-600">
                                             <strong>Cursos:</strong> {a.cursos.map(c => c.nome).join(', ')}
