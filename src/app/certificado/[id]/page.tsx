@@ -412,6 +412,20 @@ export default function Certificado() {
           padding-top: 20px;
         }
 
+        .conteudo-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1rem 2rem;
+          text-align: left;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        .conteudo-grid p {
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
+
         @page {
           margin: 0;
           size: A4 landscape;
@@ -493,11 +507,11 @@ export default function Certificado() {
               const dataInicio = new Date(matricula.dataInicio).toLocaleDateString('pt-BR');
               const dataFim = new Date(matricula.dataFim).toLocaleDateString('pt-BR');
               
-              // Dividir conteúdo em chunks para paginação (15 linhas por página)
+              // Dividir conteúdo em chunks para paginação (30 itens por página em 3 colunas = ~10 por coluna)
               const conteudoLinhas = matricula.curso.conteudo 
                 ? matricula.curso.conteudo.split('\n').filter(line => line.trim())
                 : [];
-              const linhasPorPagina = 15;
+              const linhasPorPagina = 30;
               const conteudoPages: string[][] = [];
               for (let i = 0; i < conteudoLinhas.length; i += linhasPorPagina) {
                 conteudoPages.push(conteudoLinhas.slice(i, i + linhasPorPagina));
@@ -602,9 +616,9 @@ export default function Certificado() {
                       <div className="conteudo-central relative z-10">
                         <h1 className="certificado-titulo">CONTEÚDO</h1>
                         {linhas.length > 0 && (
-                          <div className="mt-8 text-center px-16">
+                          <div className="mt-8 px-12 conteudo-grid">
                             {linhas.map((topico, idx) => (
-                              <p key={idx} className="text-base text-slate-800 font-medium leading-relaxed mb-3">
+                              <p key={idx} className="text-sm text-slate-800 font-medium leading-relaxed mb-0">
                                 {topico.trim()}
                               </p>
                             ))}
