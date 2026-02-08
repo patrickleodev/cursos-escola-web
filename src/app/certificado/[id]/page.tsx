@@ -413,9 +413,7 @@ export default function Certificado() {
         }
 
         .conteudo-grid {
-          display: flex;
-          justify-content: flex-start;
-          align-items: flex-start;
+          display: grid;
           gap: 3rem;
           text-align: left;
           -webkit-print-color-adjust: exact;
@@ -423,9 +421,7 @@ export default function Certificado() {
         }
 
         .conteudo-coluna {
-          flex: 1 1 33.333%;
           min-width: 0;
-          max-width: 33.333%;
         }
 
         .conteudo-coluna p {
@@ -626,9 +622,12 @@ export default function Certificado() {
                       <div className="conteudo-central relative z-10">
                         <h1 className="certificado-titulo">CONTEÚDO</h1>
                         {linhas.length > 0 && (() => {
+                          // Determinar número de colunas baseado na quantidade de itens
+                          const numColunas = linhas.length <= 5 ? 1 : linhas.length <= 15 ? 2 : 3;
+                          
                           // Distribuir itens de forma equilibrada baseado no comprimento do texto
-                          const colunas: string[][] = [[], [], []];
-                          const alturas = [0, 0, 0];
+                          const colunas: string[][] = Array.from({ length: numColunas }, () => []);
+                          const alturas = Array(numColunas).fill(0);
                           
                           // Adicionar cada item à coluna com menor altura acumulada
                           linhas.forEach((linha) => {
@@ -639,7 +638,7 @@ export default function Certificado() {
                           });
                           
                           return (
-                            <div className="mt-8 px-12 conteudo-grid">
+                            <div className="mt-8 px-12 conteudo-grid" style={{ gridTemplateColumns: `repeat(${numColunas}, 1fr)` }}>
                               {colunas.map((coluna, colIdx) => (
                                 <div key={`coluna-${colIdx}`} className="conteudo-coluna">
                                   {coluna.map((topico, idx) => (
