@@ -22,6 +22,9 @@ export class Cursos {
   @Column({ length: 100, nullable: true })
   categoria: string;
 
+  @Column({ type: "text", nullable: true })
+  conteudo: string; // JSON array de tópicos
+
   @CreateDateColumn()
   criadoEm: Date;
 

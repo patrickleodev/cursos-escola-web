@@ -33,6 +33,7 @@ type Curso = {
   nome: string;
   duracao: number;
   categoria?: string;
+  conteudo?: string;
 };
 
 export default function GerenciarCursos() {
@@ -41,6 +42,7 @@ export default function GerenciarCursos() {
   const [nome, setNome] = useState("");
   const [duracao, setDuracao] = useState("");
   const [categoria, setCategoria] = useState("");
+  const [conteudo, setConteudo] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [busca, setBusca] = useState("");
@@ -79,7 +81,7 @@ export default function GerenciarCursos() {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    const payload = { nome, duracao: parseInt(duracao), categoria };
+    const payload = { nome, duracao: parseInt(duracao), categoria, conteudo };
 
     try {
       if (editingId) {
@@ -101,6 +103,7 @@ export default function GerenciarCursos() {
       setNome("");
       setDuracao("");
       setCategoria("");
+      setConteudo("");
       await fetchCursos();
     } catch (err) {
       console.error(err);
@@ -114,6 +117,7 @@ export default function GerenciarCursos() {
     setNome(c.nome);
     setDuracao(c.duracao.toString());
     setCategoria(c.categoria || "");
+    setConteudo(c.conteudo || "");
   }
 
   async function handleDelete(id: string) {
@@ -182,36 +186,46 @@ export default function GerenciarCursos() {
 
           <form
             onSubmit={handleSave}
-            className="mb-8 grid gap-3 sm:grid-cols-4 bg-gradient-to-br from-amber-50 to-stone-50 p-6 rounded-xl"
+            className="mb-8 bg-gradient-to-br from-amber-50 to-stone-50 p-6 rounded-xl space-y-4"
           >
-            <input
-              placeholder="Nome do Curso"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
+            <div className="grid gap-3 sm:grid-cols-3">
+              <input
+                placeholder="Nome do Curso"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                disabled={saving}
+                className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
+              />
+              <input
+                placeholder="Duração (horas)"
+                type="number"
+                value={duracao}
+                onChange={(e) => setDuracao(e.target.value)}
+                disabled={saving}
+                className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
+              />
+              <select
+                value={categoria}
+                onChange={(e) => setCategoria(e.target.value)}
+                disabled={saving}
+                className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
+              >
+                <option value="">Selecione categoria</option>
+                {CATEGORIAS.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <textarea
+              placeholder="Conteúdo do curso (um tópico por linha, ex: desenvolvimento de canva, aplicação de pacote office, etc.)"
+              value={conteudo}
+              onChange={(e) => setConteudo(e.target.value)}
               disabled={saving}
-              className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
+              rows={4}
+              className="w-full rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50 resize-none"
             />
-            <input
-              placeholder="Duração (horas)"
-              type="number"
-              value={duracao}
-              onChange={(e) => setDuracao(e.target.value)}
-              disabled={saving}
-              className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
-            />
-            <select
-              value={categoria}
-              onChange={(e) => setCategoria(e.target.value)}
-              disabled={saving}
-              className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
-            >
-              <option value="">Selecione categoria</option>
-              {CATEGORIAS.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
             <div className="flex gap-3">
               <button disabled={saving} className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
                 <FaSave /> {saving ? "Salvando..." : (editingId ? "Salvar" : "Criar")}
@@ -224,6 +238,7 @@ export default function GerenciarCursos() {
                     setNome("");
                     setDuracao("");
                     setCategoria("");
+                    setConteudo("");
                   }}
                   disabled={saving}
                   className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition cursor-pointer disabled:opacity-50 flex items-center gap-2"

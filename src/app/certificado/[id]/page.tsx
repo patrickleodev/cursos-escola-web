@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import QRCode from "qrcode";
 import AuthGuard from "../../../components/AuthGuard";
@@ -46,7 +46,6 @@ export default function Certificado() {
   const [editingDuracao, setEditingDuracao] = useState<string | null>(null);
   const [editDuracoes, setEditDuracoes] = useState<Record<string, number>>({});
   const [saving, setSaving] = useState(false);
-  const certificateRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function fetchAluno() {
@@ -487,109 +486,129 @@ export default function Certificado() {
             </button>
           </div>
 
-          {/* Certificado */}
-          <div
-            ref={certificateRef}
-            className="certificado-print relative bg-white mx-auto"
-          >
-            {/* Bordas decorativas padrão triangular */}
-            <div className="certificado-border-top"></div>
-            <div className="certificado-border-bottom"></div>
+          {/* Certificados - um para cada curso */}
+          {aluno.matriculas && aluno.matriculas.length > 0 ? (
+            aluno.matriculas.map((matricula, index) => {
+              const duracaoFinal = matricula.duracaoCustomizada ?? matricula.curso.duracao;
+              const dataInicio = new Date(matricula.dataInicio).toLocaleDateString('pt-BR');
+              const dataFim = new Date(matricula.dataFim).toLocaleDateString('pt-BR');
+              
+              return (
+                <React.Fragment key={matricula.id}>
+                  {/* Frente do Certificado */}
+                  <div
+                    className="certificado-print relative bg-white mx-auto"
+                    style={index > 0 ? { pageBreakBefore: 'always' } : {}}
+                  >
+                    {/* Bordas decorativas padrão triangular */}
+                    <div className="certificado-border-top"></div>
+                    <div className="certificado-border-bottom"></div>
 
-            {/* Logo */}
-            <div className="logo-container">
-              <img src="/logo.png" alt="Logo" />
-            </div>
+                    {/* Logo */}
+                    <div className="logo-container">
+                      <img src="/logo.png" alt="Logo" />
+                    </div>
 
-            {/* QR Code */}
-            {qrCodeUrl && (
-              <div className="qr-code-container">
-                <img src={qrCodeUrl} alt="QR Code" />
-              </div>
-            )}
+                    {/* QR Code */}
+                    {qrCodeUrl && (
+                      <div className="qr-code-container">
+                        <img src={qrCodeUrl} alt="QR Code" />
+                      </div>
+                    )}
 
-            {/* Conteúdo do certificado */}
-            <div className="relative z-10" style={{ paddingTop: '20px' }}>
-              {/* Cabeçalho */}
-              <div className="text-center">
-                <h1 className="certificado-titulo">CERTIFICADO</h1>
-                <p className="instituicao-nome">Vecchiato Assessoria Educacional</p>
-              </div>
+                    {/* Conteúdo do certificado */}
+                    <div className="relative z-10" style={{ paddingTop: '20px' }}>
+                      {/* Cabeçalho */}
+                      <div className="text-center">
+                        <h1 className="certificado-titulo">CERTIFICADO</h1>
+                        <p className="instituicao-nome">Vecchiato Assessoria Educacional</p>
+                      </div>
 
-              {/* Nome do aluno */}
-              <div className="text-center mt-3 mb-3">
-                <p className="certificado-nome">{aluno.nome}</p>
-              </div>
+                      {/* Nome do aluno */}
+                      <div className="text-center mt-3 mb-3">
+                        <p className="certificado-nome">{aluno.nome}</p>
+                      </div>
 
-              {/* Informações do aluno - CPF e RG na mesma linha */}
-              <div className="text-center mb-3">
-                <p className="info-aluno">
-                  CPF: {formatCPF(aluno.cpf || "")} RG: {aluno.rg ? formatRG(aluno.rg) : "Ausente"}
-                </p>
-              </div>
+                      {/* Informações do aluno - CPF e RG na mesma linha */}
+                      <div className="text-center mb-3">
+                        <p className="info-aluno">
+                          CPF: {formatCPF(aluno.cpf || "")} RG: {aluno.rg ? formatRG(aluno.rg) : "Ausente"}
+                        </p>
+                      </div>
 
-              {/* Descrição do curso */}
-              <div className="text-center mb-4" style={{ marginTop: '70px' }}>
-                {aluno.matriculas && aluno.matriculas.length > 0 ? (
-                  <>
-                    {aluno.matriculas.map((matricula) => {
-                      const duracaoFinal = matricula.duracaoCustomizada ?? matricula.curso.duracao;
-                      const dataInicio = new Date(matricula.dataInicio).toLocaleDateString('pt-BR');
-                      const dataFim = new Date(matricula.dataFim).toLocaleDateString('pt-BR');
-                      return (
-                        <div key={matricula.id} className="descricao-curso">
+                      {/* Descrição do curso */}
+                      <div className="text-center mb-4" style={{ marginTop: '70px' }}>
+                        <div className="descricao-curso">
                           <p className="font-bold">CONCLUIU COM ÊXITO AO CURSO DE {matricula.curso.nome.toUpperCase()} COM {duracaoFinal}H</p>
                           <p>REALIZADO DE {dataInicio} A {dataFim}</p>
                         </div>
-                      );
-                    })}
-                  </>
-                ) : (
-                  <p className="descricao-curso">Nenhum curso encontrado</p>
-                )}
-              </div>
+                      </div>
 
-              {/* Seção de assinatura */}
-              <div className="assinatura-container">
-                <div className="assinatura-item">
-                  <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '15px' }}>
-                    <p className="text-sm font-semibold mb-0 text-slate-900">{aluno.nome}</p>
+                      {/* Seção de assinatura */}
+                      <div className="assinatura-container">
+                        <div className="assinatura-item">
+                          <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '15px' }}>
+                            <p className="text-sm font-semibold mb-0 text-slate-900">{aluno.nome}</p>
+                          </div>
+                          <div className="assinatura-linha"></div>
+                          <p className="text-xs mt-4 mb-0 text-slate-900">{formatCPF(aluno.cpf || "")}</p>
+                        </div>
+                        <div className="assinatura-item">
+                          <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '15px' }}>
+                            <p className="text-xs font-semibold mb-0 text-slate-900">VECCHIATO ASSESSORIA EDUCACIONAL</p>
+                          </div>
+                          <div className="assinatura-linha"></div>
+                          <p className="assinatura-titulo mb-0 mt-4">DIRETORA EDUCACIONAL</p>
+                          <p className="text-xs mt-1 mb-0 text-slate-900">MICHELLE VECCHIATO CRTP 2344</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="assinatura-linha"></div>
-                  <p className="text-xs mt-4 mb-0 text-slate-900">{formatCPF(aluno.cpf || "")}</p>
-                </div>
-                <div className="assinatura-item">
-                  <div style={{ height: '60px', marginBottom: '15px' }}></div>
-                  <div className="assinatura-linha"></div>
-                  <p className="assinatura-titulo mb-0 mt-4">DIRETORA EDUCACIONAL</p>
-                </div>
+
+                  {/* Verso do Certificado */}
+                  <div className="segunda-pagina relative bg-white mx-auto">
+                    {/* Bordas decorativas padrão triangular */}
+                    <div className="certificado-border-top"></div>
+                    <div className="certificado-border-bottom"></div>
+
+                    {/* Logo */}
+                    <div className="logo-container">
+                      <img src="/logo.png" alt="Logo" />
+                    </div>
+
+                    {/* QR Code */}
+                    {qrCodeUrl && (
+                      <div className="qr-code-container">
+                        <img src={qrCodeUrl} alt="QR Code" />
+                      </div>
+                    )}
+
+                    {/* Conteúdo centralizado */}
+                    <div className="conteudo-central relative z-10">
+                      <h1 className="certificado-titulo">CONTEÚDO</h1>
+                      {matricula.curso.conteudo && (
+                        <div className="mt-6 text-left px-12">
+                          <ul className="space-y-2">
+                            {matricula.curso.conteudo.split('\n').filter(line => line.trim()).map((topico, idx) => (
+                              <li key={idx} className="text-base text-slate-800 font-medium leading-relaxed">
+                                • {topico.trim()}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </React.Fragment>
+              );
+            })
+          ) : (
+            <div className="certificado-print relative bg-white mx-auto">
+              <div className="flex items-center justify-center h-full">
+                <p className="text-xl text-stone-500">Nenhum curso encontrado para este aluno</p>
               </div>
             </div>
-          </div>
-
-          {/* Segunda Página do Certificado */}
-          <div className="segunda-pagina relative bg-white mx-auto">
-            {/* Bordas decorativas padrão triangular */}
-            <div className="certificado-border-top"></div>
-            <div className="certificado-border-bottom"></div>
-
-            {/* Logo */}
-            <div className="logo-container">
-              <img src="/logo.png" alt="Logo" />
-            </div>
-
-            {/* QR Code */}
-            {qrCodeUrl && (
-              <div className="qr-code-container">
-                <img src={qrCodeUrl} alt="QR Code" />
-              </div>
-            )}
-
-            {/* Conteúdo centralizado */}
-            <div className="conteudo-central relative z-10">
-              <h1 className="certificado-titulo">CONTEÚDO</h1>
-            </div>
-          </div>
+          )}
 
           {/* Seção de edição de cursos - visível apenas na tela */}
           {aluno.matriculas && aluno.matriculas.length > 0 && (
