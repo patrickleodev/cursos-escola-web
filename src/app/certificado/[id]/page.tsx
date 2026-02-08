@@ -423,15 +423,17 @@ export default function Certificado() {
         }
 
         .conteudo-coluna {
-          flex: 1 1 0;
+          flex: 1 1 33.333%;
           min-width: 0;
+          max-width: 33.333%;
         }
 
         .conteudo-coluna p {
           margin: 0 0 0.5rem 0;
-          line-height: 1.6;
+          line-height: 1.5;
           page-break-inside: avoid;
           break-inside: avoid;
+          word-wrap: break-word;
         }
 
         @page {
@@ -624,12 +626,17 @@ export default function Certificado() {
                       <div className="conteudo-central relative z-10">
                         <h1 className="certificado-titulo">CONTEÚDO</h1>
                         {linhas.length > 0 && (() => {
-                          const itensPorColuna = Math.ceil(linhas.length / 3);
-                          const colunas = [
-                            linhas.slice(0, itensPorColuna),
-                            linhas.slice(itensPorColuna, itensPorColuna * 2),
-                            linhas.slice(itensPorColuna * 2)
-                          ];
+                          // Distribuir itens de forma equilibrada baseado no comprimento do texto
+                          const colunas: string[][] = [[], [], []];
+                          const alturas = [0, 0, 0];
+                          
+                          // Adicionar cada item à coluna com menor altura acumulada
+                          linhas.forEach((linha) => {
+                            const menorIndice = alturas.indexOf(Math.min(...alturas));
+                            colunas[menorIndice].push(linha);
+                            // Estimar altura baseada no comprimento do texto
+                            alturas[menorIndice] += linha.length;
+                          });
                           
                           return (
                             <div className="mt-8 px-12 conteudo-grid">
