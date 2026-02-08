@@ -413,19 +413,25 @@ export default function Certificado() {
         }
 
         .conteudo-grid {
-          column-count: 3;
-          column-gap: 2rem;
-          column-fill: balance;
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+          gap: 3rem;
           text-align: left;
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
         }
 
-        .conteudo-grid p {
+        .conteudo-coluna {
+          flex: 1 1 0;
+          min-width: 0;
+        }
+
+        .conteudo-coluna p {
           margin: 0 0 0.5rem 0;
+          line-height: 1.6;
           page-break-inside: avoid;
           break-inside: avoid;
-          -webkit-column-break-inside: avoid;
         }
 
         @page {
@@ -617,15 +623,28 @@ export default function Certificado() {
                       {/* Conteúdo centralizado */}
                       <div className="conteudo-central relative z-10">
                         <h1 className="certificado-titulo">CONTEÚDO</h1>
-                        {linhas.length > 0 && (
-                          <div className="mt-8 px-12 conteudo-grid">
-                            {linhas.map((topico, idx) => (
-                              <p key={idx} className="text-sm text-slate-800 font-medium leading-relaxed">
-                                {topico.trim()}
-                              </p>
-                            ))}
-                          </div>
-                        )}
+                        {linhas.length > 0 && (() => {
+                          const itensPorColuna = Math.ceil(linhas.length / 3);
+                          const colunas = [
+                            linhas.slice(0, itensPorColuna),
+                            linhas.slice(itensPorColuna, itensPorColuna * 2),
+                            linhas.slice(itensPorColuna * 2)
+                          ];
+                          
+                          return (
+                            <div className="mt-8 px-12 conteudo-grid">
+                              {colunas.map((coluna, colIdx) => (
+                                <div key={`coluna-${colIdx}`} className="conteudo-coluna">
+                                  {coluna.map((topico, idx) => (
+                                    <p key={`col${colIdx}-${idx}`} className="text-sm text-slate-800 font-medium">
+                                      {topico.trim()}
+                                    </p>
+                                  ))}
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        })()}
                       </div>
                     </div>
                   ))}
