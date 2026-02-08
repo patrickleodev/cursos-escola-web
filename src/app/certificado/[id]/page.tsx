@@ -409,12 +409,13 @@ export default function Certificado() {
 
         .conteudo-central {
           text-align: center;
-          padding-top: 20px;
+          padding-top: 280px;
         }
 
         .conteudo-grid {
           display: flex;
           justify-content: space-between;
+          align-items: flex-start;
           gap: 2rem;
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
@@ -423,6 +424,7 @@ export default function Certificado() {
         .conteudo-coluna {
           flex: 1;
           text-align: left;
+          min-width: 0;
         }
 
         .conteudo-coluna p {
