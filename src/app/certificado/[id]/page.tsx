@@ -383,8 +383,8 @@ export default function Certificado() {
 
         @media print {
           .assinatura-container {
-            margin-top: 20px;
-            padding-top: 10px;
+            margin-top: 120px;
+            padding-top: 30px;
           }
 
           .assinatura-linha {
@@ -588,8 +588,9 @@ export default function Certificado() {
                           <p className="text-xs mt-4 mb-0 text-slate-900">{formatCPF(aluno.cpf || "")}</p>
                         </div>
                         <div className="assinatura-item">
-                          <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '15px' }}>
-                            <img src="/assinatura_michelle.png" alt="Assinatura Michelle Vecchiato" style={{ maxHeight: '60px', maxWidth: '200px', objectFit: 'contain' }} />
+                          <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '15px', position: 'relative' }}>
+                            <p className="text-xs font-semibold mb-0 text-slate-900">VECCHIATO ASSESSORIA EDUCACIONAL</p>
+                            <img src="/assinatura_michelle.png" alt="Assinatura Michelle Vecchiato" style={{ position: 'absolute', maxHeight: '200px', maxWidth: '450px', objectFit: 'contain', bottom: '-50px', left: '50%', transform: 'translateX(-50%)', zIndex: 10 }} />
                           </div>
                           <div className="assinatura-linha"></div>
                           <p className="assinatura-titulo mb-0 mt-4">DIRETORA EDUCACIONAL</p>
