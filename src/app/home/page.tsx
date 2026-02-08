@@ -7,16 +7,15 @@ export default function Home() {
     <div className="bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black text-stone-900 dark:text-stone-50">
       {/* Header */}
       <header className="mx-auto max-w-7xl px-6 py-8 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+        <Link href="/gerenciar-alunos" className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition">
           <Image src="/logo.png" alt="Vecchiato Assessoria Educacional" width={180} height={60} className="h-12 w-auto" priority />
-        </div>
+        </Link>
         <nav className="hidden md:flex items-center gap-6">
           <a href="#sobre" className="hover:underline text-stone-700">Sobre</a>
           <a href="#oferecemos" className="hover:underline text-stone-700">O que oferecemos</a>
           <a href="#areas" className="hover:underline text-stone-700">Áreas</a>
           <a href="/afiliadas" className="hover:underline text-stone-700">Afiliadas</a>
           <a href="#contato" className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 hover:bg-stone-100 transition">Contato</a>
-          <a href="/gerenciar-alunos" className="text-xs text-stone-500 hover:text-stone-700 transition">👤</a>
         </nav>
       </header>
 
@@ -30,12 +29,9 @@ export default function Home() {
             Você dedica sua vida a ensinar, mas na hora de enfrentar um processo seletivo, 
             sente que falta o direcionamento certo? Na <span className="font-semibold">Vecchiato Assessoria Educacional</span>, transformamos sua vocação em aprovação.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <div className="flex justify-center mb-12">
             <a href="#oferecemos" className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-8 py-4 font-semibold hover:shadow-lg transition">
               Conheça nossos cursos
-            </a>
-            <a href="#contato" className="rounded-full border-2 border-amber-400 text-amber-700 px-8 py-4 font-semibold hover:bg-amber-50 transition">
-              Fale com um consultor
             </a>
           </div>
         </section>

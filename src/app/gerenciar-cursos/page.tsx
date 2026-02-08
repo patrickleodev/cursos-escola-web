@@ -7,6 +7,7 @@ import { FaSave, FaTimes, FaEdit, FaTrash, FaUsers, FaBook, FaSignOutAlt } from 
 
 const CATEGORIAS = [
   'Educação',
+  'Educação Especial',
   'Estética',
   'Direito',
   'Administração',
@@ -23,6 +24,8 @@ const CATEGORIAS = [
   'Motorista',
   'Cuidador de Idosos',
   'Setor Imobiliário',
+  'Informática',
+  'Idiomas',
 ];
 
 type Curso = {
