@@ -413,9 +413,8 @@ export default function Certificado() {
         }
 
         .conteudo-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1rem 2rem;
+          column-count: 3;
+          column-gap: 2rem;
           text-align: left;
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
@@ -424,6 +423,7 @@ export default function Certificado() {
         .conteudo-grid p {
           page-break-inside: avoid;
           break-inside: avoid;
+          -webkit-column-break-inside: avoid;
         }
 
         @page {
