@@ -12,26 +12,36 @@ export async function POST(req: NextRequest) {
     const ds = await initializeDataSource();
     const alunosRepo = ds.getRepository(Alunos);
     const cursosRepo = ds.getRepository(Cursos);
+    const matriculasRepo = ds.getRepository(Matriculas as any);
+    
     const aluno = await alunosRepo.findOneBy({ id: String(alunoId) });
 
     if (!aluno) {
       return NextResponse.json({ error: 'Aluno não encontrado' }, { status: 404 });
     }
 
-    const cursos = await cursosRepo.findByIds(cursoIds || []);
+    // Remove todas as matrículas existentes do aluno
+    const existingMatriculas = await matriculasRepo.find({ 
+      where: { aluno: { id: String(alunoId) } } 
+    });
+    
+    if (existingMatriculas.length > 0) {
+      await matriculasRepo.remove(existingMatriculas);
+    }
 
-    const matriculasRepo = ds.getRepository(Matriculas as any);
+    // Cria novas matrículas apenas para os cursos selecionados
+    if (cursoIds && cursoIds.length > 0) {
+      const cursos = await cursosRepo.findByIds(cursoIds);
 
-    // Remove existing matriculas for these cursos for this aluno (optional)
-    for (const curso of cursos) {
-      // create new matricula with default dates (today)
-      const m = matriculasRepo.create({
-        aluno: aluno,
-        curso: curso,
-        dataInicio: new Date(),
-        dataFim: new Date(),
-      });
-      await matriculasRepo.save(m);
+      for (const curso of cursos) {
+        const m = matriculasRepo.create({
+          aluno: aluno,
+          curso: curso,
+          dataInicio: new Date(),
+          dataFim: new Date(),
+        });
+        await matriculasRepo.save(m);
+      }
     }
 
     // Return updated aluno with derived cursos

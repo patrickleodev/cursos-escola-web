@@ -27,3 +27,12 @@ export type Aluno = {
   cursos?: Curso[];
   matriculas?: Matricula[];
 };
+
+export type Afiliada = {
+  id: string;
+  nome: string;
+  foto?: string;
+  whatsapp: string;
+  criadoEm?: string;
+  atualizadoEm?: string;
+};

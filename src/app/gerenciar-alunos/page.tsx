@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { IMaskInput } from "react-imask";
 import AuthGuard from "../../components/AuthGuard";
 import type { Aluno, Curso } from "../../types";
+import { FaSave, FaTimes, FaCertificate, FaBook, FaEdit, FaTrash, FaUsers, FaSignOutAlt } from "react-icons/fa";
 
 function getApiUrl(path: string) {
     return path;
@@ -43,10 +44,17 @@ export default function GerenciarAlunos() {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [selectingCursosId, setSelectingCursosId] = useState<string | null>(null);
     const [selectedCursos, setSelectedCursos] = useState<string[]>([]);
+    const [busca, setBusca] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [savingCursos, setSavingCursos] = useState(false);
 
     async function fetchAlunos() {
         try {
-            const res = await fetch(getApiUrl('/api/alunos'));
+            setLoading(true);
+            const params = new URLSearchParams();
+            if (busca) params.append('busca', busca);
+            const res = await fetch(getApiUrl(`/api/alunos?${params.toString()}`));
             const data = await res.json();
             if (Array.isArray(data)) {
                 setAlunos(data);
@@ -57,6 +65,8 @@ export default function GerenciarAlunos() {
         } catch (err) {
             console.error('Erro ao buscar alunos:', err);
             setAlunos([]);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -78,12 +88,16 @@ export default function GerenciarAlunos() {
 
     useEffect(() => {
         fetchAlunos();
-        fetchCursos();
         setUserEmail(localStorage.getItem("user_email") || "");
+    }, [busca]);
+
+    useEffect(() => {
+        fetchCursos();
     }, []);
 
     async function handleSave(e: React.FormEvent) {
         e.preventDefault();
+        setSaving(true);
         // Remover formatação antes de enviar
         const payload = { 
             nome, 
@@ -93,20 +107,22 @@ export default function GerenciarAlunos() {
             rg: rg ? rg.replace(/\D/g, '') : null 
         };
 
-        if (editingId) {
-            try {
+        try {
+            if (editingId) {
                 const res = await fetch(getApiUrl('/api/alunos'), { method: 'PUT', body: JSON.stringify({ id: editingId, ...payload }), headers: { 'Content-Type': 'application/json' } });
                 if (!res.ok) console.error('Erro ao atualizar aluno', await res.text());
-            } catch (err) { console.error(err); }
-            setEditingId(null);
-        } else {
-            try {
+                setEditingId(null);
+            } else {
                 const res = await fetch(getApiUrl('/api/alunos'), { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'application/json' } });
                 if (!res.ok) console.error('Erro ao criar aluno', await res.text());
-            } catch (err) { console.error(err); }
+            }
+            setNome(''); setEmail(''); setCpf(''); setRg(''); setTelefone('');
+            await fetchAlunos();
+        } catch (err) { 
+            console.error(err); 
+        } finally {
+            setSaving(false);
         }
-        setNome(''); setEmail(''); setCpf(''); setRg(''); setTelefone('');
-        fetchAlunos();
     }
 
     async function handleEdit(a: Aluno) {
@@ -134,6 +150,7 @@ export default function GerenciarAlunos() {
 
     async function handleSaveCursos() {
         if (!selectingCursosId) return;
+        setSavingCursos(true);
         try {
             const res = await fetch('/api/alunos/cursos', {
                 method: 'POST',
@@ -144,7 +161,8 @@ export default function GerenciarAlunos() {
         } catch (err) { console.error(err); }
         setSelectingCursosId(null);
         setSelectedCursos([]);
-        fetchAlunos();
+        await fetchAlunos();
+        setSavingCursos(false);
     }
 
     function handleLogout() {
@@ -157,7 +175,7 @@ export default function GerenciarAlunos() {
         return (
             <AuthGuard>
                 <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
-                    <div className="mx-auto max-w-2xl bg-white rounded-2xl shadow-lg p-8">
+                    <div className="mx-auto max-w-4xl bg-white rounded-2xl shadow-lg p-8">
                         <h1 className="text-3xl font-semibold text-stone-800 mb-6">
                             Adicionar Cursos ao Aluno
                         </h1>
@@ -192,14 +210,17 @@ export default function GerenciarAlunos() {
                         <div className="flex gap-3">
                             <button
                                 onClick={handleSaveCursos}
-                                className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition"
+                                disabled={savingCursos}
+                                className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                             >
-                                Salvar Cursos
+                                <FaSave /> {savingCursos ? 'Salvando...' : 'Salvar Cursos'}
                             </button>
                             <button
                                 onClick={() => setSelectingCursosId(null)}
-                                className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition"
+                                disabled={savingCursos}
+                                className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition cursor-pointer disabled:opacity-50 flex items-center gap-2"
                             >
+                                <FaTimes />
                                 Cancelar
                             </button>
                         </div>
@@ -212,49 +233,61 @@ export default function GerenciarAlunos() {
     return (
         <AuthGuard>
             <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
-                <div className="mx-auto max-w-4xl bg-white rounded-2xl shadow-lg p-8">
+                <div className="mx-auto max-w-6xl bg-white rounded-2xl shadow-lg p-8">
                     <div className="flex items-center justify-between mb-6">
                         <h1 className="text-3xl font-semibold text-stone-800">Gerenciar Alunos</h1>
                         <div className="flex gap-3 items-center">
-                            <button onClick={() => router.push('/gerenciar-cursos')} className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 hover:bg-stone-100 transition text-sm">Gerenciar Cursos</button>
-                            <div className="text-sm text-stone-600">{userEmail}</div>
-                            <button onClick={handleLogout} className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 hover:bg-stone-100 transition">Sair</button>
+                            <button onClick={() => router.push('/gerenciar-cursos')} className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 hover:bg-stone-100 transition text-sm cursor-pointer flex items-center gap-2"><FaBook /> Gerenciar Cursos</button>
+                            <button onClick={() => router.push('/gerenciar-afiliadas')} className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 hover:bg-stone-100 transition text-sm cursor-pointer flex items-center gap-2"><FaUsers /> Gerenciar Afiliadas</button>
+                            <button onClick={handleLogout} className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 hover:bg-stone-100 transition cursor-pointer flex items-center gap-2"><FaSignOutAlt /> Sair</button>
                         </div>
                     </div>
-
+                    {/* Campo de busca */}
+                    <div className="mb-6">
+                        <input
+                            placeholder="🔍 Pesquisar por nome, e-mail ou CPF..."
+                            value={busca}
+                            onChange={(e) => setBusca(e.target.value)}
+                            className="w-full rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 bg-stone-100"
+                        />
+                    </div>
                     <form onSubmit={handleSave} className="mb-8 grid gap-3 sm:grid-cols-4 bg-gradient-to-br from-amber-50 to-stone-50 p-6 rounded-xl">
-                        <input placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" />
-                        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" />
+                        <input placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} disabled={saving} className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50" />
+                        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={saving} className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50" />
                         <IMaskInput 
                             mask="000.000.000-00" 
                             placeholder="CPF" 
                             value={cpf} 
                             onAccept={(value) => setCpf(value)} 
-                            className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" 
+                            disabled={saving}
+                            className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50" 
                         />
                         <IMaskInput 
                             mask="00.000.000-0" 
                             placeholder="RG (opcional)" 
                             value={rg} 
                             onAccept={(value) => setRg(value)} 
-                            className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" 
+                            disabled={saving}
+                            className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50" 
                         />
                         <IMaskInput 
                             mask="(00) 00000-0000" 
                             placeholder="Telefone" 
                             value={telefone} 
                             onAccept={(value) => setTelefone(value)} 
-                            className="rounded-lg border border-stone-300 px-4 py-3 sm:col-span-2 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400" 
+                            disabled={saving}
+                            className="rounded-lg border border-stone-300 px-4 py-3 sm:col-span-2 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50" 
                         />
                         <div className="sm:col-span-2 flex gap-3">
-                            <button className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition">{editingId ? 'Salvar' : 'Criar'}</button>
-                            {editingId && <button type="button" onClick={() => { setEditingId(null); setNome(''); setEmail(''); setCpf(''); setRg(''); setTelefone(''); }} className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition">Cancelar</button>}
+                            <button disabled={saving} className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"><FaSave /> {saving ? 'Salvando...' : (editingId ? 'Salvar' : 'Criar')}</button>
+                            {editingId && <button type="button" onClick={() => { setEditingId(null); setNome(''); setEmail(''); setCpf(''); setRg(''); setTelefone(''); }} disabled={saving} className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition cursor-pointer disabled:opacity-50 flex items-center gap-2"><FaTimes /> Cancelar</button>}
                         </div>
                     </form>
 
                     <div className="grid gap-4">
-                        {alunos.length === 0 && <div className="text-center py-8 text-stone-500">Nenhum aluno encontrado.</div>}
-                        {alunos.map((a) => (
+                        {loading && <div className="text-center py-8 text-amber-600 font-medium">Buscando alunos...</div>}
+                        {!loading && alunos.length === 0 && <div className="text-center py-8 text-stone-500">Nenhum aluno encontrado.</div>}
+                        {!loading && alunos.map((a) => (
                             <div key={a.id} className="flex items-center justify-between bg-gradient-to-r from-stone-50 to-amber-50 rounded-xl border border-stone-200 p-5 hover:shadow-md transition">
                                 <div className="flex-1">
                                     <div className="font-semibold text-stone-800">{a.nome}</div>
@@ -268,10 +301,10 @@ export default function GerenciarAlunos() {
                                     )}
                                 </div>
                                 <div className="flex gap-3 flex-wrap justify-end">
-                                    <button onClick={() => router.push(`/certificado/${a.id}`)} className="rounded-full bg-gradient-to-r from-green-400 to-emerald-400 text-white px-4 py-2 text-sm font-medium hover:shadow-lg transition">Certificado</button>
-                                    <button onClick={() => handleSelectCursos(a.id, a.cursos || [])} className="rounded-full bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 text-sm font-medium hover:shadow-lg transition">Cursos</button>
-                                    <button onClick={() => handleEdit(a)} className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 text-sm hover:bg-stone-100 transition">Editar</button>
-                                    <button onClick={() => handleDelete(a.id)} className="rounded-full border border-red-300 text-red-600 px-4 py-2 text-sm hover:bg-red-50 transition">Excluir</button>
+                                    <button onClick={() => router.push(`/certificado/${a.id}`)} className="rounded-full bg-gradient-to-r from-green-400 to-emerald-400 text-white px-4 py-2 text-sm font-medium hover:shadow-lg transition cursor-pointer flex items-center gap-2"><FaCertificate /> Certificado</button>
+                                    <button onClick={() => handleSelectCursos(a.id, a.cursos || [])} className="rounded-full bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 text-sm font-medium hover:shadow-lg transition cursor-pointer flex items-center gap-2"><FaBook /> Cursos</button>
+                                    <button onClick={() => handleEdit(a)} className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 text-sm hover:bg-stone-100 transition cursor-pointer flex items-center gap-2"><FaEdit /> Editar</button>
+                                    <button onClick={() => handleDelete(a.id)} className="rounded-full border border-red-300 text-red-600 px-4 py-2 text-sm hover:bg-red-50 transition cursor-pointer flex items-center gap-2"><FaTrash /> Excluir</button>
                                 </div>
                             </div>
                         ))}

@@ -3,12 +3,32 @@ import { NextRequest, NextResponse } from "next/server";
 import { initializeDataSource } from '../../../lib/data-source';
 import { Alunos } from '../../../database/entities/alunos.entity';
 import { Matriculas } from '../../../database/entities/matriculas.entity';
+import { Like } from 'typeorm';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const ds = await initializeDataSource();
     const repo = ds.getRepository(Alunos);
-    const list = await repo.find({ relations: ['matriculas', 'matriculas.curso'] });
+    
+    // Obter parâmetro de busca
+    const searchParams = req.nextUrl.searchParams;
+    const busca = searchParams.get('busca');
+    
+    let list;
+    if (busca) {
+      // Buscar por nome, email ou CPF
+      list = await repo.find({ 
+        where: [
+          { nome: Like(`%${busca}%`) },
+          { email: Like(`%${busca}%`) },
+          { cpf: Like(`%${busca}%`) },
+        ],
+        relations: ['matriculas', 'matriculas.curso'] 
+      });
+    } else {
+      list = await repo.find({ relations: ['matriculas', 'matriculas.curso'] });
+    }
+    
     const mapped = list.map((aluno: any) => ({
       ...aluno,
       cursos: aluno.matriculas ? aluno.matriculas.map((m: any) => m.curso) : [],

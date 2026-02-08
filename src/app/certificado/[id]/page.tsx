@@ -408,42 +408,9 @@ export default function Certificado() {
           page-break-before: always;
         }
 
-        .qr-code-central {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 280px;
-          height: 280px;
-          border: 3px solid #1e3a8a !important;
-          background: white !important;
-          padding: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-          color-adjust: exact;
-        }
-
-        .qr-code-central img {
-          width: 100%;
-          height: 100%;
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-          color-adjust: exact;
-        }
-
-        .qr-code-placeholder {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #1e3a8a;
-          font-size: 14px;
-          font-weight: 600;
+        .conteudo-central {
           text-align: center;
+          padding-top: 20px;
         }
 
         @page {
@@ -606,9 +573,21 @@ export default function Certificado() {
             <div className="certificado-border-top"></div>
             <div className="certificado-border-bottom"></div>
 
-            {/* QR Code central */}
-            <div className="qr-code-central">
-              <img src="/cursos-escola-web-qr.png" alt="QR Code Cursos Escola Web" />
+            {/* Logo */}
+            <div className="logo-container">
+              <img src="/logo.png" alt="Logo" />
+            </div>
+
+            {/* QR Code */}
+            {qrCodeUrl && (
+              <div className="qr-code-container">
+                <img src={qrCodeUrl} alt="QR Code" />
+              </div>
+            )}
+
+            {/* Conteúdo centralizado */}
+            <div className="conteudo-central relative z-10">
+              <h1 className="certificado-titulo">CONTEÚDO</h1>
             </div>
           </div>
 

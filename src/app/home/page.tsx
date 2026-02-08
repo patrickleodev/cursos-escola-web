@@ -14,6 +14,7 @@ export default function Home() {
           <a href="#sobre" className="hover:underline text-stone-700">Sobre</a>
           <a href="#oferecemos" className="hover:underline text-stone-700">O que oferecemos</a>
           <a href="#areas" className="hover:underline text-stone-700">Áreas</a>
+          <a href="/afiliadas" className="hover:underline text-stone-700">Afiliadas</a>
           <a href="#contato" className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 hover:bg-stone-100 transition">Contato</a>
           <a href="/gerenciar-alunos" className="text-xs text-stone-500 hover:text-stone-700 transition">👤</a>
         </nav>
@@ -199,6 +200,7 @@ export default function Home() {
                 <li><a href="#sobre" className="hover:underline">Sobre</a></li>
                 <li><a href="#oferecemos" className="hover:underline">O que oferecemos</a></li>
                 <li><a href="#areas" className="hover:underline">Áreas de estudo</a></li>
+                <li><a href="/afiliadas" className="hover:underline">Afiliadas</a></li>
               </ul>
             </div>
             <div>
