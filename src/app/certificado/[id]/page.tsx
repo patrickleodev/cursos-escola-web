@@ -613,11 +613,9 @@ export default function Certificado() {
                       </div>
 
                       {/* QR Code */}
-                      {qrCodeUrl && (
-                        <div className="qr-code-container">
-                          <img src={qrCodeUrl} alt="QR Code" />
-                        </div>
-                      )}
+                      <div className="qr-code-container">
+                        <img src="/cursos-escola-web-qr.png" alt="QR Code Cursos Escola Web" />
+                      </div>
 
                       {/* Conteúdo centralizado */}
                       <div className="conteudo-central relative z-10">
