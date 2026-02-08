@@ -409,12 +409,7 @@ export default function Certificado() {
 
         .conteudo-central {
           text-align: center;
-          padding-top: 100px;
-        }
-
-        .conteudo-central h1 {
-          margin-top: -50px;
-          margin-bottom: 0;
+          padding-top: 20px;
         }
 
         .conteudo-grid {
@@ -643,7 +638,7 @@ export default function Certificado() {
                           });
                           
                           return (
-                            <div className="mt-24 px-12 conteudo-grid" style={{ gridTemplateColumns: `repeat(${numColunas}, 1fr)` }}>
+                            <div className="mt-8 px-12 conteudo-grid" style={{ gridTemplateColumns: `repeat(${numColunas}, 1fr)` }}>
                               {colunas.map((coluna, colIdx) => (
                                 <div key={`coluna-${colIdx}`} className="conteudo-coluna">
                                   {coluna.map((topico, idx) => (
