@@ -425,8 +425,8 @@ export default function Certificado() {
         }
 
         .conteudo-coluna p {
-          margin: 0 0 0.5rem 0;
-          line-height: 1.5;
+          margin: 0 0 0.4rem 0;
+          line-height: 1.4;
           page-break-inside: avoid;
           break-inside: avoid;
           word-wrap: break-word;
@@ -513,11 +513,11 @@ export default function Certificado() {
               const dataInicio = new Date(matricula.dataInicio).toLocaleDateString('pt-BR');
               const dataFim = new Date(matricula.dataFim).toLocaleDateString('pt-BR');
               
-              // Dividir conteúdo em chunks para paginação (30 itens por página em 3 colunas = ~10 por coluna)
+              // Dividir conteúdo em chunks para paginação (39 itens por página em 3 colunas = ~13 por coluna)
               const conteudoLinhas = matricula.curso.conteudo 
                 ? matricula.curso.conteudo.split('\n').filter(line => line.trim())
                 : [];
-              const linhasPorPagina = 30;
+              const linhasPorPagina = 39;
               const conteudoPages: string[][] = [];
               for (let i = 0; i < conteudoLinhas.length; i += linhasPorPagina) {
                 conteudoPages.push(conteudoLinhas.slice(i, i + linhasPorPagina));
