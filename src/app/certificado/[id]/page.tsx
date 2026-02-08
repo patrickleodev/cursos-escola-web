@@ -638,7 +638,7 @@ export default function Certificado() {
                           });
                           
                           return (
-                            <div className="mt-16 px-12 conteudo-grid" style={{ gridTemplateColumns: `repeat(${numColunas}, 1fr)` }}>
+                            <div className="px-12 conteudo-grid" style={{ gridTemplateColumns: `repeat(${numColunas}, 1fr)`, marginTop: '60px' }}>
                               {colunas.map((coluna, colIdx) => (
                                 <div key={`coluna-${colIdx}`} className="conteudo-coluna">
                                   {coluna.map((topico, idx) => (
