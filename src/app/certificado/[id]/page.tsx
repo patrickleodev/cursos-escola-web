@@ -589,7 +589,7 @@ export default function Certificado() {
                         </div>
                         <div className="assinatura-item">
                           <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '15px' }}>
-                            <p className="text-xs font-semibold mb-0 text-slate-900">VECCHIATO ASSESSORIA EDUCACIONAL</p>
+                            <img src="/assinatura_michelle.png" alt="Assinatura Michelle Vecchiato" style={{ maxHeight: '60px', maxWidth: '200px', objectFit: 'contain' }} />
                           </div>
                           <div className="assinatura-linha"></div>
                           <p className="assinatura-titulo mb-0 mt-4">DIRETORA EDUCACIONAL</p>
