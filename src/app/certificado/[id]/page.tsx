@@ -493,6 +493,20 @@ export default function Certificado() {
               const dataInicio = new Date(matricula.dataInicio).toLocaleDateString('pt-BR');
               const dataFim = new Date(matricula.dataFim).toLocaleDateString('pt-BR');
               
+              // Dividir conteúdo em chunks para paginação (15 linhas por página)
+              const conteudoLinhas = matricula.curso.conteudo 
+                ? matricula.curso.conteudo.split('\n').filter(line => line.trim())
+                : [];
+              const linhasPorPagina = 15;
+              const conteudoPages: string[][] = [];
+              for (let i = 0; i < conteudoLinhas.length; i += linhasPorPagina) {
+                conteudoPages.push(conteudoLinhas.slice(i, i + linhasPorPagina));
+              }
+              // Se não houver conteúdo, criar uma página vazia
+              if (conteudoPages.length === 0) {
+                conteudoPages.push([]);
+              }
+              
               return (
                 <React.Fragment key={matricula.id}>
                   {/* Frente do Certificado */}
@@ -565,40 +579,40 @@ export default function Certificado() {
                     </div>
                   </div>
 
-                  {/* Verso do Certificado */}
-                  <div className="segunda-pagina relative bg-white mx-auto">
-                    {/* Bordas decorativas padrão triangular */}
-                    <div className="certificado-border-top"></div>
-                    <div className="certificado-border-bottom"></div>
+                  {/* Verso do Certificado - uma ou mais páginas de conteúdo */}
+                  {conteudoPages.map((linhas, pageIdx) => (
+                    <div key={`conteudo-${pageIdx}`} className="segunda-pagina relative bg-white mx-auto" style={{ pageBreakBefore: 'always' }}>
+                      {/* Bordas decorativas padrão triangular */}
+                      <div className="certificado-border-top"></div>
+                      <div className="certificado-border-bottom"></div>
 
-                    {/* Logo */}
-                    <div className="logo-container">
-                      <img src="/logo.png" alt="Logo" />
-                    </div>
-
-                    {/* QR Code */}
-                    {qrCodeUrl && (
-                      <div className="qr-code-container">
-                        <img src={qrCodeUrl} alt="QR Code" />
+                      {/* Logo */}
+                      <div className="logo-container">
+                        <img src="/logo.png" alt="Logo" />
                       </div>
-                    )}
 
-                    {/* Conteúdo centralizado */}
-                    <div className="conteudo-central relative z-10">
-                      <h1 className="certificado-titulo">CONTEÚDO</h1>
-                      {matricula.curso.conteudo && (
-                        <div className="mt-6 text-left px-12">
-                          <ul className="space-y-2">
-                            {matricula.curso.conteudo.split('\n').filter(line => line.trim()).map((topico, idx) => (
-                              <li key={idx} className="text-base text-slate-800 font-medium leading-relaxed">
-                                • {topico.trim()}
-                              </li>
-                            ))}
-                          </ul>
+                      {/* QR Code */}
+                      {qrCodeUrl && (
+                        <div className="qr-code-container">
+                          <img src={qrCodeUrl} alt="QR Code" />
                         </div>
                       )}
+
+                      {/* Conteúdo centralizado */}
+                      <div className="conteudo-central relative z-10">
+                        <h1 className="certificado-titulo">CONTEÚDO</h1>
+                        {linhas.length > 0 && (
+                          <div className="mt-8 text-center px-16">
+                            {linhas.map((topico, idx) => (
+                              <p key={idx} className="text-base text-slate-800 font-medium leading-relaxed mb-3">
+                                {topico.trim()}
+                              </p>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </React.Fragment>
               );
             })
