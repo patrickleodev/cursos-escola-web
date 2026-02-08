@@ -4,10 +4,31 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthGuard from "../../components/AuthGuard";
 
+const CATEGORIAS = [
+  'Educação',
+  'Estética',
+  'Direito',
+  'Administração',
+  'Enfermagem',
+  'Massagem',
+  'Psicologia',
+  'Engenharia',
+  'Nutrição',
+  'Segurança',
+  'Manicure/Pedicure',
+  'Cosmetologia',
+  'Terapia Holística',
+  'Serviços Gerais',
+  'Motorista',
+  'Cuidador de Idosos',
+  'Setor Imobiliário',
+];
+
 type Curso = {
   id: string;
   nome: string;
   duracao: number;
+  categoria?: string;
 };
 
 export default function GerenciarCursos() {
@@ -15,12 +36,19 @@ export default function GerenciarCursos() {
   const [cursos, setCursos] = useState<Curso[]>([]);
   const [nome, setNome] = useState("");
   const [duracao, setDuracao] = useState("");
+  const [categoria, setCategoria] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [busca, setBusca] = useState("");
+  const [filtroCategoria, setFiltroCategoria] = useState("todas");
 
   async function fetchCursos() {
     try {
-      const res = await fetch("/api/cursos");
+      const params = new URLSearchParams();
+      if (busca) params.append('busca', busca);
+      if (filtroCategoria !== 'todas') params.append('categoria', filtroCategoria);
+      
+      const res = await fetch(`/api/cursos?${params.toString()}`);
       const data = await res.json();
       if (Array.isArray(data)) {
         setCursos(data);
@@ -37,11 +65,11 @@ export default function GerenciarCursos() {
   useEffect(() => {
     fetchCursos();
     setUserEmail(localStorage.getItem("user_email") || "");
-  }, []);
+  }, [busca, filtroCategoria]);
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    const payload = { nome, duracao: parseInt(duracao) };
+    const payload = { nome, duracao: parseInt(duracao), categoria };
 
     if (editingId) {
       try {
@@ -69,6 +97,7 @@ export default function GerenciarCursos() {
     }
     setNome("");
     setDuracao("");
+    setCategoria("");
     fetchCursos();
   }
 
@@ -76,6 +105,7 @@ export default function GerenciarCursos() {
     setEditingId(c.id);
     setNome(c.nome);
     setDuracao(c.duracao.toString());
+    setCategoria(c.categoria || "");
   }
 
   async function handleDelete(id: string) {
@@ -118,9 +148,31 @@ export default function GerenciarCursos() {
             </div>
           </div>
 
+          {/* Campos de busca e filtro */}
+          <div className="mb-6 grid gap-3 sm:grid-cols-2 bg-stone-100 p-4 rounded-xl">
+            <input
+              placeholder="🔍 Pesquisar por nome do curso..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+              className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            />
+            <select
+              value={filtroCategoria}
+              onChange={(e) => setFiltroCategoria(e.target.value)}
+              className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            >
+              <option value="todas">Todas as categorias</option>
+              {CATEGORIAS.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <form
             onSubmit={handleSave}
-            className="mb-8 grid gap-3 sm:grid-cols-3 bg-gradient-to-br from-amber-50 to-stone-50 p-6 rounded-xl"
+            className="mb-8 grid gap-3 sm:grid-cols-4 bg-gradient-to-br from-amber-50 to-stone-50 p-6 rounded-xl"
           >
             <input
               placeholder="Nome do Curso"
@@ -135,6 +187,18 @@ export default function GerenciarCursos() {
               onChange={(e) => setDuracao(e.target.value)}
               className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
+            <select
+              value={categoria}
+              onChange={(e) => setCategoria(e.target.value)}
+              className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            >
+              <option value="">Selecione categoria</option>
+              {CATEGORIAS.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
             <div className="flex gap-3">
               <button className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition">
                 {editingId ? "Salvar" : "Criar"}
@@ -146,6 +210,7 @@ export default function GerenciarCursos() {
                     setEditingId(null);
                     setNome("");
                     setDuracao("");
+                    setCategoria("");
                   }}
                   className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition"
                 >
@@ -171,6 +236,11 @@ export default function GerenciarCursos() {
                   <div className="text-sm text-stone-600">
                     Duração: {c.duracao} horas
                   </div>
+                  {c.categoria && (
+                    <div className="text-xs text-amber-700 bg-amber-100 rounded-full px-3 py-1 inline-block mt-1">
+                      {c.categoria}
+                    </div>
+                  )}
                 </div>
                 <div className="flex gap-3">
                   <button

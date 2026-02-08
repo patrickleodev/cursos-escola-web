@@ -2,12 +2,28 @@ import "reflect-metadata";
 import { NextRequest, NextResponse } from "next/server";
 import { initializeDataSource } from '../../../lib/data-source';
 import { Cursos } from '../../../database/entities/cursos.entity';
+import { Like } from 'typeorm';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const ds = await initializeDataSource();
     const repo = ds.getRepository(Cursos);
-    const list = await repo.find();
+    
+    // Obter parâmetros de busca
+    const searchParams = req.nextUrl.searchParams;
+    const busca = searchParams.get('busca');
+    const categoria = searchParams.get('categoria');
+    
+    // Construir filtros
+    const where: any = {};
+    if (busca) {
+      where.nome = Like(`%${busca}%`);
+    }
+    if (categoria && categoria !== 'todas') {
+      where.categoria = categoria;
+    }
+    
+    const list = await repo.find({ where });
     return NextResponse.json(list);
   } catch (error) {
     console.error('GET /api/cursos error:', error);

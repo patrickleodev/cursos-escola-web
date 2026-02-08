@@ -41,7 +41,6 @@ export default function Certificado() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
-  const [qrCodeSegundaPagina, setQrCodeSegundaPagina] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editDates, setEditDates] = useState<Record<string, { dataInicio: string; dataFim: string }>>({});
   const [editingDuracao, setEditingDuracao] = useState<string | null>(null);
@@ -200,17 +199,6 @@ export default function Certificado() {
     }
   }
 
-  function handleQrCodeUpload(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setQrCodeSegundaPagina(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
   if (loading) {
     return (
       <AuthGuard>
@@ -253,10 +241,10 @@ export default function Certificado() {
           background: linear-gradient(135deg, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%) !important;
           position: relative;
           overflow: hidden;
-          width: 210mm;
-          height: 297mm;
+          width: 297mm;
+          height: 210mm;
           margin: 0 auto;
-          padding: 40mm 30mm;
+          padding: 25mm 40mm;
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
@@ -269,14 +257,7 @@ export default function Certificado() {
           left: 0;
           right: 0;
           height: 40px;
-          background-image: 
-            repeating-linear-gradient(
-              135deg,
-              #1e3a8a 0px,
-              #1e3a8a 20px,
-              #f5f1e8 20px,
-              #f5f1e8 40px
-            );
+          background: #dc2626;
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
           color-adjust: exact;
@@ -294,8 +275,8 @@ export default function Certificado() {
           position: absolute;
           top: 60px;
           right: 40px;
-          width: 140px;
-          height: 140px;
+          width: 180px;
+          height: 180px;
           border: 2px solid #1e3a8a !important;
           background: white !important;
           padding: 5px;
@@ -316,8 +297,8 @@ export default function Certificado() {
           position: absolute;
           top: 60px;
           left: 40px;
-          width: 160px;
-          height: 160px;
+          width: 200px;
+          height: 200px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -338,31 +319,31 @@ export default function Certificado() {
         .certificado-titulo {
           color: #1e3a8a !important;
           font-weight: 900 !important;
-          font-size: 48px !important;
+          font-size: 42px !important;
           letter-spacing: 2px !important;
-          margin-top: 20px;
+          margin-top: 10px;
         }
 
         .instituicao-nome {
           color: #374151 !important;
           font-size: 16px !important;
           font-weight: 500;
-          margin: 10px 0 20px 0;
+          margin: 8px 0 15px 0;
           letter-spacing: 0.5px;
         }
 
         .certificado-nome {
           color: #1f2937 !important;
-          font-size: 36px !important;
+          font-size: 32px !important;
           font-weight: bold !important;
-          margin: 20px 0;
+          margin: 15px 0;
           letter-spacing: 1px;
         }
 
         .info-aluno {
           color: #374151 !important;
           font-size: 14px !important;
-          margin: 15px 0;
+          margin: 10px 0;
           letter-spacing: 0.5px;
           font-weight: 500;
         }
@@ -371,7 +352,7 @@ export default function Certificado() {
           color: #1f2937 !important;
           font-size: 14px !important;
           font-weight: 600;
-          margin: 25px 0;
+          margin: 10px 0;
           letter-spacing: 0.5px;
           line-height: 1.6;
         }
@@ -379,7 +360,7 @@ export default function Certificado() {
         .assinatura-container {
           display: flex;
           justify-content: space-between;
-          margin-top: 60px;
+          margin-top: 80px;
           padding-top: 30px;
         }
 
@@ -390,7 +371,7 @@ export default function Certificado() {
 
         .assinatura-linha {
           border-top: 2px solid #1e3a8a;
-          margin: 8px 0;
+          margin: 5px 0;
           width: 100%;
         }
 
@@ -398,17 +379,28 @@ export default function Certificado() {
           color: #1f2937 !important;
           font-weight: 600;
           font-size: 12px !important;
-          margin-top: 5px;
+          margin-top: 12px;
+        }
+
+        @media print {
+          .assinatura-container {
+            margin-top: 20px;
+            padding-top: 10px;
+          }
+
+          .assinatura-linha {
+            margin: 3px 0;
+          }
         }
 
         .segunda-pagina {
           background: linear-gradient(135deg, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%) !important;
           position: relative;
           overflow: hidden;
-          width: 210mm;
-          height: 297mm;
+          width: 297mm;
+          height: 210mm;
           margin: 20px auto 0;
-          padding: 40mm 30mm;
+          padding: 25mm 40mm;
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
@@ -421,8 +413,8 @@ export default function Certificado() {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          width: 200px;
-          height: 200px;
+          width: 280px;
+          height: 280px;
           border: 3px solid #1e3a8a !important;
           background: white !important;
           padding: 10px;
@@ -456,7 +448,7 @@ export default function Certificado() {
 
         @page {
           margin: 0;
-          size: A4;
+          size: A4 landscape;
         }
 
         @media print {
@@ -487,10 +479,10 @@ export default function Certificado() {
           }
 
           .certificado-print {
-            width: 210mm;
-            height: 297mm;
+            width: 297mm;
+            height: 210mm;
             margin: 0;
-            padding: 40mm 30mm;
+            padding: 25mm 40mm;
             box-shadow: none !important;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
@@ -498,10 +490,10 @@ export default function Certificado() {
           }
 
           .segunda-pagina {
-            width: 210mm;
-            height: 297mm;
+            width: 297mm;
+            height: 210mm;
             margin: 0 !important;
-            padding: 40mm 30mm;
+            padding: 25mm 40mm;
             box-shadow: none !important;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
@@ -511,7 +503,7 @@ export default function Certificado() {
       `}</style>
 
       <div className="certificate-container min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
-        <div className="mx-auto" style={{ maxWidth: '210mm' }}>
+        <div className="mx-auto" style={{ maxWidth: '297mm' }}>
           {/* Botões de ação */}
           <div className="flex gap-3 mb-6 print:hidden">
             <button
@@ -550,7 +542,7 @@ export default function Certificado() {
             )}
 
             {/* Conteúdo do certificado */}
-            <div className="relative z-10 h-full flex flex-col justify-between" style={{ paddingTop: '60px' }}>
+            <div className="relative z-10" style={{ paddingTop: '20px' }}>
               {/* Cabeçalho */}
               <div className="text-center">
                 <h1 className="certificado-titulo">CERTIFICADO</h1>
@@ -558,19 +550,19 @@ export default function Certificado() {
               </div>
 
               {/* Nome do aluno */}
-              <div className="text-center mt-8 mb-6">
+              <div className="text-center mt-3 mb-3">
                 <p className="certificado-nome">{aluno.nome}</p>
               </div>
 
               {/* Informações do aluno - CPF e RG na mesma linha */}
-              <div className="text-center mb-8">
+              <div className="text-center mb-3">
                 <p className="info-aluno">
                   CPF: {formatCPF(aluno.cpf || "")} RG: {aluno.rg ? formatRG(aluno.rg) : "Ausente"}
                 </p>
               </div>
 
               {/* Descrição do curso */}
-              <div className="text-center mb-12">
+              <div className="text-center mb-4" style={{ marginTop: '70px' }}>
                 {aluno.matriculas && aluno.matriculas.length > 0 ? (
                   <>
                     {aluno.matriculas.map((matricula) => {
@@ -593,16 +585,16 @@ export default function Certificado() {
               {/* Seção de assinatura */}
               <div className="assinatura-container">
                 <div className="assinatura-item">
-                  <div style={{ height: '50px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
-                    <p className="text-sm font-semibold mb-0">{aluno.nome}</p>
+                  <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '15px' }}>
+                    <p className="text-sm font-semibold mb-0 text-slate-900">{aluno.nome}</p>
                   </div>
                   <div className="assinatura-linha"></div>
-                  <p className="text-xs mt-1 mb-0">{formatCPF(aluno.cpf || "")}</p>
+                  <p className="text-xs mt-4 mb-0 text-slate-900">{formatCPF(aluno.cpf || "")}</p>
                 </div>
                 <div className="assinatura-item">
-                  <div style={{ height: '50px' }}></div>
+                  <div style={{ height: '60px', marginBottom: '15px' }}></div>
                   <div className="assinatura-linha"></div>
-                  <p className="assinatura-titulo mb-0">DIRETORA EDUCACIONAL</p>
+                  <p className="assinatura-titulo mb-0 mt-4">DIRETORA EDUCACIONAL</p>
                 </div>
               </div>
             </div>
@@ -614,48 +606,15 @@ export default function Certificado() {
             <div className="certificado-border-top"></div>
             <div className="certificado-border-bottom"></div>
 
-            {/* QR Code central - será adicionado futuramente */}
+            {/* QR Code central */}
             <div className="qr-code-central">
-              {qrCodeSegundaPagina ? (
-                <img src={qrCodeSegundaPagina} alt="QR Code Segunda Página" />
-              ) : (
-                <div className="qr-code-placeholder">
-                  QR Code a ser anexado
-                </div>
-              )}
+              <img src="/cursos-escola-web-qr.png" alt="QR Code Cursos Escola Web" />
             </div>
           </div>
 
           {/* Seção de edição de cursos - visível apenas na tela */}
           {aluno.matriculas && aluno.matriculas.length > 0 && (
-            <div className="mt-8 print:hidden" style={{ maxWidth: '210mm', margin: '2rem auto 0' }}>
-              {/* Upload QR Code Segunda Página */}
-              <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-                <h2 className="text-2xl font-semibold text-stone-800 mb-4">QR Code da Segunda Página</h2>
-                <div className="flex flex-col gap-3">
-                  <label className="block text-sm font-semibold text-stone-700">
-                    Anexar QR Code para a segunda página
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleQrCodeUpload}
-                    className="block w-full text-sm text-stone-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                  />
-                  {qrCodeSegundaPagina && (
-                    <div className="mt-2">
-                      <p className="text-sm text-green-600 font-medium">✓ QR Code anexado com sucesso</p>
-                      <button
-                        onClick={() => setQrCodeSegundaPagina("")}
-                        className="mt-2 text-sm text-red-600 hover:text-red-700 font-medium"
-                      >
-                        Remover QR Code
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-
+            <div className="mt-8 print:hidden" style={{ maxWidth: '297mm', margin: '2rem auto 0' }}>
               <div className="bg-white rounded-2xl shadow-lg p-6">
                 <h2 className="text-2xl font-semibold text-stone-800 mb-6">Editar Certificado</h2>
                 {aluno.matriculas.map((matricula) => {

@@ -19,6 +19,9 @@ export class Cursos {
   @Column({ type: "int" })
   duracao: number; // em horas
 
+  @Column({ length: 100, nullable: true })
+  categoria: string;
+
   @CreateDateColumn()
   criadoEm: Date;
 
