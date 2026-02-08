@@ -274,8 +274,8 @@ export default function Certificado() {
           position: absolute;
           top: 60px;
           right: 40px;
-          width: 180px;
-          height: 180px;
+          width: 120px;
+          height: 120px;
           border: 2px solid #1e3a8a !important;
           background: white !important;
           padding: 5px;
@@ -296,8 +296,8 @@ export default function Certificado() {
           position: absolute;
           top: 60px;
           left: 40px;
-          width: 200px;
-          height: 200px;
+          width: 140px;
+          height: 140px;
           display: flex;
           align-items: center;
           justify-content: center;
