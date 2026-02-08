@@ -153,7 +153,7 @@ export default function AlunoDetalhes() {
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '-';
-    return new Date(dateString).toLocaleDateString('pt-BR');
+    return new Date(dateString).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
   };
 
   const totalHoras = aluno.cursos?.reduce((acc, curso) => acc + (curso.duracaoCustomizada ?? curso.duracao), 0) || 0;

@@ -510,8 +510,8 @@ export default function Certificado() {
           {aluno.matriculas && aluno.matriculas.length > 0 ? (
             aluno.matriculas.map((matricula, index) => {
               const duracaoFinal = matricula.duracaoCustomizada ?? matricula.curso.duracao;
-              const dataInicio = new Date(matricula.dataInicio).toLocaleDateString('pt-BR');
-              const dataFim = new Date(matricula.dataFim).toLocaleDateString('pt-BR');
+              const dataInicio = new Date(matricula.dataInicio).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+              const dataFim = new Date(matricula.dataFim).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
               
               // Dividir conteúdo em chunks para paginação (39 itens por página em 3 colunas = ~13 por coluna)
               const conteudoLinhas = matricula.curso.conteudo 
@@ -773,10 +773,10 @@ export default function Certificado() {
                       ) : (
                         <div className="mb-4">
                           <p className="text-sm text-stone-600 mb-1">
-                            <span className="font-semibold">Início:</span> {new Date(matricula.dataInicio).toLocaleDateString("pt-BR")}
+                            <span className="font-semibold">Início:</span> {new Date(matricula.dataInicio).toLocaleDateString("pt-BR", { timeZone: 'UTC' })}
                           </p>
                           <p className="text-sm text-stone-600 mb-1">
-                            <span className="font-semibold">Conclusão:</span> {new Date(matricula.dataFim).toLocaleDateString("pt-BR")}
+                            <span className="font-semibold">Conclusão:</span> {new Date(matricula.dataFim).toLocaleDateString("pt-BR", { timeZone: 'UTC' })}
                           </p>
                           <p className="text-sm text-stone-600 mb-3">
                             <span className="font-semibold">Duração:</span> {duracaoFinal}h
