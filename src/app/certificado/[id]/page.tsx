@@ -409,7 +409,7 @@ export default function Certificado() {
 
         .conteudo-central {
           text-align: center;
-          padding-top: 280px;
+          padding-top: 100px;
         }
 
         .conteudo-grid {
