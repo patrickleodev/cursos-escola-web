@@ -39,6 +39,7 @@ export default function GerenciarAfiliadas() {
     const [busca, setBusca] = useState("");
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [dragActive, setDragActive] = useState(false);
 
     async function fetchAfiliadas() {
         try {
@@ -118,10 +119,7 @@ export default function GerenciarAfiliadas() {
         setEditingId(afiliada.id);
     }
 
-    async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
+    function processImageFile(file: File) {
         // Validar tipo de arquivo
         if (!file.type.startsWith('image/')) {
             alert('Por favor, selecione apenas arquivos de imagem');
@@ -140,6 +138,32 @@ export default function GerenciarAfiliadas() {
             setFoto(reader.result as string);
         };
         reader.readAsDataURL(file);
+    }
+
+    async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        processImageFile(file);
+    }
+
+    function handleDrag(e: React.DragEvent) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === "dragenter" || e.type === "dragover") {
+            setDragActive(true);
+        } else if (e.type === "dragleave") {
+            setDragActive(false);
+        }
+    }
+
+    function handleDrop(e: React.DragEvent) {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(false);
+        
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            processImageFile(e.dataTransfer.files[0]);
+        }
     }
 
     async function handleDelete(id: string) {
@@ -202,10 +226,20 @@ export default function GerenciarAfiliadas() {
                             />
                             <label 
                                 htmlFor="file-upload"
-                                className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 w-full cursor-pointer bg-white hover:bg-stone-50 transition flex items-center gap-2"
+                                onDragEnter={handleDrag}
+                                onDragLeave={handleDrag}
+                                onDragOver={handleDrag}
+                                onDrop={handleDrop}
+                                className={`rounded-lg border-2 border-dashed px-4 py-3 text-stone-800 w-full cursor-pointer transition flex items-center gap-2 ${
+                                    dragActive 
+                                        ? 'border-amber-500 bg-amber-50' 
+                                        : 'border-stone-300 bg-white hover:bg-stone-50'
+                                }`}
                             >
                                 <span className="py-1 px-3 rounded-full border-0 text-sm font-semibold bg-amber-100 text-amber-700">Escolher imagem</span>
-                                <span className="text-stone-600 text-sm flex-1">{foto ? 'Imagem selecionada' : 'Nenhuma imagem selecionada'}</span>
+                                <span className="text-stone-600 text-sm flex-1">
+                                    {dragActive ? 'Solte a imagem aqui' : (foto ? 'Imagem selecionada' : 'Ou arraste aqui')}
+                                </span>
                             </label>
                         </div>
                         <IMaskInput 
