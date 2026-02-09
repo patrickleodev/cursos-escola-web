@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:reset": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} reset-db.ts"
+    "db:reset": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} reset-db.ts",
+    "seed:vendas": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} seed-cursos-vendas.ts",
+    "seed:tecnico": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} seed-cursos-especializacao-tecnica.ts"
   },
   "dependencies": {
     "class-transformer": "^0.5.1",

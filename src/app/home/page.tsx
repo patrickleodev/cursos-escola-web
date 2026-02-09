@@ -138,7 +138,7 @@ export default function Home() {
                 'Enfermagem', 'Massagem', 'Psicologia', 'Engenharia',
                 'Nutrição', 'Segurança', 'Manicure/Pedicure', 'Cosmetologia',
                 'Terapia Holística', 'Serviços Gerais', 'Motorista', 'Cuidador de Idosos',
-                'Setor Imobiliário', 'E muito mais...'
+                'Setor Imobiliário', 'VENDAS', 'ESPECIALIZAÇÃO TÉCNICA', 'E muito mais...'
               ].map((area, idx) => (
                 <div key={idx} className="bg-gradient-to-br from-amber-50 to-stone-50 rounded-lg p-4 border border-amber-200 text-center">
                   <p className="font-semibold text-stone-800">{area}</p>

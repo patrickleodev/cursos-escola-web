@@ -26,6 +26,8 @@ const CATEGORIAS = [
   'Setor Imobiliário',
   'Informática',
   'Idiomas',
+  'VENDAS',
+  'ESPECIALIZAÇÃO TÉCNICA',
 ];
 
 type Curso = {
