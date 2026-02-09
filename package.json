@@ -9,7 +9,8 @@
     "lint": "eslint",
     "db:reset": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} reset-db.ts",
     "seed:vendas": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} seed-cursos-vendas.ts",
-    "seed:tecnico": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} seed-cursos-especializacao-tecnica.ts"
+    "seed:tecnico": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} seed-cursos-especializacao-tecnica.ts",
+    "seed:veterinaria": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} seed-cursos-veterinaria.ts"
   },
   "dependencies": {
     "class-transformer": "^0.5.1",
