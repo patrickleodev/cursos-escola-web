@@ -1,73 +1,17 @@
-import Image from "next/image";
-import Link from "next/link";
-import { FaWhatsapp, FaInstagram } from "react-icons/fa";
+import Header from "../../components/home/Header";
+import HeroSection from "../../components/home/HeroSection";
+import WhyChooseUs from "../../components/home/WhyChooseUs";
+import AreasSection from "../../components/home/AreasSection";
+import Footer from "../../components/home/Footer";
 
 export default function Home() {
   return (
     <div className="bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black text-stone-900 dark:text-stone-50">
-      {/* Header */}
-      <header className="mx-auto max-w-7xl px-6 py-8 flex items-center justify-between">
-        <Link href="/gerenciar-alunos" className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition">
-          <Image src="/logo.png" alt="Vecchiato Assessoria Educacional" width={180} height={60} className="h-12 w-auto" priority />
-        </Link>
-        <nav className="hidden md:flex items-center gap-6">
-          <a href="#sobre" className="hover:underline text-stone-700">Sobre</a>
-          <a href="#oferecemos" className="hover:underline text-stone-700">O que oferecemos</a>
-          <a href="#areas" className="hover:underline text-stone-700">Áreas</a>
-          <a href="/afiliadas" className="hover:underline text-stone-700">Afiliadas</a>
-          <a href="#contato" className="rounded-full border border-stone-300 text-stone-700 px-4 py-2 hover:bg-stone-100 transition">Contato</a>
-        </nav>
-      </header>
+      <Header />
 
       <main className="mx-auto max-w-7xl px-6">
-        {/* Hero Section */}
-        <section className="py-16 text-center">
-          <h1 className="text-5xl font-extrabold text-amber-900 mb-6 leading-tight">
-            Sua carreira na educação não pode depender da sorte.
-          </h1>
-          <p className="text-xl text-stone-700 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Você dedica sua vida a ensinar, mas na hora de enfrentar um processo seletivo, 
-            sente que falta o direcionamento certo? Na <span className="font-semibold">Vecchiato Assessoria Educacional</span>, transformamos sua vocação em aprovação.
-          </p>
-          <div className="flex justify-center mb-12">
-            <a href="#oferecemos" className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-8 py-4 font-semibold hover:shadow-lg transition">
-              Conheça nossos cursos
-            </a>
-          </div>
-        </section>
-
-        {/* Por que escolher */}
-        <section id="sobre" className="py-16 mb-12">
-          <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100">
-            <h2 className="text-3xl font-bold text-stone-800 mb-8 text-center">Por que escolher a Vecchiato Assessoria Educacional?</h2>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
-                <h3 className="font-semibold text-amber-900 mb-3 text-lg">📚 Método Focado</h3>
-                <p className="text-stone-700">Conteúdo focado no que realmente cai nas provas da área da educação, sem enrolação.</p>
-              </div>
-              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
-                <h3 className="font-semibold text-amber-900 mb-3 text-lg">📖 Material Apostilado</h3>
-                <p className="text-stone-700">Informações direto ao ponto com material apostilado de qualidade.</p>
-              </div>
-              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
-                <h3 className="font-semibold text-amber-900 mb-3 text-lg">🎥 Vídeo Aulas</h3>
-                <p className="text-stone-700">Videoaulas conforme o curso adquirido para melhor aprendizado.</p>
-              </div>
-              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
-                <h3 className="font-semibold text-amber-900 mb-3 text-lg">✅ Certificado com QR Code</h3>
-                <p className="text-stone-700">Certificado com QRCODE necessário para qualquer seletivo, prova de título.</p>
-              </div>
-              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
-                <h3 className="font-semibold text-amber-900 mb-3 text-lg">⚡ Acesso Rápido</h3>
-                <p className="text-stone-700">Material e certificado liberado em 24 horas após conclusão.</p>
-              </div>
-              <div className="p-6 bg-gradient-to-br from-amber-50 to-stone-50 rounded-xl border border-amber-200">
-                <h3 className="font-semibold text-amber-900 mb-3 text-lg">💳 Pagamento Facilitado</h3>
-                <p className="text-stone-700">Pagamento facilitado via PIX para sua conveniência.</p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <HeroSection />
+        <WhyChooseUs />
 
         {/* O que oferecemos */}
         <section id="oferecemos" className="py-16 mb-12">
@@ -125,28 +69,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Áreas de Estudo */}
-        <section id="areas" className="py-16 mb-12">
-          <h2 className="text-3xl font-bold text-stone-800 mb-10 text-center">Áreas de Estudo</h2>
-          <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100">
-            <p className="text-lg text-stone-700 mb-8 font-semibold text-center">
-              Oferecemos mais de 1200 opções em cursos nas seguintes áreas:
-            </p>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                'Educação', 'Estética', 'Direito', 'Administração',
-                'Enfermagem', 'Massagem', 'Psicologia', 'Engenharia',
-                'Nutrição', 'Segurança', 'Manicure/Pedicure', 'Cosmetologia',
-                'Terapia Holística', 'Serviços Gerais', 'Motorista', 'Cuidador de Idosos',
-                'Setor Imobiliário', 'VENDAS', 'ESPECIALIZAÇÃO TÉCNICA', 'E muito mais...'
-              ].map((area, idx) => (
-                <div key={idx} className="bg-gradient-to-br from-amber-50 to-stone-50 rounded-lg p-4 border border-amber-200 text-center">
-                  <p className="font-semibold text-stone-800">{area}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <AreasSection />
 
         {/* O que fazemos */}
         <section className="py-16 mb-12">
@@ -203,19 +126,4 @@ export default function Home() {
               <h3 className="text-lg font-bold text-amber-900 mb-4">Entre em Contato</h3>
               <div className="flex items-center gap-6">
                 <a href="https://wa.me/5515996842152" target="_blank" rel="noopener noreferrer" className="text-4xl text-green-500 hover:text-green-600 hover:scale-110 transition" title="WhatsApp">
-                  <FaWhatsapp />
-                </a>
-                <a href="https://www.instagram.com/vecchiatoassessoriaeducacional" target="_blank" rel="noopener noreferrer" className="text-4xl text-pink-500 hover:text-pink-600 hover:scale-110 transition" title="Instagram">
-                  <FaInstagram />
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-amber-200 pt-8 text-center text-stone-600">
-            <p>© {new Date().getFullYear()} Vecchiato Assessoria Educacional. Todos os direitos reservados.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-}
+      <Footer /
