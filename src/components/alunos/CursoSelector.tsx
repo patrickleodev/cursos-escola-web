@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaSave, FaTimes } from "react-icons/fa";
+import { FaSave, FaTimes, FaSearch } from "react-icons/fa";
 import type { Curso } from "../../types";
 
 interface CursoSelectorProps {
@@ -18,6 +19,12 @@ export default function CursoSelector({
     onToggleCurso, onSave, onCancel
 }: CursoSelectorProps) {
     const router = useRouter();
+    const [searchTerm, setSearchTerm] = useState("");
+
+    // Filtrar cursos baseado no termo de pesquisa
+    const filteredCursos = cursos.filter((curso) =>
+        curso.nome.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
@@ -25,6 +32,25 @@ export default function CursoSelector({
                 <h1 className="text-3xl font-semibold text-stone-800 mb-6">
                     Adicionar Cursos ao Aluno
                 </h1>
+                
+                {/* Campo de pesquisa */}
+                <div className="mb-6">
+                    <div className="relative">
+                        <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-stone-400" />
+                        <input
+                            type="text"
+                            placeholder="Pesquisar cursos por nome..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full pl-12 pr-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent"
+                        />
+                    </div>
+                    {searchTerm && (
+                        <p className="text-sm text-stone-600 mt-2">
+                            {filteredCursos.length} {filteredCursos.length === 1 ? 'curso encontrado' : 'cursos encontrados'}
+                        </p>
+                    )}
+                </div>
                 
                 <div className="space-y-3 mb-8">
                     {cursos.length === 0 ? (
@@ -37,8 +63,12 @@ export default function CursoSelector({
                                 Criar um curso
                             </button>
                         </p>
+                    ) : filteredCursos.length === 0 ? (
+                        <p className="text-stone-600">
+                            Nenhum curso encontrado com o termo "{searchTerm}".
+                        </p>
                     ) : (
-                        cursos.map((curso) => (
+                        filteredCursos.map((curso) => (
                             <label 
                                 key={curso.id} 
                                 className="flex items-center p-4 border border-stone-200 rounded-lg hover:bg-stone-50 cursor-pointer"

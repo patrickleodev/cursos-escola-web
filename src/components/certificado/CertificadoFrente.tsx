@@ -51,7 +51,7 @@ export default function CertificadoFrente({
                 {/* Informações do aluno - CPF e RG na mesma linha */}
                 <div className="text-center mb-3">
                     <p className="info-aluno">
-                        CPF: {formatCPF(aluno.cpf || "")} RG: {aluno.rg ? formatRG(aluno.rg) : "Ausente"}
+                        CPF: {formatCPF(aluno.cpf || "")} RG: {aluno.rg ? formatRG(aluno.rg) : ""}
                     </p>
                 </div>
 

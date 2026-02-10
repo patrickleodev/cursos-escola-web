@@ -1,8 +1,10 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import { CATEGORIAS } from "../../lib/constants";
 
 export default function AreasSection() {
-  // Adicionar "E muito mais..." ao final da lista
-  const areas = [...CATEGORIAS, "E muito mais..."];
+  const router = useRouter();
 
   return (
     <section id="areas" className="py-16 mb-12">
@@ -12,11 +14,18 @@ export default function AreasSection() {
           Oferecemos mais de 1200 opções em cursos nas seguintes áreas:
         </p>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {areas.map((area, idx) => (
-            <div key={idx} className="bg-gradient-to-br from-amber-50 to-stone-50 rounded-lg p-4 border border-amber-200 text-center">
+          {CATEGORIAS.map((area, idx) => (
+            <button
+              key={idx}
+              onClick={() => router.push(`/cursos/${encodeURIComponent(area)}`)}
+              className="bg-gradient-to-br from-amber-50 to-stone-50 rounded-lg p-4 border border-amber-200 text-center hover:from-amber-100 hover:to-stone-100 hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
+            >
               <p className="font-semibold text-stone-800">{area}</p>
-            </div>
+            </button>
           ))}
+          <div className="bg-gradient-to-br from-amber-50 to-stone-50 rounded-lg p-4 border border-amber-200 text-center">
+            <p className="font-semibold text-stone-800">E muito mais...</p>
+          </div>
         </div>
       </div>
     </section>

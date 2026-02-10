@@ -120,6 +120,7 @@ export default function GerenciarAlunos() {
         setCpf('');
         setRg('');
         setTelefone('');
+    }
 
     async function handleEdit(a: Aluno) {
         setEditingId(a.id);
@@ -154,15 +155,25 @@ export default function GerenciarAlunos() {
         setSelectingCursosId(null);
         setSelectedCursos([]);
         await fetchAlunos();
-        setSavingCursos(false)gify({ alunoId: selectingCursosId, cursoIds: selectedCursos }),
-                headers: { 'Content-Type': 'application/json' }
-            });
-            if (!res.ok) console.error('Erro ao atualizar cursos do aluno', await res.text());
-        } catch (err) { console.error(err); }
-        setSelectingCursosId(null);
-        setSelectedCursos([]);
-        await fetchAlunos();
         setSavingCursos(false);
+    }
+
+    async function handleDelete(id: string) {
+        if (!confirm('Tem certeza que deseja excluir este aluno?')) return;
+        try {
+            const res = await fetch(getApiUrl(`/api/alunos/${id}`), { method: 'DELETE' });
+            if (!res.ok) console.error('Erro ao deletar aluno', await res.text());
+            await fetchAlunos();
+        } catch (err) { 
+            console.error(err); 
+        }
+    }
+
+    function handleSelectCursos(aluno: Aluno) {
+        setSelectingCursosId(aluno.id);
+        // Pré-selecionar os cursos que o aluno já tem
+        const cursosJaMatriculados = aluno.matriculas?.map(m => m.curso.id) || [];
+        setSelectedCursos(cursosJaMatriculados);
     }
 
     function handleLogout() {
