@@ -44,10 +44,7 @@ export default function AlunoDetalhes() {
     router.push('/gerenciar-alunos');
   }
 
-  i
-
-  const sanitizedCpf = (aluno?.cpf || '').replace(/\D/g, '');
-  const firstThreeCpf = sanitizedCpf.slice(0, 3);f (loading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8 flex items-center justify-center">
         <div className="text-center">
@@ -72,6 +69,12 @@ export default function AlunoDetalhes() {
           </div>
         </div>
       </div>
+    );
+  }
+
+  const sanitizedCpf = (aluno?.cpf || '').replace(/\D/g, '');
+  const firstThreeCpf = sanitizedCpf.slice(0, 3);
+
   if (!unlocked) {
     return (
       <PinProtection 
@@ -90,9 +93,6 @@ export default function AlunoDetalhes() {
         
         <CursosSection cursos={aluno.cursos} />
       </div>
-          )}
-          </div>
-        </div>
-      </div>
+    </div>
   );
 }
