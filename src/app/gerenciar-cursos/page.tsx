@@ -55,9 +55,9 @@ export default function GerenciarCursos() {
 
   useEffect(() => {
     fetchCursos();
-    setUserEmail(localStorage.getItem("user_email") || "");
   }, [busca, filtroCategoria]);
-async function handleSave(e: React.FormEvent) {
+
+  async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
     const payload = { nome, duracao: parseInt(duracao), categoria, conteudo };
@@ -70,9 +70,6 @@ async function handleSave(e: React.FormEvent) {
           headers: { "Content-Type": "application/json" },
         });
         if (!res.ok) console.error("Erro ao atualizar curso", await res.text());
-        setEditingId(null);
-      } else {
-        const res = await fetch("/api/cursos", {
       } else {
         const res = await fetch("/api/cursos", {
           method: "POST",
@@ -95,7 +92,10 @@ async function handleSave(e: React.FormEvent) {
     setDuracao("");
     setCategoria("");
     setConteudo("");
-    setEditingId(null);nc function handleEdit(c: Curso) {
+    setEditingId(null);
+  }
+
+  async function handleEdit(c: Curso) {
     setEditingId(c.id);
     setNome(c.nome);
     setDuracao(c.duracao.toString());
@@ -117,7 +117,8 @@ async function handleSave(e: React.FormEvent) {
     }
     fetchCursos();
   }
-return (
+
+  return (
     <AuthGuard>
       <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
         <div className="mx-auto max-w-6xl bg-white rounded-2xl shadow-lg p-8">
@@ -164,4 +165,5 @@ return (
       </div>
     </AuthGuard>
   );
-}}
+}
+
