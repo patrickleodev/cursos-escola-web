@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { NextRequest, NextResponse } from "next/server";
 import { initializeDataSource } from '../../../lib/data-source';
 import { Cursos } from '../../../database/entities/cursos.entity';
-import { Like } from 'typeorm';
+import { ILike } from 'typeorm';
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     // Construir filtros
     const where: any = {};
     if (busca) {
-      where.nome = Like(`%${busca}%`);
+      where.nome = ILike(`%${busca}%`);
     }
     if (categoria && categoria !== 'todas') {
       where.categoria = categoria;

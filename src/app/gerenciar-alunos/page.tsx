@@ -169,10 +169,10 @@ export default function GerenciarAlunos() {
         }
     }
 
-    function handleSelectCursos(aluno: Aluno) {
-        setSelectingCursosId(aluno.id);
+    function handleSelectCursos(alunoId: string, cursos: any[]) {
+        setSelectingCursosId(alunoId);
         // Pré-selecionar os cursos que o aluno já tem
-        const cursosJaMatriculados = aluno.matriculas?.map(m => m.curso.id) || [];
+        const cursosJaMatriculados = cursos.map(c => c.id) || [];
         setSelectedCursos(cursosJaMatriculados);
     }
 
