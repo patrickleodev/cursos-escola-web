@@ -73,7 +73,7 @@ export default function Home() {
 
         {/* O que fazemos */}
         <section className="py-16 mb-12">
-          <h2 className="text-3xl font-bold text-stone-800 mb-10 text-center">Por que Escolher a Vecchiato?</h2>
+          <h2 className="text-3xl font-bold text-stone-800 mb-10 text-center">Por que Escolher a Vecchiato Assessoria Educacional?</h2>
           <div className="grid gap-8 md:grid-cols-3">
             <div className="bg-white rounded-2xl shadow-lg p-10 border border-amber-100 text-center">
               <h3 className="text-2xl font-bold text-amber-900 mb-4">O que fazemos?</h3>

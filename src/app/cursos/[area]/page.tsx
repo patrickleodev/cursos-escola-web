@@ -97,24 +97,20 @@ export default function CursosPorArea() {
             {cursos.map((curso) => (
               <div
                 key={curso.id}
-                className="bg-white rounded-2xl shadow-lg p-6 border border-amber-100 hover:shadow-xl transition-all hover:scale-105"
+                className="bg-white rounded-2xl shadow-lg p-6 border border-amber-100"
               >
                 <h3 className="text-xl font-bold text-stone-800 mb-3">
                   {curso.nome}
                 </h3>
-                <div className="text-stone-600">
-                  <p className="flex items-center gap-2">
-                    <span className="font-semibold">Duração:</span>
-                    <span>{curso.duracao} horas</span>
-                  </p>
-                </div>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      <Footer />
+      <div className="mt-24">
+        <Footer />
+      </div>
     </div>
   );
 }

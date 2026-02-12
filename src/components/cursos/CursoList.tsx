@@ -5,7 +5,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 type Curso = {
     id: string;
     nome: string;
-    duracao: number;
+    duracao?: number;
     categoria?: string;
     conteudo?: string;
 };
@@ -26,9 +26,11 @@ export default function CursoList({ cursos, onEdit, onDelete }: CursoListProps) 
                 >
                     <div>
                         <div className="font-semibold text-stone-800">{c.nome}</div>
-                        <div className="text-sm text-stone-600">
-                            Duração: {c.duracao} horas
-                        </div>
+                        {c.duracao && (
+                            <div className="text-sm text-stone-600">
+                                Duração: {c.duracao} horas
+                            </div>
+                        )}
                         {c.categoria && (
                             <div className="text-xs text-amber-700 bg-amber-100 rounded-full px-3 py-1 inline-block mt-1">
                                 {c.categoria}

@@ -81,7 +81,9 @@ export default function CursoSelector({
                                 />
                                 <div className="ml-4 flex-1">
                                     <div className="font-semibold text-stone-800">{curso.nome}</div>
-                                    <div className="text-sm text-stone-600">{curso.duracao} horas</div>
+                                    {curso.duracao && (
+                                        <div className="text-sm text-stone-600">{curso.duracao} horas</div>
+                                    )}
                                 </div>
                             </label>
                         ))

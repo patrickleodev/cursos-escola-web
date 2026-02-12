@@ -1,7 +1,7 @@
 export type Curso = {
   id: string;
   nome: string;
-  duracao: number;
+  duracao?: number;
   categoria?: string;
   conteudo?: string;
   dataInicio?: string;

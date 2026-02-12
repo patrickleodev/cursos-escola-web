@@ -9,6 +9,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import EmptyState from "../../components/EmptyState";
 import AfiliadaForm from "../../components/afiliadas/AfiliadaForm";
 import AfiliadaList from "../../components/afiliadas/AfiliadaList";
+import ManagementSidebar from "../../components/ManagementSidebar";
 import { FaGlobe } from "react-icons/fa";
 
 interface Afiliada {
@@ -171,53 +172,54 @@ export default function GerenciarAfiliadas() {
 
     return (
         <AuthGuard>
-            <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
-                <div className="mx-auto max-w-6xl bg-white rounded-2xl shadow-lg p-8">
-                    <PageHeader 
-                        title="Gerenciar Afiliadas"
-                        showGerenciarAlunos
-                        showGerenciarCursos
-                    />
-
-                    <SearchBar
-                        value={busca}
-                        onChange={setBusca}
-                        placeholder="🔍 Pesquisar por nome..."
-                    />
-
-                    <AfiliadaForm
-                        nome={nome}
-                        foto={foto}
-                        whatsapp={whatsapp}
-                        editingId={editingId}
-                        saving={saving}
-                        dragActive={dragActive}
-                        onNomeChange={setNome}
-                        onWhatsappChange={setWhatsapp}
-                        onImageChange={handleImageChange}
-                        onDrag={handleDrag}
-                        onDrop={handleDrop}
-                        onSubmit={handleSave}
-                        onCancel={resetForm}
-                    />
-
-                    {loading && <LoadingSpinner message="Buscando afiliadas..." />}
-                    {!loading && afiliadas.length === 0 && <EmptyState message="Nenhuma afiliada encontrada." />}
-                    {!loading && afiliadas.length > 0 && (
-                        <AfiliadaList
-                            afiliadas={afiliadas}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
+            <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black" style={{ marginLeft: 'var(--sidebar-width, 256px)' }}>
+                <ManagementSidebar />
+                <div className="px-6 py-8">
+                    <div className="mx-auto max-w-6xl bg-white rounded-2xl shadow-lg p-8">
+                        <PageHeader 
+                            title="Gerenciar Afiliadas"
                         />
-                    )}
 
-                    <div className="mt-6 text-center">
-                        <button 
-                            onClick={() => router.push('/afiliadas')} 
-                            className="rounded-full bg-gradient-to-r from-purple-500 to-purple-700 text-white px-6 py-3 font-medium hover:shadow-lg transition cursor-pointer flex items-center gap-2 mx-auto"
-                        >
-                            <FaGlobe /> Ver Página Afiliadas
-                        </button>
+                        <SearchBar
+                            value={busca}
+                            onChange={setBusca}
+                            placeholder="🔍 Pesquisar por nome..."
+                        />
+
+                        <AfiliadaForm
+                            nome={nome}
+                            foto={foto}
+                            whatsapp={whatsapp}
+                            editingId={editingId}
+                            saving={saving}
+                            dragActive={dragActive}
+                            onNomeChange={setNome}
+                            onWhatsappChange={setWhatsapp}
+                            onImageChange={handleImageChange}
+                            onDrag={handleDrag}
+                            onDrop={handleDrop}
+                            onSubmit={handleSave}
+                            onCancel={resetForm}
+                        />
+
+                        {loading && <LoadingSpinner message="Buscando afiliadas..." />}
+                        {!loading && afiliadas.length === 0 && <EmptyState message="Nenhuma afiliada encontrada." />}
+                        {!loading && afiliadas.length > 0 && (
+                            <AfiliadaList
+                                afiliadas={afiliadas}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                            />
+                        )}
+
+                        <div className="mt-6 text-center">
+                            <button 
+                                onClick={() => router.push('/afiliadas')} 
+                                className="rounded-full bg-gradient-to-r from-purple-500 to-purple-700 text-white px-6 py-3 font-medium hover:shadow-lg transition cursor-pointer flex items-center gap-2 mx-auto"
+                            >
+                                <FaGlobe /> Ver Página Afiliadas
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

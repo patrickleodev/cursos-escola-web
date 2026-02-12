@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import AuthGuard from "../../components/AuthGuard";
 import PageHeader from "../../components/PageHeader";
 import SearchBar from "../../components/SearchBar";
@@ -9,6 +10,7 @@ import EmptyState from "../../components/EmptyState";
 import AlunoForm from "../../components/alunos/AlunoForm";
 import AlunoList from "../../components/alunos/AlunoList";
 import CursoSelector from "../../components/alunos/CursoSelector";
+import ManagementSidebar from "../../components/ManagementSidebar";
 import type { Aluno, Curso } from "../../types";
 
 function getApiUrl(path: string) {
@@ -176,12 +178,6 @@ export default function GerenciarAlunos() {
         setSelectedCursos(cursosJaMatriculados);
     }
 
-    function handleLogout() {
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('user_email');
-        location.href = '/login';
-    }
-
     if (selectingCursosId) {
         return (
             <AuthGuard>
@@ -199,47 +195,48 @@ export default function GerenciarAlunos() {
 
     return (
         <AuthGuard>
-            <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
-                <div className="mx-auto max-w-6xl bg-white rounded-2xl shadow-lg p-8">
-                    <PageHeader 
-                        title="Gerenciar Alunos"
-                        showGerenciarCursos
-                        showGerenciarAfiliadas
-                    />
-                    
-                    <SearchBar
-                        value={busca}
-                        onChange={setBusca}
-                        placeholder="🔍 Pesquisar por nome, e-mail ou CPF..."
-                    />
-                    
-                    <AlunoForm
-                        nome={nome}
-                        email={email}
-                        cpf={cpf}
-                        rg={rg}
-                        telefone={telefone}
-                        editingId={editingId}
-                        saving={saving}
-                        onNomeChange={setNome}
-                        onEmailChange={setEmail}
-                        onCpfChange={setCpf}
-                        onRgChange={setRg}
-                        onTelefoneChange={setTelefone}
-                        onSubmit={handleSave}
-                        onCancel={handleCancelEdit}
-                    />
-
-                    {loading && <LoadingSpinner message="Buscando alunos..." />}
-                    {!loading && alunos.length === 0 && <EmptyState message="Nenhum aluno encontrado." />}
-                    {!loading && alunos.length > 0 && (
-                        <AlunoList
-                            alunos={alunos}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
-                            onSelectCursos={handleSelectCursos}
+            <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black" style={{ marginLeft: 'var(--sidebar-width, 256px)' }}>
+                <ManagementSidebar />
+                <div className="px-6 py-8">
+                    <div className="mx-auto max-w-6xl bg-white rounded-2xl shadow-lg p-8">
+                        <PageHeader 
+                            title="Gerenciar Alunos"
                         />
-                    )}
+                        
+                        <SearchBar
+                            value={busca}
+                            onChange={setBusca}
+                            placeholder="🔍 Pesquisar por nome, e-mail ou CPF..."
+                        />
+                        
+                        <AlunoForm
+                            nome={nome}
+                            email={email}
+                            cpf={cpf}
+                            rg={rg}
+                            telefone={telefone}
+                            editingId={editingId}
+                            saving={saving}
+                            onNomeChange={setNome}
+                            onEmailChange={setEmail}
+                            onCpfChange={setCpf}
+                            onRgChange={setRg}
+                            onTelefoneChange={setTelefone}
+                            onSubmit={handleSave}
+                            onCancel={handleCancelEdit}
+                        />
+
+                        {loading && <LoadingSpinner message="Buscando alunos..." />}
+                        {!loading && alunos.length === 0 && <EmptyState message="Nenhum aluno encontrado." />}
+                        {!loading && alunos.length > 0 && (
+                            <AlunoList
+                                alunos={alunos}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                                onSelectCursos={handleSelectCursos}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </AuthGuard>

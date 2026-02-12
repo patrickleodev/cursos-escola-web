@@ -16,7 +16,7 @@ export class Cursos {
   @Column({ length: 255, unique: true })
   nome: string;
 
-  @Column({ type: "int" })
+  @Column({ type: "int", nullable: true })
   duracao: number; // em horas
 
   @Column({ length: 100, nullable: true })

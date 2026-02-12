@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import AuthGuard from "../../components/AuthGuard";
 import PageHeader from "../../components/PageHeader";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -8,12 +9,13 @@ import EmptyState from "../../components/EmptyState";
 import FilterBar from "../../components/cursos/FilterBar";
 import CursoForm from "../../components/cursos/CursoForm";
 import CursoList from "../../components/cursos/CursoList";
+import ManagementSidebar from "../../components/ManagementSidebar";
 import { CATEGORIAS } from "../../lib/constants";
 
 type Curso = {
   id: string;
   nome: string;
-  duracao: number;
+  duracao?: number;
   categoria?: string;
   conteudo?: string;
 };
@@ -60,7 +62,10 @@ export default function GerenciarCursos() {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    const payload = { nome, duracao: parseInt(duracao), categoria, conteudo };
+    const payload: any = { nome, categoria, conteudo };
+    if (duracao && duracao.trim() !== '') {
+      payload.duracao = parseInt(duracao);
+    }
 
     try {
       if (editingId) {
@@ -98,7 +103,7 @@ export default function GerenciarCursos() {
   async function handleEdit(c: Curso) {
     setEditingId(c.id);
     setNome(c.nome);
-    setDuracao(c.duracao.toString());
+    setDuracao(c.duracao ? c.duracao.toString() : "");
     setCategoria(c.categoria || "");
     setConteudo(c.conteudo || "");
   }
@@ -120,47 +125,48 @@ export default function GerenciarCursos() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8">
-        <div className="mx-auto max-w-6xl bg-white rounded-2xl shadow-lg p-8">
-          <PageHeader 
-            title="Gerenciar Cursos"
-            showGerenciarAlunos
-            showGerenciarAfiliadas
-          />
-
-          <FilterBar
-            busca={busca}
-            onBuscaChange={setBusca}
-            filtroCategoria={filtroCategoria}
-            onFiltroCategoriaChange={setFiltroCategoria}
-            categorias={CATEGORIAS}
-          />
-
-          <CursoForm
-            nome={nome}
-            duracao={duracao}
-            categoria={categoria}
-            conteudo={conteudo}
-            editingId={editingId}
-            saving={saving}
-            categorias={CATEGORIAS}
-            onNomeChange={setNome}
-            onDuracaoChange={setDuracao}
-            onCategoriaChange={setCategoria}
-            onConteudoChange={setConteudo}
-            onSubmit={handleSave}
-            onCancel={handleCancelEdit}
-          />
-
-          {loading && <LoadingSpinner message="Buscando cursos..." />}
-          {!loading && cursos.length === 0 && <EmptyState message="Nenhum curso encontrado." />}
-          {!loading && cursos.length > 0 && (
-            <CursoList
-              cursos={cursos}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
+      <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black" style={{ marginLeft: 'var(--sidebar-width, 256px)' }}>
+        <ManagementSidebar />
+        <div className="px-6 py-8">
+          <div className="mx-auto max-w-6xl bg-white rounded-2xl shadow-lg p-8">
+            <PageHeader 
+              title="Gerenciar Cursos"
             />
-          )}
+
+            <FilterBar
+              busca={busca}
+              onBuscaChange={setBusca}
+              filtroCategoria={filtroCategoria}
+              onFiltroCategoriaChange={setFiltroCategoria}
+              categorias={CATEGORIAS}
+            />
+
+            <CursoForm
+              nome={nome}
+              duracao={duracao}
+              categoria={categoria}
+              conteudo={conteudo}
+              editingId={editingId}
+              saving={saving}
+              categorias={CATEGORIAS}
+              onNomeChange={setNome}
+              onDuracaoChange={setDuracao}
+              onCategoriaChange={setCategoria}
+              onConteudoChange={setConteudo}
+              onSubmit={handleSave}
+              onCancel={handleCancelEdit}
+            />
+
+            {loading && <LoadingSpinner message="Buscando cursos..." />}
+            {!loading && cursos.length === 0 && <EmptyState message="Nenhum curso encontrado." />}
+            {!loading && cursos.length > 0 && (
+              <CursoList
+                cursos={cursos}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            )}
+          </div>
         </div>
       </div>
     </AuthGuard>
