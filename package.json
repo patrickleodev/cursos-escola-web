@@ -18,7 +18,10 @@
     "update:administracao-vendas": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} update-administracao-vendas.ts",
     "seed:thays": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} seed-add-thays.ts",
     "update:thays-foto": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} update-thays-foto.ts",
-    "seed:enfermagem": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} seed-cursos-enfermagem.ts"
+    "seed:enfermagem": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} seed-cursos-enfermagem.ts",
+    "check:cursos": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} check-cursos.ts",
+    "seed:enfermagem-faltantes": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} seed-enfermagem-faltantes.ts",
+    "consolidar:enfermagem": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} consolidar-enfermagem.ts"
   },
   "dependencies": {
     "class-transformer": "^0.5.1",
