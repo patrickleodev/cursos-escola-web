@@ -263,7 +263,7 @@ export default function Certificado() {
         <div className="container mx-auto">
           <aside className="print:hidden mb-6 lg:mb-0 lg:fixed lg:left-0 lg:top-0 lg:bottom-0 lg:w-80 lg:p-4 lg:flex lg:flex-col">
             <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm lg:shadow-none lg:h-full lg:flex lg:flex-col lg:overflow-hidden">
-              <div className="space-y-4 lg:overflow-y-auto lg:pr-1">
+              <div className="space-y-4 lg:flex-1 lg:min-h-0 lg:overflow-y-auto lg:pr-1">
                 <h2 className="text-lg font-semibold text-stone-800">Personalização</h2>
 
               <div className="space-y-2" onMouseLeave={() => setHoveredModel(null)}>
