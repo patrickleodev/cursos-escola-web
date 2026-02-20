@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import { AppDataSource } from "./src/lib/data-source";
-import { Cursos } from "./src/database/entities/cursos.entity";
+import { AppDataSource } from "../src/lib/data-source";
+import { Cursos } from "../src/database/entities/cursos.entity";
 
 async function verificar() {
   try {

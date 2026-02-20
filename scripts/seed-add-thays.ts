@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import { initializeDataSource } from "./src/lib/data-source";
-import { Afiliadas } from "./src/database/entities/afiliadas.entity";
+import { initializeDataSource } from "../src/lib/data-source";
+import { Afiliadas } from "../src/database/entities/afiliadas.entity";
 
 async function addThaysOliveira() {
   try {

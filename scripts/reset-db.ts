@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { initializeDataSource } from "./src/lib/data-source";
+import { initializeDataSource } from "../src/lib/data-source";
 
 async function resetDatabase() {
   try {

@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import { initializeDataSource } from "./src/lib/data-source";
-import { Cursos } from "./src/database/entities/cursos.entity";
+import { initializeDataSource } from "../src/lib/data-source";
+import { Cursos } from "../src/database/entities/cursos.entity";
 
 const cursosHidraulica = [
   {
