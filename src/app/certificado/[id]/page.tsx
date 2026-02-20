@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import QRCode from "qrcode";
 import { FaArrowLeft, FaPrint } from "react-icons/fa";
 import AuthGuard from "../../../components/AuthGuard";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 import type { Aluno } from "../../../types";
 import CertificadoFrente from "../../../components/certificado/CertificadoFrente";
 import CertificadoVerso from "../../../components/certificado/CertificadoVerso";
@@ -221,11 +222,7 @@ export default function Certificado() {
   if (loading) {
     return (
       <AuthGuard>
-        <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black px-6 py-8 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-lg text-stone-600">Gerando certificado...</div>
-          </div>
-        </div>
+        <LoadingSpinner message="Gerando certificado..." />
       </AuthGuard>
     );
   }
