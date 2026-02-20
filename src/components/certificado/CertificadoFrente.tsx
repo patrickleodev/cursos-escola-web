@@ -1,5 +1,17 @@
 import { formatCPF, formatRG } from "../../lib/formatters";
 import type { Aluno } from "../../types";
+import type { CSSProperties } from "react";
+
+type CertificadoModel =
+    | "vermelho"
+    | "marrom"
+    | "rosa"
+    | "amarelo"
+    | "laranja"
+    | "azul"
+    | "verde"
+    | "verde-escuro"
+    | "dourado-escuro";
 
 interface CertificadoFrenteProps {
     aluno: Aluno;
@@ -9,15 +21,24 @@ interface CertificadoFrenteProps {
     dataFim: string;
     qrCodeUrl: string;
     isFirstCertificate?: boolean;
+    model: CertificadoModel;
+    fontFamily: string;
+    fontScale: number;
 }
 
 export default function CertificadoFrente({
-    aluno, cursoNome, duracao, dataInicio, dataFim, qrCodeUrl, isFirstCertificate = true
+    aluno, cursoNome, duracao, dataInicio, dataFim, qrCodeUrl, isFirstCertificate = true, model, fontFamily, fontScale
 }: CertificadoFrenteProps) {
+    const style: CSSProperties & Record<string, string | number> = {
+        ...(isFirstCertificate ? {} : { pageBreakBefore: "always" }),
+        "--cert-font-family": fontFamily,
+        "--cert-font-scale": fontScale,
+    };
+
     return (
         <div
-            className="certificado-print relative bg-white mx-auto"
-            style={!isFirstCertificate ? { pageBreakBefore: 'always' } : {}}
+            className={`certificado-print certificado-model-${model} relative bg-white mx-auto`}
+            style={style}
         >
             {/* Bordas decorativas */}
             <div className="certificado-border-top"></div>
@@ -67,7 +88,7 @@ export default function CertificadoFrente({
                 <div className="assinatura-container">
                     <div className="assinatura-item">
                         <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '15px' }}>
-                            <p className="text-sm font-semibold mb-0 text-slate-900">{aluno.nome}</p>
+                            <p className="assinatura-aluno-nome mb-0">{aluno.nome}</p>
                         </div>
                         <div className="assinatura-linha"></div>
                         <p className="text-xs mt-4 mb-0 text-slate-900">{formatCPF(aluno.cpf || "")}</p>

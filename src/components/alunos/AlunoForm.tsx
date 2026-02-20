@@ -27,20 +27,20 @@ export default function AlunoForm({
     onSubmit, onCancel
 }: AlunoFormProps) {
     return (
-        <form onSubmit={onSubmit} className="mb-8 grid gap-3 sm:grid-cols-4 bg-gradient-to-br from-amber-50 to-stone-50 p-6 rounded-xl">
+        <form onSubmit={onSubmit} className="mb-8 grid gap-3 sm:grid-cols-4 bg-white border border-stone-200 shadow-sm p-6 rounded-2xl">
             <input 
                 placeholder="Nome" 
                 value={nome} 
                 onChange={(e) => onNomeChange(e.target.value)} 
                 disabled={saving} 
-                className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50" 
+                className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50" 
             />
             <input 
                 placeholder="Email" 
                 value={email} 
                 onChange={(e) => onEmailChange(e.target.value)} 
                 disabled={saving} 
-                className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50" 
+                className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50" 
             />
             <IMaskInput 
                 mask="000.000.000-00" 
@@ -48,7 +48,7 @@ export default function AlunoForm({
                 value={cpf} 
                 onAccept={(value) => onCpfChange(value)} 
                 disabled={saving}
-                className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50" 
+                className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50" 
             />
             <IMaskInput 
                 mask="00.000.000-0" 
@@ -56,7 +56,7 @@ export default function AlunoForm({
                 value={rg} 
                 onAccept={(value) => onRgChange(value)} 
                 disabled={saving}
-                className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50" 
+                className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50" 
             />
             <IMaskInput 
                 mask="(00) 00000-0000" 
@@ -64,12 +64,12 @@ export default function AlunoForm({
                 value={telefone} 
                 onAccept={(value) => onTelefoneChange(value)} 
                 disabled={saving}
-                className="rounded-lg border border-stone-300 px-4 py-3 sm:col-span-2 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50" 
+                className="rounded-xl border border-stone-300 bg-white px-4 py-3 sm:col-span-2 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50" 
             />
             <div className="sm:col-span-2 flex gap-3">
                 <button 
                     disabled={saving} 
-                    className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                     <FaSave /> {saving ? 'Salvando...' : (editingId ? 'Salvar' : 'Criar')}
                 </button>
@@ -78,7 +78,7 @@ export default function AlunoForm({
                         type="button" 
                         onClick={onCancel} 
                         disabled={saving} 
-                        className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition cursor-pointer disabled:opacity-50 flex items-center gap-2"
+                        className="rounded-xl border border-stone-300 bg-white text-stone-700 px-6 py-3 hover:bg-stone-100 transition cursor-pointer disabled:opacity-50 flex items-center gap-2"
                     >
                         <FaTimes /> Cancelar
                     </button>

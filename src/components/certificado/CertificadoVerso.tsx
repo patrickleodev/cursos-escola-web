@@ -1,8 +1,24 @@
+import type { CSSProperties } from "react";
+
+type CertificadoModel =
+    | "vermelho"
+    | "marrom"
+    | "rosa"
+    | "amarelo"
+    | "laranja"
+    | "azul"
+    | "verde"
+    | "verde-escuro"
+    | "dourado-escuro";
+
 interface CertificadoVersoProps {
     linhas: string[];
+    model: CertificadoModel;
+    fontFamily: string;
+    fontScale: number;
 }
 
-export default function CertificadoVerso({ linhas }: CertificadoVersoProps) {
+export default function CertificadoVerso({ linhas, model, fontFamily, fontScale }: CertificadoVersoProps) {
     // Determinar número de colunas baseado na quantidade de itens
     const numColunas = linhas.length <= 5 ? 1 : linhas.length <= 15 ? 2 : 3;
     
@@ -18,8 +34,14 @@ export default function CertificadoVerso({ linhas }: CertificadoVersoProps) {
         alturas[menorIndice] += linha.length;
     });
 
+    const style: CSSProperties & Record<string, string | number> = {
+        pageBreakBefore: "always",
+        "--cert-font-family": fontFamily,
+        "--cert-font-scale": fontScale,
+    };
+
     return (
-        <div className="segunda-pagina relative bg-white mx-auto" style={{ pageBreakBefore: 'always' }}>
+        <div className={`segunda-pagina certificado-model-${model} relative bg-white mx-auto`} style={style}>
             {/* Bordas decorativas */}
             <div className="certificado-border-top"></div>
             <div className="certificado-border-bottom"></div>
@@ -42,7 +64,7 @@ export default function CertificadoVerso({ linhas }: CertificadoVersoProps) {
                         {colunas.map((coluna, colIdx) => (
                             <div key={`coluna-${colIdx}`} className="conteudo-coluna">
                                 {coluna.map((topico, idx) => (
-                                    <p key={`col${colIdx}-${idx}`} className="text-sm text-slate-800 font-medium">
+                                    <p key={`col${colIdx}-${idx}`} className="conteudo-topico">
                                         {topico.trim()}
                                     </p>
                                 ))}

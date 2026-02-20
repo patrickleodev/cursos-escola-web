@@ -25,14 +25,14 @@ export default function CursoForm({
     onSubmit, onCancel
 }: CursoFormProps) {
     return (
-        <form onSubmit={onSubmit} className="mb-8 bg-gradient-to-br from-amber-50 to-stone-50 p-6 rounded-xl space-y-4">
+        <form onSubmit={onSubmit} className="mb-8 bg-white border border-stone-200 shadow-sm p-6 rounded-2xl space-y-4">
             <div className="grid gap-3 sm:grid-cols-3">
                 <input
                     placeholder="Nome do Curso"
                     value={nome}
                     onChange={(e) => onNomeChange(e.target.value)}
                     disabled={saving}
-                    className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
+                    className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50"
                 />
                 <input
                     placeholder="Duração (horas)"
@@ -40,13 +40,13 @@ export default function CursoForm({
                     value={duracao}
                     onChange={(e) => onDuracaoChange(e.target.value)}
                     disabled={saving}
-                    className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
+                    className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50"
                 />
                 <select
                     value={categoria}
                     onChange={(e) => onCategoriaChange(e.target.value)}
                     disabled={saving}
-                    className="rounded-lg border border-stone-300 px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50"
+                    className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50 cursor-pointer"
                 >
                     <option value="">Selecione categoria</option>
                     {categorias.map((cat) => (
@@ -62,12 +62,12 @@ export default function CursoForm({
                 onChange={(e) => onConteudoChange(e.target.value)}
                 disabled={saving}
                 rows={4}
-                className="w-full rounded-lg border border-stone-300 px-4 py-3 text-stone-800 placeholder:text-stone-600 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:opacity-50 resize-none"
+                className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50 resize-none"
             />
             <div className="flex gap-3">
                 <button 
                     disabled={saving} 
-                    className="rounded-full bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                     <FaSave /> {saving ? "Salvando..." : (editingId ? "Salvar" : "Criar")}
                 </button>
@@ -76,7 +76,7 @@ export default function CursoForm({
                         type="button"
                         onClick={onCancel}
                         disabled={saving}
-                        className="rounded-full border border-stone-300 text-stone-700 px-6 py-3 hover:bg-stone-100 transition cursor-pointer disabled:opacity-50 flex items-center gap-2"
+                        className="rounded-xl border border-stone-300 bg-white text-stone-700 px-6 py-3 hover:bg-stone-100 transition cursor-pointer disabled:opacity-50 flex items-center gap-2"
                     >
                         <FaTimes /> Cancelar
                     </button>

@@ -1,6 +1,9 @@
 export const certificadoStyles = `
   /* Estilos gerais para o certificado (desktop e print) */
   .certificado-print {
+    --cert-border-color: #dc2626;
+    --cert-font-family: "Georgia", serif;
+    --cert-font-scale: 1;
     background: linear-gradient(135deg, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%) !important;
     position: relative;
     overflow: hidden;
@@ -12,6 +15,7 @@ export const certificadoStyles = `
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     color-adjust: exact;
+    font-family: var(--cert-font-family);
   }
 
   .certificado-border-top,
@@ -20,7 +24,7 @@ export const certificadoStyles = `
     left: 0;
     right: 0;
     height: 40px;
-    background: #dc2626;
+    background: var(--cert-border-color);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     color-adjust: exact;
@@ -82,14 +86,14 @@ export const certificadoStyles = `
   .certificado-titulo {
     color: #1e3a8a !important;
     font-weight: 900 !important;
-    font-size: 42px !important;
+    font-size: calc(42px * var(--cert-font-scale)) !important;
     letter-spacing: 2px !important;
     margin-top: 10px;
   }
 
   .instituicao-nome {
     color: #374151 !important;
-    font-size: 16px !important;
+    font-size: calc(16px * var(--cert-font-scale)) !important;
     font-weight: 500;
     margin: 8px 0 15px 0;
     letter-spacing: 0.5px;
@@ -97,7 +101,7 @@ export const certificadoStyles = `
 
   .certificado-nome {
     color: #1f2937 !important;
-    font-size: 32px !important;
+    font-size: calc(32px * var(--cert-font-scale)) !important;
     font-weight: bold !important;
     margin: 15px 0;
     letter-spacing: 1px;
@@ -105,7 +109,7 @@ export const certificadoStyles = `
 
   .info-aluno {
     color: #374151 !important;
-    font-size: 14px !important;
+    font-size: calc(14px * var(--cert-font-scale)) !important;
     margin: 10px 0;
     letter-spacing: 0.5px;
     font-weight: 500;
@@ -113,7 +117,7 @@ export const certificadoStyles = `
 
   .descricao-curso {
     color: #1f2937 !important;
-    font-size: 14px !important;
+    font-size: calc(14px * var(--cert-font-scale)) !important;
     font-weight: 600;
     margin: 10px 0;
     letter-spacing: 0.5px;
@@ -141,8 +145,18 @@ export const certificadoStyles = `
   .assinatura-titulo {
     color: #1f2937 !important;
     font-weight: 600;
-    font-size: 12px !important;
+    font-size: calc(12px * var(--cert-font-scale)) !important;
     margin-top: 12px;
+  }
+
+  .assinatura-aluno-nome {
+    font-family: "Segoe Script", "Brush Script MT", "Lucida Handwriting", cursive;
+    font-style: normal;
+    font-size: 22px;
+    font-weight: 500;
+    color: #0f172a !important;
+    letter-spacing: 0.2px;
+    line-height: 1;
   }
 
   @media print {
@@ -157,6 +171,9 @@ export const certificadoStyles = `
   }
 
   .segunda-pagina {
+    --cert-border-color: #dc2626;
+    --cert-font-family: "Georgia", serif;
+    --cert-font-scale: 1;
     background: linear-gradient(135deg, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%) !important;
     position: relative;
     overflow: hidden;
@@ -169,6 +186,7 @@ export const certificadoStyles = `
     print-color-adjust: exact;
     color-adjust: exact;
     page-break-before: always;
+    font-family: var(--cert-font-family);
   }
 
   .conteudo-central {
@@ -194,6 +212,53 @@ export const certificadoStyles = `
     page-break-inside: avoid;
     break-inside: avoid;
     word-wrap: break-word;
+  }
+
+  .conteudo-topico {
+    color: #1f2937 !important;
+    font-weight: 500;
+    font-size: calc(14px * var(--cert-font-scale));
+    margin: 0 0 0.4rem 0;
+    line-height: 1.4;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    word-wrap: break-word;
+  }
+
+  .certificado-model-vermelho {
+    --cert-border-color: #dc2626;
+  }
+
+  .certificado-model-marrom {
+    --cert-border-color: #92400e;
+  }
+
+  .certificado-model-rosa {
+    --cert-border-color: #db2777;
+  }
+
+  .certificado-model-amarelo {
+    --cert-border-color: #ca8a04;
+  }
+
+  .certificado-model-laranja {
+    --cert-border-color: #ea580c;
+  }
+
+  .certificado-model-azul {
+    --cert-border-color: #2563eb;
+  }
+
+  .certificado-model-verde {
+    --cert-border-color: #16a34a;
+  }
+
+  .certificado-model-verde-escuro {
+    --cert-border-color: #166534;
+  }
+
+  .certificado-model-dourado-escuro {
+    --cert-border-color: #a16207;
   }
 
   @page {

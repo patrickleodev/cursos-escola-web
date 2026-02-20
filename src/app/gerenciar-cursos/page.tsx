@@ -125,10 +125,10 @@ export default function GerenciarCursos() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black" style={{ marginLeft: 'var(--sidebar-width, 256px)' }}>
+      <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black" style={{ paddingLeft: 'var(--sidebar-width, 256px)' }}>
         <ManagementSidebar />
         <div className="px-6 py-8">
-          <div className="mx-auto max-w-6xl bg-white rounded-2xl shadow-lg p-8">
+          <div className="mx-auto max-w-6xl bg-white rounded-2xl border border-stone-200 shadow-sm p-8">
             <PageHeader 
               title="Gerenciar Cursos"
             />
