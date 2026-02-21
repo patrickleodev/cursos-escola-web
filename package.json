@@ -24,6 +24,7 @@
     "consolidar:enfermagem": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/consolidar-enfermagem.ts"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.6.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
     "class-validator-cpf": "^1.1.1",
