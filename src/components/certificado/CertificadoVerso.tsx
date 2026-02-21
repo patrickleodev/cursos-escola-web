@@ -53,7 +53,7 @@ export default function CertificadoVerso({ linhas, model, fontFamily, fontScale 
 
             {/* QR Code */}
             <div className="qr-code-container">
-                <img src="/cursos-escola-web-qr.png" alt="QR Code Cursos Escola Web" />
+                <img src="/vecchiato-cursos.png" alt="QR Code Vecchiato Cursos" />
             </div>
 
             {/* Conteúdo centralizado */}
