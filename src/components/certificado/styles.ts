@@ -7,10 +7,10 @@ export const certificadoStyles = `
     background: linear-gradient(135deg, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%) !important;
     position: relative;
     overflow: hidden;
-    width: 297mm;
-    height: 210mm;
+    width: 210mm;
+    height: 297mm;
     margin: 0 auto;
-    padding: 25mm 40mm;
+    padding: 35mm 40mm;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -23,7 +23,7 @@ export const certificadoStyles = `
     position: absolute;
     left: 0;
     right: 0;
-    height: 40px;
+    height: 30px;
     background: var(--cert-border-color);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -40,7 +40,7 @@ export const certificadoStyles = `
 
   .qr-code-container {
     position: absolute;
-    top: 60px;
+    top: 90px;
     right: 40px;
     width: 120px;
     height: 120px;
@@ -62,7 +62,7 @@ export const certificadoStyles = `
 
   .logo-container {
     position: absolute;
-    top: 60px;
+    top: 90px;
     left: 40px;
     width: 140px;
     height: 140px;
@@ -127,7 +127,7 @@ export const certificadoStyles = `
   .assinatura-container {
     display: flex;
     justify-content: space-between;
-    margin-top: 80px;
+    margin-top: 140px;
     padding-top: 30px;
   }
 
@@ -177,8 +177,8 @@ export const certificadoStyles = `
     background: linear-gradient(135deg, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%) !important;
     position: relative;
     overflow: hidden;
-    width: 297mm;
-    height: 210mm;
+    width: 210mm;
+    height: 297mm;
     margin: 20px auto 0;
     padding: 25mm 40mm;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -191,7 +191,7 @@ export const certificadoStyles = `
 
   .conteudo-central {
     text-align: center;
-    padding-top: 20px;
+    padding-top: 60px;
   }
 
   .conteudo-grid {
@@ -263,7 +263,7 @@ export const certificadoStyles = `
 
   @page {
     margin: 0;
-    size: A4 landscape;
+    size: A4 portrait;
   }
 
   @media print {
@@ -294,10 +294,10 @@ export const certificadoStyles = `
     }
 
     .certificado-print {
-      width: 297mm;
-      height: 210mm;
+      width: 210mm;
+      height: 297mm;
       margin: 0;
-      padding: 25mm 40mm;
+      padding: 35mm 40mm;
       box-shadow: none !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
@@ -305,10 +305,10 @@ export const certificadoStyles = `
     }
 
     .segunda-pagina {
-      width: 297mm;
-      height: 210mm;
+      width: 210mm;
+      height: 297mm;
       margin: 0 !important;
-      padding: 25mm 40mm;
+      padding: 35mm 40mm;
       box-shadow: none !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
