@@ -57,13 +57,28 @@ export default function CertificadoGradeNotas({
 
         <div style={{ height: 28 }} />
 
-        <div style={{ textAlign: "center", marginTop: 8 }}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 6 }}>
-            <img src="/assinatura_michelle.png" alt="Assinatura Michelle" style={{ width: 220, maxWidth: '60%', height: 'auto', display: 'block' }} />
+        <div style={{ textAlign: "center", marginTop: 8, position: 'relative' }}>
+          <img
+            src="/assinatura_michelle.png"
+            alt="Assinatura Michelle"
+            style={{
+              position: 'absolute',
+              top: -42,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 220,
+              maxWidth: '60%',
+              height: 'auto',
+              display: 'block',
+              zIndex: 20,
+              pointerEvents: 'none'
+            }}
+          />
+          <div style={{ paddingTop: 48 }}>
+            <p style={{ fontWeight: 700 }}>VECCHIATO ASSESSORIA EDUCACIONAL</p>
+            <p>DIRETORA EDUCACIONAL</p>
+            <p>MICHELLE C. VECCHIATO CRTP 2344</p>
           </div>
-          <p style={{ fontWeight: 700 }}>VECCHIATO ASSESSORIA EDUCACIONAL</p>
-          <p>DIRETORA EDUCACIONAL</p>
-          <p>MICHELLE C. VECCHIATO CRTP 2344</p>
         </div>
       </div>
     </div>
