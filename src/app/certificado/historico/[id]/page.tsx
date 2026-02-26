@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import AuthGuard from "../../../components/AuthGuard";
-import LoadingSpinner from "../../../components/LoadingSpinner";
-import type { Aluno } from "../../../types";
-import CertificadoPaginaExtra from "../../../components/certificado/CertificadoPaginaExtra";
-import CertificadoGradeNotas from "../../../components/certificado/CertificadoGradeNotas";
-import { certificadoStyles } from "../../../components/certificado/styles";
+import AuthGuard from "../../../../components/AuthGuard";
+import LoadingSpinner from "../../../../components/LoadingSpinner";
+import type { Aluno } from "../../../../types";
+import CertificadoPaginaExtra from "../../../../components/certificado/CertificadoPaginaExtra";
+import CertificadoGradeNotas from "../../../../components/certificado/CertificadoGradeNotas";
+import { certificadoStyles } from "../../../../components/certificado/styles";
 
 export default function HistoricoPage() {
   const { id } = useParams();
