@@ -84,6 +84,8 @@ export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, 
                 />
               ))}
 
+              { /* Página extra (movida para página separada de histórico) */ }
+              { /*
               <CertificadoPaginaExtra
                 aluno={aluno}
                 cursoNome={matricula.curso.nome}
@@ -119,6 +121,7 @@ export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, 
                   ));
                 })()
               )}
+              */ }
             </React.Fragment>
           );
         })

@@ -31,11 +31,33 @@ export default function AlunoList({ alunos, onEdit, onDelete, onSelectCursos }: 
                         )}
                     </div>
                     <div className="flex gap-3 flex-wrap justify-end">
+                        {/* Mostrar botão de Certificado Técnico somente se o aluno tiver pelo menos um curso de especialização técnica */}
+                        {(() => {
+                            const hasTecnico = (a.cursos || []).some((c) => {
+                                const cat = (c.categoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                                return cat.includes('especializacao') && cat.includes('tecnica');
+                            });
+
+                            return hasTecnico ? (
+                                <button 
+                                    onClick={() => router.push(`/certificado-tecnico/${a.id}`)} 
+                                    className="rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-white px-4 py-2 text-sm font-medium hover:shadow-lg transition cursor-pointer flex items-center gap-2"
+                                >
+                                    <FaCertificate /> Certificado Técnico
+                                </button>
+                            ) : null;
+                        })()}
                         <button 
                             onClick={() => router.push(`/certificado/${a.id}`)} 
                             className="rounded-full bg-gradient-to-r from-green-400 to-emerald-400 text-white px-4 py-2 text-sm font-medium hover:shadow-lg transition cursor-pointer flex items-center gap-2"
                         >
                             <FaCertificate /> Certificado
+                        </button>
+                        <button 
+                            onClick={() => router.push(`/certificado-tecnico/${a.id}`)} 
+                            className="rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-white px-4 py-2 text-sm font-medium hover:shadow-lg transition cursor-pointer flex items-center gap-2"
+                        >
+                            <FaCertificate /> Certificado Técnico
                         </button>
                         <button 
                             onClick={() => onSelectCursos(a.id, a.cursos || [])} 
