@@ -53,12 +53,7 @@ export default function AlunoList({ alunos, onEdit, onDelete, onSelectCursos }: 
                         >
                             <FaCertificate /> Certificado
                         </button>
-                        <button 
-                            onClick={() => router.push(`/certificado-tecnico/${a.id}`)} 
-                            className="rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-white px-4 py-2 text-sm font-medium hover:shadow-lg transition cursor-pointer flex items-center gap-2"
-                        >
-                            <FaCertificate /> Certificado Técnico
-                        </button>
+                        {/* botão de Certificado Técnico já renderizado condicionalmente acima */}
                         <button 
                             onClick={() => onSelectCursos(a.id, a.cursos || [])} 
                             className="rounded-full bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 text-sm font-medium hover:shadow-lg transition cursor-pointer flex items-center gap-2"

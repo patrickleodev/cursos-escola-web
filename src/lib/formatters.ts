@@ -31,6 +31,8 @@ export function formatRG(rg: string): string {
     if (numbers.length === 9) {
         return `${numbers.slice(0, 2)}.${numbers.slice(2, 5)}.${numbers.slice(5, 8)}-${numbers.slice(8, 9)}`;
     }
+    // For RGs with variable length (up to 12), display just the digits without mask
+    if (numbers.length > 0) return numbers;
     return rg;
 }
 

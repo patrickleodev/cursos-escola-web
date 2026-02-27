@@ -2,15 +2,15 @@ export const certificadoStyles = `
   /* Estilos gerais para o certificado (desktop e print) */
   .certificado-print {
     --cert-border-color: #dc2626;
-    --cert-font-family: "Georgia", serif;
+    --cert-font-family: "Arial", "Helvetica", sans-serif;
     --cert-font-scale: 1;
     background: linear-gradient(135deg, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%) !important;
     position: relative;
     overflow: hidden;
-    width: 210mm;
-    height: 297mm;
+    width: 297mm;
+    height: 210mm;
     margin: 0 auto;
-    padding: 35mm 40mm;
+    padding: 25mm 35mm;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -177,10 +177,10 @@ export const certificadoStyles = `
     background: linear-gradient(135deg, #f5f1e8 0%, #faf8f3 50%, #f5f1e8 100%) !important;
     position: relative;
     overflow: hidden;
-    width: 210mm;
-    height: 297mm;
+    width: 297mm;
+    height: 210mm;
     margin: 20px auto 0;
-    padding: 25mm 40mm;
+    padding: 20mm 35mm;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -263,7 +263,7 @@ export const certificadoStyles = `
 
   @page {
     margin: 0;
-    size: A4 portrait;
+    size: A4 landscape;
   }
 
   @media print {
@@ -294,10 +294,10 @@ export const certificadoStyles = `
     }
 
     .certificado-print {
-      width: 210mm;
-      height: 297mm;
+      width: 297mm;
+      height: 210mm;
       margin: 0;
-      padding: 35mm 40mm;
+      padding: 25mm 35mm;
       box-shadow: none !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
@@ -305,10 +305,10 @@ export const certificadoStyles = `
     }
 
     .segunda-pagina {
-      width: 210mm;
-      height: 297mm;
+      width: 297mm;
+      height: 210mm;
       margin: 0 !important;
-      padding: 35mm 40mm;
+      padding: 25mm 35mm;
       box-shadow: none !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;

@@ -50,13 +50,12 @@ export default function AlunoForm({
                 disabled={saving}
                 className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50" 
             />
-            <IMaskInput 
-                mask="00.000.000-0" 
-                placeholder="RG (opcional)" 
-                value={rg} 
-                onAccept={(value) => onRgChange(value)} 
+            <input
+                placeholder="RG (opcional)"
+                value={rg}
+                onChange={(e) => onRgChange(e.target.value)}
                 disabled={saving}
-                className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50" 
+                className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50"
             />
             <IMaskInput 
                 mask="(00) 00000-0000" 

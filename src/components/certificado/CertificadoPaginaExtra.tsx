@@ -46,7 +46,7 @@ export default function CertificadoPaginaExtra({ aluno, cursoNome, duracao, meto
             </div>
 
             <div className="conteudo-central relative z-10" style={{ paddingTop: '20px', color: '#1f2937' }}>
-                <div style={{ textAlign: 'left', padding: '0 12mm' }}>
+                <div style={{ textAlign: 'left', padding: '0 8mm' }}>
                     <p style={{ fontWeight: 700, color: '#b91c1c', marginBottom: 6 }}>VECCHIATO ASSESSORIA EDUCACIONAL</p>
                     <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>INSTITUIÇÃO DE ENSINO – VECCHIATO ASSESSORIA EDUCACIONAL</p>
                     <div style={{ margin: '0 0 6px 0', fontSize: '13px', display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -74,8 +74,8 @@ export default function CertificadoPaginaExtra({ aluno, cursoNome, duracao, meto
 
                 <hr style={{ margin: '8px 12mm', borderColor: '#e5e7eb' }} />
 
-                <div style={{ padding: '0 12mm', marginTop: 8 }}>
-                    <p style={{ margin: '6px 0', fontWeight: 700 }}>CURSO REALIZADO: {cursoNome.toUpperCase()}</p>
+                <div style={{ padding: '0 8mm', marginTop: 8 }}>
+                    <p style={{ margin: '6px 0', fontWeight: 700 }}>CURSO REALIZADO: ESPECIALIZAÇÃO TÉCNICA EM {cursoNome.toUpperCase()}</p>
                     <p style={{ margin: '6px 0' }}>CARGA HORÁRIA: {duracao}</p>
                     <p style={{ margin: '6px 0' }}>MÉTODO: {metodo}</p>
                     <p style={{ margin: '6px 0' }}>TURMA: {turma}</p>

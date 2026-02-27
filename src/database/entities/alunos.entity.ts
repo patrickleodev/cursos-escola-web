@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { IsEmail, Matches } from "class-validator";
+import { IsEmail, Matches, IsOptional } from "class-validator";
 import { IsCPF } from "class-validator-cpf";
 import {
   Entity,
@@ -29,7 +29,9 @@ export class Alunos {
   @Column({ unique: true })
   cpf: string;
 
-  @Column({ length: 20, nullable: true })
+  @IsOptional()
+  @Matches(/^\d{1,12}$/, { message: 'RG deve conter apenas dígitos (até 12).' })
+  @Column({ length: 12, nullable: true })
   rg?: string;
 
   @CreateDateColumn()

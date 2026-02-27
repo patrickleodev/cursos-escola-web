@@ -74,7 +74,7 @@ export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, 
                 fontScale={fontScale}
               />
 
-              {conteudoPages.map((linhas, pageIdx) => (
+              {(!((matricula.curso.categoria ?? '').toString().toUpperCase().includes('ESPECIALIZA') || (matricula.curso.categoria ?? '').toString().toUpperCase().includes('ESPECIALIZAÇÃO'))) && conteudoPages.map((linhas, pageIdx) => (
                 <CertificadoVerso
                   key={`conteudo-${pageIdx}`}
                   linhas={linhas}
@@ -84,8 +84,7 @@ export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, 
                 />
               ))}
 
-              { /* Página extra (movida para página separada de histórico) */ }
-              { /*
+              {/* Página extra (reintegrada ao certificado técnico) */}
               <CertificadoPaginaExtra
                 aluno={aluno}
                 cursoNome={matricula.curso.nome}
@@ -97,8 +96,8 @@ export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, 
 
               {((matricula.curso.categoria ?? '').toString().toUpperCase().includes('ESPECIALIZA') || (matricula.curso.categoria ?? '').toString().toUpperCase().includes('ESPECIALIZAÇÃO')) && (
                 (() => {
-                  const disciplinas = conteudoLinhas;
-                  const rowsPerPage = 18;
+                  const disciplinas = conteudoLinhas.filter((d) => (d || '').toString().trim() !== '');
+                  const rowsPerPage = 8;
                   const gradePages: string[][] = [];
                   for (let i = 0; i < disciplinas.length; i += rowsPerPage) {
                     gradePages.push(disciplinas.slice(i, i + rowsPerPage));
@@ -121,7 +120,6 @@ export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, 
                   ));
                 })()
               )}
-              */ }
             </React.Fragment>
           );
         })

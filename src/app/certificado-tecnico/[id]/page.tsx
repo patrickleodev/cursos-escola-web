@@ -38,6 +38,7 @@ const MODELOS: {
 ];
 
 const FONT_OPTIONS = [
+  { label: "Arial (padrão)", value: '"Arial", "Helvetica", sans-serif' },
   { label: "Serifada clássica", value: '"Georgia", "Times New Roman", serif' },
   { label: "Sans moderna", value: '"Inter", "Segoe UI", Arial, sans-serif' },
   { label: "Didática", value: '"Trebuchet MS", "Verdana", sans-serif' },
