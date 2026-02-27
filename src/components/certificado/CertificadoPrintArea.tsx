@@ -84,16 +84,18 @@ export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, 
                 />
               ))}
 
-              {/* Página extra (reintegrada ao certificado técnico) */}
-              <CertificadoPaginaExtra
-                aluno={aluno}
-                cursoNome={matricula.curso.nome}
-                duracao={duracaoFinal}
-                model={selectedModel as any}
-                fontFamily={selectedFont}
-                fontScale={fontScale}
-                qrCodeUrl={qrCodeUrl}
-              />
+              {/* Página extra: somente para certificados técnicos (especialização técnica) */}
+              {((matricula.curso.categoria ?? '').toString().toUpperCase().includes('ESPECIALIZA') || (matricula.curso.categoria ?? '').toString().toUpperCase().includes('ESPECIALIZAÇÃO')) && (
+                <CertificadoPaginaExtra
+                  aluno={aluno}
+                  cursoNome={matricula.curso.nome}
+                  duracao={duracaoFinal}
+                  model={selectedModel as any}
+                  fontFamily={selectedFont}
+                  fontScale={fontScale}
+                  qrCodeUrl={qrCodeUrl}
+                />
+              )}
 
               {((matricula.curso.categoria ?? '').toString().toUpperCase().includes('ESPECIALIZA') || (matricula.curso.categoria ?? '').toString().toUpperCase().includes('ESPECIALIZAÇÃO')) && (
                 (() => {
