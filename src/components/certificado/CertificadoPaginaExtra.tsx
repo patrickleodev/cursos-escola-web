@@ -24,10 +24,10 @@ interface Props {
     model: CertificadoModel;
     fontFamily: string;
     fontScale: number;
+    qrCodeUrl?: string;
 }
-        qrCodeUrl?: string;
 
-export default function CertificadoPaginaExtra({ aluno, cursoNome, duracao, metodo = 'EAD', turma = 'A', periodo = 'NOTURNO', model, fontFamily, fontScale }: Props) {
+export default function CertificadoPaginaExtra({ aluno, cursoNome, duracao, metodo = 'EAD', turma = 'A', periodo = 'NOTURNO', model, fontFamily, fontScale, qrCodeUrl }: Props) {
     const style: CSSProperties & Record<string, string | number> = {
         pageBreakBefore: "always",
         "--cert-font-family": fontFamily,
@@ -47,11 +47,18 @@ export default function CertificadoPaginaExtra({ aluno, cursoNome, duracao, meto
             </div>
 
             <div className="conteudo-central relative z-10" style={{ paddingTop: '20px', color: '#1f2937' }}>
+                {/* site + aluno QR codes positioned in the page corners */}
+                <div style={{ position: 'absolute', top: '12mm', left: '-20mm', width: 120, height: 120, border: '2px solid #1e3a8a', background: 'white', padding: 6, zIndex: 20 }}>
+                    <img src="/vecchiato-cursos.png" alt="QR Site" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                </div>
+                <div style={{ position: 'absolute', top: '12mm', right: '-20mm', width: 120, height: 120, border: '2px solid #1e3a8a', background: 'white', padding: 6, zIndex: 20 }}>
+                    <img src={qrCodeUrl ?? '/vecchiato-cursos.png'} alt="QR Aluno" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                </div>
                 <div style={{ textAlign: 'left', padding: '0 8mm' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '0 12mm' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                            <p style={{ fontWeight: 700, color: '#b91c1c', marginBottom: 6 }}>VECCHIATO ASSESSORIA EDUCACIONAL</p>
-                            <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>INSTITUIÇÃO DE ENSINO – VECCHIATO ASSESSORIA EDUCACIONAL</p>
+                            <p style={{ fontWeight: 700, color: '#b91c1c', marginBottom: 6 }}>VECCHIATO ASSESSORIA EDUCIONAL</p>
+                            <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>INSTITUIÇÃO DE ENSINO – VECCHIATO ASSESSORIA EDUCIONAL</p>
                             <div style={{ margin: '0 0 6px 0', fontSize: '13px', display: 'flex', alignItems: 'center', gap: 8 }}>
                                 <span style={{ minWidth: 36 }}>CNPJ:</span>
                                 <input
@@ -66,29 +73,7 @@ export default function CertificadoPaginaExtra({ aluno, cursoNome, duracao, meto
                             <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>CONTATO: (15) 99684-2152</p>
                             <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>DIRETORA EDUCACIONAL: MICHELLE C. VECCHIATO CRTP – 2344</p>
                         </div>
-                        <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                            <div style={{ width: 120, height: 120, border: '2px solid #1e3a8a', background: 'white', padding: 6 }}>
-                                <img src="/vecchiato-cursos.png" alt="QR Site" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                            </div>
-                            <div style={{ width: 120, height: 120, border: '2px solid #1e3a8a', background: 'white', padding: 6 }}>
-                                <img src={qrCodeUrl ?? '/vecchiato-cursos.png'} alt="QR Aluno" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                            </div>
-                        </div>
                     </div>
-                    <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>INSTITUIÇÃO DE ENSINO – VECCHIATO ASSESSORIA EDUCACIONAL</p>
-                    <div style={{ margin: '0 0 6px 0', fontSize: '13px', display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ minWidth: 36 }}>CNPJ:</span>
-                        <input
-                            className="cert-input"
-                            value={cnpj}
-                            onChange={(e) => setCnpj(e.target.value)}
-                            placeholder="00.000.000/0000-00"
-                            style={{ border: '1px solid #e5e7eb', padding: '6px 8px', borderRadius: 6, minWidth: 160 }}
-                        />
-                        <span className="cert-print-value" style={{ marginLeft: 8 }}>{cnpj}</span>
-                    </div>
-                    <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>CONTATO: (15) 99684-2152</p>
-                    <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>DIRETORA EDUCACIONAL: MICHELLE C. VECCHIATO CRTP – 2344</p>
                 </div>
 
                 <hr style={{ margin: '14px 12mm', borderColor: '#d1d5db' }} />
