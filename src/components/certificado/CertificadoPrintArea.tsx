@@ -92,6 +92,7 @@ export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, 
                 model={selectedModel as any}
                 fontFamily={selectedFont}
                 fontScale={fontScale}
+                qrCodeUrl={qrCodeUrl}
               />
 
               {((matricula.curso.categoria ?? '').toString().toUpperCase().includes('ESPECIALIZA') || (matricula.curso.categoria ?? '').toString().toUpperCase().includes('ESPECIALIZAÇÃO')) && (
