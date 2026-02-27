@@ -315,4 +315,37 @@ export const certificadoStyles = `
       color-adjust: exact;
     }
   }
+
+  /* Responsividade para telas menores (preview no celular) */
+  @media (max-width: 768px) {
+    .certificado-print,
+    .segunda-pagina {
+      width: calc(100% - 16px) !important;
+      height: auto !important;
+      margin: 12px auto !important;
+      padding: 12mm 8mm !important;
+      box-shadow: none !important;
+    }
+
+    .conteudo-central {
+      text-align: left !important;
+      padding-top: 20px !important;
+    }
+
+    .qr-code-container,
+    .logo-container {
+      position: static !important;
+      width: 72px !important;
+      height: 72px !important;
+      margin: 6px 0 !important;
+      border-width: 1px !important;
+    }
+
+    .assinatura-container {
+      flex-direction: column !important;
+      gap: 12px !important;
+      margin-top: 40px !important;
+      padding-top: 12px !important;
+    }
+  }
 `;

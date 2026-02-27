@@ -195,7 +195,21 @@ export default function GerenciarAlunos() {
 
     return (
         <AuthGuard>
-            <div className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black" style={{ paddingLeft: 'var(--sidebar-width, 256px)' }}>
+                        <style>{`
+                                /* ensure management pages don't overflow on small screens */
+                                .management-main { padding-left: var(--sidebar-width, 256px); }
+                                @media (max-width: 1024px) { .management-main { padding-left: 0 !important; padding-right: 0 !important; } }
+
+                                /* Aggressive mobile fixes for very small screens (~340px) */
+                                @media (max-width: 360px) {
+                                    html, body { overflow-x: hidden; }
+                                    .mx-auto.max-w-6xl { max-width: calc(100% - 16px) !important; padding-left: 8px !important; padding-right: 8px !important; }
+                                    .management-main { padding-left: 0 !important; padding-right: 0 !important; }
+                                    .rounded-2xl { overflow: hidden !important; }
+                                    .flex.items-center.justify-between { flex-wrap: wrap !important; }
+                                }
+                        `}</style>
+            <div className="management-main min-h-screen bg-gradient-to-br from-stone-50 to-amber-50 dark:bg-black">
                 <ManagementSidebar />
                 <div className="px-6 py-8">
                     <div className="mx-auto max-w-6xl bg-white rounded-2xl border border-stone-200 shadow-sm p-8">
@@ -221,6 +235,7 @@ export default function GerenciarAlunos() {
                             onEmailChange={setEmail}
                             onCpfChange={setCpf}
                             onRgChange={setRg}
+
                             onTelefoneChange={setTelefone}
                             onSubmit={handleSave}
                             onCancel={handleCancelEdit}

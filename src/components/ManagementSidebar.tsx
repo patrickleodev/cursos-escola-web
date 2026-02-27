@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import gsap from "gsap";
-import { FaUsers, FaBook, FaUserTie, FaHome, FaChevronLeft, FaSignOutAlt } from "react-icons/fa";
+import { FaUsers, FaBook, FaUserTie, FaHome, FaChevronLeft, FaSignOutAlt, FaTimes } from "react-icons/fa";
 
 const SIDEBAR_EXPANDED_WIDTH = 288;
 const SIDEBAR_COLLAPSED_WIDTH = 112;
@@ -12,6 +12,7 @@ export default function ManagementSidebar() {
   const router = useRouter();
   const pathname = usePathname();
   const [isExpanded, setIsExpanded] = useState(true);
+  const [isMobileVisible, setIsMobileVisible] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   const isActive = (path: string) => pathname === path;
@@ -69,6 +70,26 @@ export default function ManagementSidebar() {
     };
   }, []);
 
+  useEffect(() => {
+    const handler = () => setIsMobileVisible((v) => !v);
+    window.addEventListener('toggleMobileSidebar', handler as EventListener);
+    return () => window.removeEventListener('toggleMobileSidebar', handler as EventListener);
+  }, []);
+
+  function navigateTo(path: string) {
+    setIsMobileVisible(false);
+    router.push(path);
+  }
+
+  // Close on Escape key when mobile drawer is visible
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape' && isMobileVisible) setIsMobileVisible(false);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isMobileVisible]);
+
   function handleLogout() {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user_email');
@@ -76,7 +97,24 @@ export default function ManagementSidebar() {
   }
 
   return (
-    <div ref={sidebarRef} className={`fixed left-0 top-0 h-screen flex flex-col w-72 overflow-hidden`}>
+    <div>
+      <style>{`
+        /* Hide fixed sidebar on smaller screens to improve responsiveness */
+        .management-sidebar { position: fixed; left: 0; top: 0; height: 100vh; }
+        @media (max-width: 1024px) { .management-sidebar { display: none !important; } }
+        /* When mobile-visible, show a centered drawer */
+        @media (max-width: 1024px) {
+          .management-sidebar.mobile-visible { display: block !important; position: fixed !important; left: 8% !important; top: 8% !important; width: 84% !important; height: 84% !important; z-index: 60 !important; overflow: auto !important; box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important; border-radius: 12px !important; }
+        }
+      `}</style>
+      {isMobileVisible && (
+        <div
+          className="fixed inset-0 bg-black/40 z-50 lg:hidden"
+          onClick={() => setIsMobileVisible(false)}
+          aria-hidden
+        />
+      )}
+      <div ref={sidebarRef} className={`management-sidebar ${isMobileVisible ? 'mobile-visible' : ''} fixed left-0 top-0 h-screen flex flex-col w-72 overflow-hidden`}>
       <div className={`h-full transition-all duration-300 ${isExpanded ? "p-4" : "p-3"}`}>
       <div className="h-full rounded-2xl border border-stone-200 bg-white shadow-sm flex flex-col overflow-hidden">
       {/* Toggle button */}
@@ -87,12 +125,20 @@ export default function ManagementSidebar() {
         >
           <FaChevronLeft className="toggle-icon" />
         </button>
+        {/* mobile close button */}
+        <button
+          onClick={() => setIsMobileVisible(false)}
+          className="ml-auto lg:hidden p-2 rounded-lg hover:bg-stone-100 transition text-stone-600"
+          aria-label="Fechar menu"
+        >
+          <FaTimes />
+        </button>
       </div>
 
       {/* Menu items */}
       <div className="flex-1 p-4 space-y-3 overflow-y-auto">
         <button
-          onClick={() => router.push("/gerenciar-alunos")}
+          onClick={() => navigateTo("/gerenciar-alunos")}
           title="Gerenciar Alunos"
           className={`relative w-full flex items-center px-4 py-3 rounded-xl font-medium transition overflow-hidden cursor-pointer ${
             isActive("/gerenciar-alunos")
@@ -105,7 +151,7 @@ export default function ManagementSidebar() {
         </button>
         
         <button
-          onClick={() => router.push("/gerenciar-cursos")}
+          onClick={() => navigateTo("/gerenciar-cursos")}
           title="Gerenciar Cursos"
           className={`relative w-full flex items-center px-4 py-3 rounded-xl font-medium transition overflow-hidden cursor-pointer ${
             isActive("/gerenciar-cursos")
@@ -118,7 +164,7 @@ export default function ManagementSidebar() {
         </button>
         
         <button
-          onClick={() => router.push("/gerenciar-afiliadas")}
+          onClick={() => navigateTo("/gerenciar-afiliadas")}
           title="Gerenciar Afiliadas"
           className={`relative w-full flex items-center px-4 py-3 rounded-xl font-medium transition overflow-hidden cursor-pointer ${
             isActive("/gerenciar-afiliadas")
@@ -134,7 +180,7 @@ export default function ManagementSidebar() {
       {/* Voltar para Home e Sair */}
       <div className="p-4 border-t border-stone-200 space-y-3 mt-auto">
         <button
-          onClick={() => router.push("/home")}
+          onClick={() => navigateTo("/home")}
           title="Voltar para Home"
           className={`relative w-full flex items-center px-4 py-3 rounded-xl font-medium bg-gradient-to-r from-purple-500 to-purple-700 text-white hover:shadow-lg transition overflow-hidden cursor-pointer`}
         >
@@ -153,6 +199,7 @@ export default function ManagementSidebar() {
       </div>
       </div>
       </div>
+    </div>
     </div>
   );
 }

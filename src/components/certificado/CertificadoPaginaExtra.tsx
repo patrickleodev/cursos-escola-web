@@ -47,11 +47,31 @@ export default function CertificadoPaginaExtra({ aluno, cursoNome, duracao, meto
             </div>
 
             <div className="conteudo-central relative z-10" style={{ paddingTop: '20px', color: '#1f2937' }}>
-                {/* site + aluno QR codes positioned in the page corners */}
-                <div style={{ position: 'absolute', top: '12mm', left: '-20mm', width: 120, height: 120, border: '2px solid #1e3a8a', background: 'white', padding: 6, zIndex: 20 }}>
+                {/* Responsive QR placement: absolute near edges for print/large, inline and smaller on mobile */}
+                <style>{`
+                    .cert-qr { position: absolute; top: 12mm; width: 120px; height: 120px; border: 2px solid #1e3a8a; background: white; padding: 6px; z-index: 20; }
+                    .cert-qr.site { left: -15mm; }
+                    .cert-qr.aluno { right: -15mm; }
+
+                    /* Mobile/tablet: make QRs inline, smaller and non-overlapping */
+                    @media (max-width: 768px) {
+                        .cert-qr { position: static !important; width: 80px !important; height: 80px !important; border-width: 1px !important; margin: 6px 0; display: inline-block; }
+                        .conteudo-central { padding-top: 12px !important; }
+                        .cert-input { max-width: 140px !important; }
+                    }
+
+                    /* Ensure print keeps absolute positions */
+                    @media print {
+                        .cert-qr { position: absolute; top: 12mm; width: 120px; height: 120px; }
+                        .cert-qr.site { left: -15mm; }
+                        .cert-qr.aluno { right: -15mm; }
+                    }
+                `}</style>
+
+                <div className="cert-qr site">
                     <img src="/vecchiato-cursos.png" alt="QR Site" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
-                <div style={{ position: 'absolute', top: '12mm', right: '-20mm', width: 120, height: 120, border: '2px solid #1e3a8a', background: 'white', padding: 6, zIndex: 20 }}>
+                <div className="cert-qr aluno">
                     <img src={qrCodeUrl ?? '/vecchiato-cursos.png'} alt="QR Aluno" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
                 <div style={{ textAlign: 'left', padding: '0 8mm' }}>
