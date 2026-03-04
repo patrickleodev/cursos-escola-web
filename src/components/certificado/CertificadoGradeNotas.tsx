@@ -21,6 +21,7 @@ interface Props {
   fontFamily: string;
   fontScale: number;
   footerLabel?: string;
+  randomizeNotaFalta?: boolean;
 }
 
 export default function CertificadoGradeNotas({
@@ -31,6 +32,7 @@ export default function CertificadoGradeNotas({
   fontFamily,
   fontScale,
   footerLabel,
+  randomizeNotaFalta = false,
 }: Props) {
   const style: CSSProperties & Record<string, string | number> = {
     pageBreakBefore: "always",
@@ -53,7 +55,7 @@ export default function CertificadoGradeNotas({
         <h3 style={{ color: "#b91c1c", fontWeight: 700, marginBottom: 10 }}>VECCHIATO ASSESSORIA EDUCIONAL</h3>
 
         <div style={{ width: "100%", maxWidth: "100%", margin: "0 auto", padding: '0 8mm' }}>
-          <TableSection disciplinas={itens} footerLabel={footerLabel} />
+          <TableSection disciplinas={itens} footerLabel={footerLabel} randomizeNotaFalta={randomizeNotaFalta} />
         </div>
 
         <div style={{ height: 28 }} />
@@ -86,10 +88,19 @@ export default function CertificadoGradeNotas({
   );
 }
 
-function TableSection({ disciplinas, footerLabel }: { disciplinas: string[]; footerLabel?: string }) {
+function TableSection({ disciplinas, footerLabel, randomizeNotaFalta }: { disciplinas: string[]; footerLabel?: string; randomizeNotaFalta?: boolean }) {
+  function randomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   // initialize state with disciplina from provided array (non-empty only); nota/falta/ch are editable
   const [data, setData] = useState(() =>
-    (disciplinas || []).map((d) => ({ disciplina: d ?? "", nota: "", falta: "", ch: "" }))
+    (disciplinas || []).map((d) => ({
+      disciplina: d ?? "",
+      nota: randomizeNotaFalta ? String(randomInt(7, 10)) : "",
+      falta: randomizeNotaFalta ? String(randomInt(0, 4)) : "",
+      ch: "",
+    }))
   );
 
   function updateCell(index: number, key: 'nota' | 'falta' | 'ch', value: string) {

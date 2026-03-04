@@ -19,9 +19,10 @@ interface Props {
   saveDates: (matriculaId: string, dates: { dataInicio: string; dataFim: string }) => Promise<void>;
   saveDuracao: (matriculaId: string, duracao: number) => Promise<void>;
   removeCurso: (matriculaId: string) => Promise<void>;
+  randomizeNotaFalta?: boolean;
 }
 
-export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, selectedFont, fontScale, saving, saveDates, saveDuracao, removeCurso }: Props) {
+export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, selectedFont, fontScale, saving, saveDates, saveDuracao, removeCurso, randomizeNotaFalta = false }: Props) {
   return (
     <div className="lg:ml-80 lg:pl-6 lg:min-w-0">
       <style>{certificadoStyles}</style>
@@ -119,6 +120,7 @@ export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, 
                       fontFamily={selectedFont}
                       fontScale={fontScale}
                       footerLabel={idx === gradePages.length - 1 ? 'Trabalho de Conclusão Final' : undefined}
+                      randomizeNotaFalta={randomizeNotaFalta}
                     />
                   ));
                 })()

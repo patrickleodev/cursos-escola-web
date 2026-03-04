@@ -182,6 +182,7 @@ export default function CertificadoTecnico() {
             saveDates={saveDates}
             saveDuracao={saveDuracao}
             removeCurso={removeCurso}
+            randomizeNotaFalta
           />
         </div>
       </div>
