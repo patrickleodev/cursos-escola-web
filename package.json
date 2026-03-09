@@ -24,7 +24,9 @@
     "seed:enfermagem-faltantes": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-enfermagem-faltantes.ts",
     "seed:enfermagem-lote": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-enfermagem-lote-20260225.ts",
     "seed:geografia": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-cursos-geografia.ts",
-    "seed:direito-lote": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-direito-lote-20260302.ts",
+    "seed:direito-lote": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-direito-lote-20260309.ts",
+    "seed:direito-lote-20260302": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-direito-lote-20260302.ts",
+    "seed:direito-lote-20260309": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-direito-lote-20260309.ts",
     "seed:administracao-lote": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-administracao-lote-20260303.ts",
     "seed:educacao": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-cursos-educacao.ts",
     "consolidar:enfermagem": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/consolidar-enfermagem.ts"
