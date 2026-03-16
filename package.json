@@ -29,6 +29,9 @@
     "seed:direito-lote-20260309": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-direito-lote-20260309.ts",
     "seed:administracao-lote": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-administracao-lote-20260303.ts",
     "seed:educacao": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-cursos-educacao.ts",
+    "seed:educacao-pedagogia": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-cursos-educacao-pedagogia.ts",
+    "seed:autoajuda": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-cursos-autoajuda.ts",
+    "seed:odontologia": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-cursos-odontologia.ts",
     "consolidar:enfermagem": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/consolidar-enfermagem.ts"
   },
   "dependencies": {
