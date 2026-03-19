@@ -94,8 +94,9 @@ export default function CertificadoFrente({
                         <p className="text-xs mt-4 mb-0 text-slate-900">{formatCPF(aluno.cpf || "")}</p>
                     </div>
                     <div className="assinatura-item">
-                        <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '15px', position: 'relative' }}>
+                        <div style={{ height: '60px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginBottom: '15px', position: 'relative' }}>
                             <p className="text-xs font-semibold mb-0 text-slate-900">VECCHIATO ASSESSORIA EDUCACIONAL</p>
+                            <p className="text-xs mb-0 text-slate-900">CNPJ: 65.777.338/0001-08</p>
                             <img 
                                 src="/assinatura_michelle.png" 
                                 alt="Assinatura Michelle Vecchiato" 
@@ -104,7 +105,7 @@ export default function CertificadoFrente({
                                     maxHeight: '200px', 
                                     maxWidth: '450px', 
                                     objectFit: 'contain', 
-                                    bottom: '-50px', 
+                                    bottom: '0px', 
                                     left: '50%', 
                                     transform: 'translateX(-50%)', 
                                     zIndex: 10 
@@ -113,7 +114,7 @@ export default function CertificadoFrente({
                         </div>
                         <div className="assinatura-linha"></div>
                         <p className="assinatura-titulo mb-0 mt-4">DIRETORA EDUCACIONAL</p>
-                        <p className="text-xs mt-1 mb-0 text-slate-900">MICHELLE VECCHIATO CRTP 2344</p>
+                        <p className="text-xs mt-1 mb-0 text-slate-900">MICHELLE CARLA VECCHIATO DE MORAES CRTP 2344</p>
                     </div>
                 </div>
             </div>

@@ -91,7 +91,7 @@ export default function CertificadoPaginaExtra({ aluno, cursoNome, duracao, meto
                                 <span className="cert-print-value" style={{ marginLeft: 8 }}>{cnpj}</span>
                             </div>
                             <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>CONTATO: (15) 99684-2152</p>
-                            <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>DIRETORA EDUCACIONAL: MICHELLE C. VECCHIATO CRTP – 2344</p>
+                            <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>DIRETORA EDUCACIONAL: MICHELLE CARLA VECCHIATO DE MORAES CRTP – 2344</p>
                         </div>
                     </div>
                 </div>

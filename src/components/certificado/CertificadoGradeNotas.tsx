@@ -66,7 +66,7 @@ export default function CertificadoGradeNotas({
             alt="Assinatura Michelle"
             style={{
               position: 'absolute',
-              top: -42,
+              top: -90,
               left: '50%',
               transform: 'translateX(-50%)',
               width: 220,
@@ -79,8 +79,9 @@ export default function CertificadoGradeNotas({
           />
           <div style={{ paddingTop: 48 }}>
             <p style={{ fontWeight: 700 }}>VECCHIATO ASSESSORIA EDUCACIONAL</p>
+            <p>CNPJ: 65.777.338/0001-08</p>
             <p>DIRETORA EDUCACIONAL</p>
-            <p>MICHELLE C. VECCHIATO CRTP 2344</p>
+            <p>MICHELLE CARLA VECCHIATO DE MORAES CRTP 2344</p>
           </div>
         </div>
       </div>
