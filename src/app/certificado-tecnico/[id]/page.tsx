@@ -178,6 +178,7 @@ export default function CertificadoTecnico() {
             selectedModel={selectedModel}
             selectedFont={selectedFont}
             fontScale={fontScale}
+            isTechnicalCertificate
             saving={saving}
             saveDates={saveDates}
             saveDuracao={saveDuracao}

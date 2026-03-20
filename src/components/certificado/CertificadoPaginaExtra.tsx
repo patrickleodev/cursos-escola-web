@@ -34,8 +34,6 @@ export default function CertificadoPaginaExtra({ aluno, cursoNome, duracao, meto
         "--cert-font-scale": fontScale,
     };
 
-    const [cnpj, setCnpj] = useState<string>('');
-
     return (
         <div className={`segunda-pagina certificado-model-${model} relative bg-white mx-auto`} style={style}>
             <div className="certificado-border-top"></div>
@@ -77,19 +75,9 @@ export default function CertificadoPaginaExtra({ aluno, cursoNome, duracao, meto
                 <div style={{ textAlign: 'left', padding: '0 8mm' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '0 12mm' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                            <p style={{ fontWeight: 700, color: '#b91c1c', marginBottom: 6 }}>VECCHIATO ASSESSORIA EDUCIONAL</p>
-                            <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>INSTITUIÇÃO DE ENSINO – VECCHIATO ASSESSORIA EDUCIONAL</p>
-                            <div style={{ margin: '0 0 6px 0', fontSize: '13px', display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <span style={{ minWidth: 36 }}>CNPJ:</span>
-                                <input
-                                    className="cert-input"
-                                    value={cnpj}
-                                    onChange={(e) => setCnpj(e.target.value)}
-                                    placeholder="00.000.000/0000-00"
-                                    style={{ border: '1px solid #e5e7eb', padding: '6px 8px', borderRadius: 6, minWidth: 160 }}
-                                />
-                                <span className="cert-print-value" style={{ marginLeft: 8 }}>{cnpj}</span>
-                            </div>
+                            <p style={{ fontWeight: 700, color: '#b91c1c', marginBottom: 6 }}>VECCHIATO ASSESSORIA EDUCACIONAL</p>
+                            <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>INSTITUIÇÃO DE ENSINO – VECCHIATO ASSESSORIA EDUCACIONAL</p>
+                            <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>CNPJ: 65.777.338/0001-08</p>
                             <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>CONTATO: (15) 99684-2152</p>
                             <p style={{ margin: '0 0 6px 0', fontSize: '13px' }}>DIRETORA EDUCACIONAL: MICHELLE CARLA VECCHIATO DE MORAES CRTP – 2344</p>
                         </div>
@@ -115,7 +103,7 @@ export default function CertificadoPaginaExtra({ aluno, cursoNome, duracao, meto
                 </div>
 
                 <div style={{ textAlign: 'center', marginTop: 20 }}>
-                    <h2 style={{ letterSpacing: 1.5, color: '#1f2937' }}>CONTEÚDO PROGRAMÁTICO DO CURSO</h2>
+                    <h2 style={{ letterSpacing: 1.5, color: '#1f2937' }}>HISTÓRICO ESCOLAR</h2>
                 </div>
             </div>
         </div>

@@ -15,6 +15,7 @@ interface Props {
   selectedModel: string;
   selectedFont: string;
   fontScale: number;
+  isTechnicalCertificate?: boolean;
   saving: boolean;
   saveDates: (matriculaId: string, dates: { dataInicio: string; dataFim: string }) => Promise<void>;
   saveDuracao: (matriculaId: string, duracao: number) => Promise<void>;
@@ -22,7 +23,7 @@ interface Props {
   randomizeNotaFalta?: boolean;
 }
 
-export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, selectedFont, fontScale, saving, saveDates, saveDuracao, removeCurso, randomizeNotaFalta = false }: Props) {
+export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, selectedFont, fontScale, isTechnicalCertificate = false, saving, saveDates, saveDuracao, removeCurso, randomizeNotaFalta = false }: Props) {
   return (
     <div className="lg:ml-80 lg:pl-6 lg:min-w-0">
       <style>{certificadoStyles}</style>
@@ -70,6 +71,7 @@ export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, 
                 dataFim={dataFim}
                 qrCodeUrl={qrCodeUrl}
                 isFirstCertificate={index === 0}
+                isTechnicalCertificate={isTechnicalCertificate}
                 model={selectedModel as any}
                 fontFamily={selectedFont}
                 fontScale={fontScale}

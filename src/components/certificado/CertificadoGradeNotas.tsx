@@ -52,7 +52,7 @@ export default function CertificadoGradeNotas({
       </div>
 
       <div className="conteudo-central relative z-10" style={{ paddingTop: 20, color: "#1f2937" }}>
-        <h3 style={{ color: "#b91c1c", fontWeight: 700, marginBottom: 10 }}>VECCHIATO ASSESSORIA EDUCIONAL</h3>
+        <h3 style={{ color: "#b91c1c", fontWeight: 700, marginBottom: 10 }}>VECCHIATO ASSESSORIA EDUCACIONAL</h3>
 
         <div style={{ width: "100%", maxWidth: "100%", margin: "0 auto", padding: '0 8mm' }}>
           <TableSection disciplinas={itens} footerLabel={footerLabel} randomizeNotaFalta={randomizeNotaFalta} />

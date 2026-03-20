@@ -21,13 +21,24 @@ interface CertificadoFrenteProps {
     dataFim: string;
     qrCodeUrl: string;
     isFirstCertificate?: boolean;
+    isTechnicalCertificate?: boolean;
     model: CertificadoModel;
     fontFamily: string;
     fontScale: number;
 }
 
 export default function CertificadoFrente({
-    aluno, cursoNome, duracao, dataInicio, dataFim, qrCodeUrl, isFirstCertificate = true, model, fontFamily, fontScale
+    aluno,
+    cursoNome,
+    duracao,
+    dataInicio,
+    dataFim,
+    qrCodeUrl,
+    isFirstCertificate = true,
+    isTechnicalCertificate = false,
+    model,
+    fontFamily,
+    fontScale,
 }: CertificadoFrenteProps) {
     const style: CSSProperties & Record<string, string | number> = {
         ...(isFirstCertificate ? {} : { pageBreakBefore: "always" }),
@@ -35,81 +46,94 @@ export default function CertificadoFrente({
         "--cert-font-scale": fontScale,
     };
 
+    const descricaoCurso = isTechnicalCertificate
+        ? `CONCLUIU COM ÊXITO AO CURSO DE ESPECIALIZAÇÃO TÉCNICA EM ${cursoNome.toUpperCase()} COM ${duracao}H`
+        : `CONCLUIU COM ÊXITO AO CURSO DE ${cursoNome.toUpperCase()} COM ${duracao}H`;
+
     return (
         <div
             className={`certificado-print certificado-model-${model} relative bg-white mx-auto`}
             style={style}
         >
-            {/* Bordas decorativas */}
             <div className="certificado-border-top"></div>
             <div className="certificado-border-bottom"></div>
 
-            {/* Logo */}
             <div className="logo-container">
                 <img src="/logo.png" alt="Logo" />
             </div>
 
-            {/* QR Code */}
             {qrCodeUrl && (
                 <div className="qr-code-container">
                     <img src={qrCodeUrl} alt="QR Code" />
                 </div>
             )}
 
-            {/* Conteúdo do certificado */}
-            <div className="relative z-10" style={{ paddingTop: '20px' }}>
-                {/* Cabeçalho */}
+            <div className="relative z-10" style={{ paddingTop: "20px" }}>
                 <div className="text-center">
                     <h1 className="certificado-titulo">CERTIFICADO</h1>
                     <p className="instituicao-nome">Vecchiato Assessoria Educacional</p>
                 </div>
 
-                {/* Nome do aluno */}
                 <div className="text-center mt-3 mb-3">
                     <p className="certificado-nome">{aluno.nome}</p>
                 </div>
 
-                {/* Informações do aluno - CPF e RG na mesma linha */}
                 <div className="text-center mb-3">
                     <p className="info-aluno">
                         CPF: {formatCPF(aluno.cpf || "")} RG: {aluno.rg ? formatRG(aluno.rg) : ""}
                     </p>
                 </div>
 
-                {/* Descrição do curso */}
-                <div className="text-center mb-4" style={{ marginTop: '70px' }}>
+                <div className="text-center mb-4" style={{ marginTop: "70px" }}>
                     <div className="descricao-curso">
-                        <p className="font-bold">CONCLUIU COM ÊXITO AO CURSO DE {cursoNome.toUpperCase()} COM {duracao}H</p>
+                        <p className="font-bold">{descricaoCurso}</p>
                         <p>REALIZADO DE {dataInicio} A {dataFim}</p>
                     </div>
                 </div>
 
-                {/* Seção de assinatura */}
                 <div className="assinatura-container">
                     <div className="assinatura-item">
-                        <div style={{ height: '60px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '15px' }}>
+                        <div
+                            style={{
+                                height: "60px",
+                                display: "flex",
+                                alignItems: "flex-end",
+                                justifyContent: "center",
+                                marginBottom: "15px",
+                            }}
+                        >
                             <p className="assinatura-aluno-nome mb-0">{aluno.nome}</p>
                         </div>
                         <div className="assinatura-linha"></div>
                         <p className="text-xs mt-4 mb-0 text-slate-900">{formatCPF(aluno.cpf || "")}</p>
                     </div>
                     <div className="assinatura-item">
-                        <div style={{ height: '60px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', marginBottom: '15px', position: 'relative' }}>
+                        <div
+                            style={{
+                                height: "60px",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "flex-end",
+                                marginBottom: "15px",
+                                position: "relative",
+                            }}
+                        >
                             <p className="text-xs font-semibold mb-0 text-slate-900">VECCHIATO ASSESSORIA EDUCACIONAL</p>
                             <p className="text-xs mb-0 text-slate-900">CNPJ: 65.777.338/0001-08</p>
-                            <img 
-                                src="/assinatura_michelle.png" 
-                                alt="Assinatura Michelle Vecchiato" 
-                                style={{ 
-                                    position: 'absolute', 
-                                    maxHeight: '200px', 
-                                    maxWidth: '450px', 
-                                    objectFit: 'contain', 
-                                    bottom: '0px', 
-                                    left: '50%', 
-                                    transform: 'translateX(-50%)', 
-                                    zIndex: 10 
-                                }} 
+                            <img
+                                src="/assinatura_michelle.png"
+                                alt="Assinatura Michelle Vecchiato"
+                                style={{
+                                    position: "absolute",
+                                    maxHeight: "200px",
+                                    maxWidth: "450px",
+                                    objectFit: "contain",
+                                    bottom: "0px",
+                                    left: "50%",
+                                    transform: "translateX(-50%)",
+                                    zIndex: 10,
+                                }}
                             />
                         </div>
                         <div className="assinatura-linha"></div>
