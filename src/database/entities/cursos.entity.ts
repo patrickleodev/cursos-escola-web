@@ -6,20 +6,23 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  Index,
 } from "typeorm";
+import { Matriculas } from "./matriculas.entity";
 
+@Index("IDX_CURSOS_NOME_CATEGORIA_UNICO", ["nome", "categoria"], { unique: true })
 @Entity("cursos")
 export class Cursos {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ length: 255, unique: true })
+  @Column({ length: 255 })
   nome: string;
 
   @Column({ type: "int", nullable: true })
   duracao: number; // em horas
 
-  @Column({ length: 100, nullable: true })
+  @Column({ length: 100 })
   categoria: string;
 
   @Column({ type: "text", nullable: true })
@@ -31,6 +34,6 @@ export class Cursos {
   @UpdateDateColumn()
   atualizadoEm: Date;
 
-  @OneToMany("Matriculas", (matricula: any) => matricula.curso)
-  matriculas: any[];
+  @OneToMany(() => Matriculas, (matricula) => matricula.curso)
+  matriculas: Matriculas[];
 }

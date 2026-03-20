@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import AuthGuard from "../../components/AuthGuard";
 import PageHeader from "../../components/PageHeader";
 import LoadingSpinner from "../../components/LoadingSpinner";
@@ -20,12 +19,20 @@ type Curso = {
   conteudo?: string;
 };
 
+type CursoPayload = {
+  nome: string;
+  categoria: string;
+  conteudo: string;
+  duracao?: number;
+};
+
 export default function GerenciarCursos() {
   const [cursos, setCursos] = useState<Curso[]>([]);
   const [nome, setNome] = useState("");
   const [duracao, setDuracao] = useState("");
   const [categoria, setCategoria] = useState("");
   const [conteudo, setConteudo] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [busca, setBusca] = useState("");
   const [filtroCategoria, setFiltroCategoria] = useState("todas");
@@ -61,8 +68,9 @@ export default function GerenciarCursos() {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
+    setErrorMessage("");
     setSaving(true);
-    const payload: any = { nome, categoria, conteudo };
+    const payload: CursoPayload = { nome, categoria, conteudo };
     if (duracao && duracao.trim() !== '') {
       payload.duracao = parseInt(duracao);
     }
@@ -74,19 +82,28 @@ export default function GerenciarCursos() {
           body: JSON.stringify({ id: editingId, ...payload }),
           headers: { "Content-Type": "application/json" },
         });
-        if (!res.ok) console.error("Erro ao atualizar curso", await res.text());
+        if (!res.ok) {
+          const data = await res.json().catch(() => null);
+          setErrorMessage(data?.error || "Erro ao atualizar curso");
+          return;
+        }
       } else {
         const res = await fetch("/api/cursos", {
           method: "POST",
           body: JSON.stringify(payload),
           headers: { "Content-Type": "application/json" },
         });
-        if (!res.ok) console.error("Erro ao criar curso", await res.text());
+        if (!res.ok) {
+          const data = await res.json().catch(() => null);
+          setErrorMessage(data?.error || "Erro ao criar curso");
+          return;
+        }
       }
       handleCancelEdit();
       await fetchCursos();
     } catch (err) {
       console.error(err);
+      setErrorMessage("Não foi possível salvar o curso.");
     } finally {
       setSaving(false);
     }
@@ -97,6 +114,7 @@ export default function GerenciarCursos() {
     setDuracao("");
     setCategoria("");
     setConteudo("");
+    setErrorMessage("");
     setEditingId(null);
   }
 
@@ -146,6 +164,7 @@ export default function GerenciarCursos() {
               duracao={duracao}
               categoria={categoria}
               conteudo={conteudo}
+              errorMessage={errorMessage}
               editingId={editingId}
               saving={saving}
               categorias={CATEGORIAS}

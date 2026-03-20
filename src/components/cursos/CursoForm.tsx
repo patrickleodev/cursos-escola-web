@@ -8,6 +8,7 @@ interface CursoFormProps {
     duracao: string;
     categoria: string;
     conteudo: string;
+    errorMessage: string;
     editingId: string | null;
     saving: boolean;
     categorias: string[];
@@ -20,7 +21,7 @@ interface CursoFormProps {
 }
 
 export default function CursoForm({
-    nome, duracao, categoria, conteudo, editingId, saving, categorias,
+    nome, duracao, categoria, conteudo, errorMessage, editingId, saving, categorias,
     onNomeChange, onDuracaoChange, onCategoriaChange, onConteudoChange,
     onSubmit, onCancel
 }: CursoFormProps) {
@@ -64,9 +65,12 @@ export default function CursoForm({
                 rows={4}
                 className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-stone-800 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-300 disabled:opacity-50 resize-none"
             />
+            {errorMessage && (
+                <p className="text-sm font-medium text-red-600">{errorMessage}</p>
+            )}
             <div className="flex gap-3">
-                <button 
-                    disabled={saving} 
+                <button
+                    disabled={saving}
                     className="rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 text-white px-6 py-3 font-medium hover:shadow-lg transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
                     <FaSave /> {saving ? "Salvando..." : (editingId ? "Salvar" : "Criar")}
