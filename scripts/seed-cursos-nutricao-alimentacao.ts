@@ -1,0 +1,198 @@
+import "reflect-metadata";
+import { initializeDataSource } from "../src/lib/data-source";
+import { Cursos } from "../src/database/entities/cursos.entity";
+
+const categoriaNutricaoAlimentacao = "NUTRIÇÃO E ALIMENTAÇÃO";
+
+const conteudoPadrao = JSON.stringify([
+  "Fundamentos e conceitos básicos",
+  "Rotinas e boas práticas",
+  "Equipamentos e procedimentos",
+  "Segurança e bem-estar",
+  "Legislação e ética",
+  "Aplicações profissionais"
+]);
+
+const nomesNutricaoAlimentacao = [
+  "A IMPORTÂNCIA DO ALEITAMENTO MATERNO",
+  "ACOMPANHAMENTO NUTRICIONAL",
+  "AGENTE DE ALIMENTAÇÃO ESCOLAR",
+  "ALEITAMENTO MATERNO E ALIMENTAÇÃO COMPLEMENTAR",
+  "ALERGIAS ALIMENTARES",
+  "ALIMENTAÇÃO E NUTRIÇÃO ESCOLAR",
+  "ALIMENTAÇÃO ESCOLAR NO PNAE",
+  "ALIMENTAÇÃO SAUDÁVEL NA ESCOLA",
+  "ANTROPOLOGIA DA ALIMENTAÇÃO",
+  "ANTROPOMETRIA",
+  "ATENDENTE DE FAST FOOD",
+  "ATENDENTE DE NUTRIÇÃO",
+  "ATUAÇÃO DO NUTRICIONISTA NO PNAE",
+  "AUXILIAR DE COZINHA",
+  "AUXILIAR DE NUTRIÇÃO",
+  "AUXILIAR DE NUTRIÇÃO HOSPITALAR",
+  "AUXILIAR DE PRODUÇÃO DE ALIMENTOS",
+  "AVALIAÇÃO NUTRICIONAL",
+  "BARISTA",
+  "BOAS PRÁTICAS DE FABRICAÇÃO - BPF",
+  "BOAS PRÁTICAS NA MANIPULAÇÃO DE ALIMENTOS",
+  "BOAS PRÁTICAS NO LACTÁRIO HOSPITALAR",
+  "BOAS PRÁTICAS PARA SERVIÇOS DE ALIMENTAÇÃO",
+  "BROMATOLOGIA",
+  "CACHAÇA ARTESANAL",
+  "CARDÁPIO DE MERENDA ESCOLAR",
+  "CERVEJARIA ARTESANAL BÁSICA",
+  "CHARCUTARIA",
+  "CHARCUTARIA ARTESANAL",
+  "CHOCOLATERIA PROFISSIONAL",
+  "CHURRASQUEIRO",
+  "CÓDIGO DE ÉTICA DO NUTRICIONISTA",
+  "COMPORTAMENTO ALIMENTAR",
+  "CONFEITEIRO",
+  "CONGELAMENTO DE ALIMENTOS",
+  "CONSERVAÇÃO DE FRUTAS, LEGUMES E VERDURAS (FLV)",
+  "CONSULTORIA DE ALIMENTOS",
+  "CONSULTORIA GASTRONÔMICA",
+  "CONTAMINAÇÃO DE ALIMENTOS",
+  "CONTROLE DE QUALIDADE DE ALIMENTOS",
+  "COPEIRA HOSPITALAR",
+  "COQUETELARIA",
+  "COZINHA ESCOLAR",
+  "COZINHEIRA ESCOLAR",
+  "CULINÁRIA AFRO-BRASILEIRA",
+  "CULINÁRIA ÁRABE",
+  "CULINÁRIA BAIANA",
+  "CULINÁRIA BÁSICA",
+  "CULINÁRIA BRASILEIRA",
+  "CULINÁRIA CAPIXABA",
+  "CULINÁRIA CHINESA",
+  "CULINÁRIA FITNESS",
+  "CULINÁRIA FRANCESA",
+  "CULINÁRIA INFANTIL",
+  "CULINÁRIA ITALIANA",
+  "CULINÁRIA JUNINA",
+  "CULINÁRIA MINEIRA",
+  "CULINÁRIA NORDESTINA",
+  "CULINÁRIA PARAENSE",
+  "CULINÁRIA SAUDÁVEL",
+  "DEGUSTAÇÃO DE CAFÉ PROFISSIONAL",
+  "DEGUSTAÇÃO DE CERVEJA PROFISSIONAL",
+  "DEGUSTAÇÃO DE CHÁ PROFISSIONAL",
+  "DEGUSTAÇÃO DE VINHO PROFISSIONAL",
+  "DESNUTRIÇÃO E BAIXO RENDIMENTO ESCOLAR",
+  "DESNUTRIÇÃO INFANTIL NO BRASIL",
+  "DOENÇAS TRANSMITIDAS POR ALIMENTOS (DTAS)",
+  "EDUCAÇÃO ALIMENTAR E NUTRICIONAL",
+  "EDUCAÇÃO ALIMENTAR E NUTRICIONAL (EAN)",
+  "EMAGRECIMENTO SAUDÁVEL",
+  "EMBALAGENS PLÁSTICAS FLEXÍVEIS",
+  "ENGENHARIA DE ALIMENTOS BÁSICA",
+  "ENOLOGIA",
+  "ENÓLOGO",
+  "EPIDEMIOLOGIA NUTRICIONAL",
+  "GASTRONOMIA",
+  "GASTRONOMIA EXECUTIVA",
+  "GASTRONOMIA HOSPITALAR",
+  "GERENTE DE COZINHA",
+  "GERENTE DE PADARIA",
+  "GERENTE DE RESTAURANTE",
+  "HARMONIZAÇÃO DE CERVEJAS",
+  "HARMONIZAÇÃO DE VINHOS",
+  "HIGIENE E MANIPULAÇÃO DE ALIMENTOS",
+  "INTELIGÊNCIA NUTRICIONAL",
+  "INTOXICAÇÃO ALIMENTAR",
+  "ISO 22000",
+  "JEJUM INTERMITENTE",
+  "LACTARISTA HOSPITALAR",
+  "LICOR ARTESANAL",
+  "MANIPULADOR DE ALIMENTOS",
+  "MARKETING ALIMENTAR",
+  "MARKETING GASTRONÔMICO",
+  "MARMITEX LUCRATIVO",
+  "MERENDEIRA ESCOLAR",
+  "MÉTODOS DE CONSERVAÇÃO DE ALIMENTOS",
+  "MICROBIOLOGIA DOS ALIMENTOS",
+  "NEURONUTRIÇÃO",
+  "NOÇÕES BÁSICAS DE NUTRIÇÃO",
+  "NUTRIÇÃO 4.0",
+  "NUTRIÇÃO CLÍNICA",
+  "NUTRIÇÃO COMPORTAMENTAL",
+  "NUTRIÇÃO E AUTISMO",
+  "NUTRIÇÃO E SAÚDE MENTAL DO ATLETA",
+  "NUTRIÇÃO ESPORTIVA",
+  "NUTRIÇÃO FUNCIONAL",
+  "NUTRIÇÃO HOSPITALAR",
+  "NUTRIÇÃO INFANTIL",
+  "NUTRIÇÃO NO ESPORTE",
+  "NUTRIÇÃO, ALIMENTAÇÃO E DESEMPENHO ESCOLAR",
+  "NUTRICIONISTA ESCOLAR",
+  "OBESIDADE NA INFÂNCIA E ADOLESCÊNCIA",
+  "PADEIRO",
+  "PIZZAIOL0",
+  "POLÍTICAS DE ALIMENTAÇÃO ESCOLAR",
+  "PRÁTICAS DE AUTOCUIDADO PARA PROFISSIONAIS DA SAÚDE",
+  "PROGRAMA BANCO DE ALIMENTOS",
+  "PROGRAMA DE AQUISIÇÃO DE ALIMENTOS (PAA)",
+  "PROGRAMA NACIONAL DE ALIMENTAÇÃO ESCOLAR (PNAE)",
+  "PROGRAMA RESTAURANTE POPULAR",
+  "PSICOLOGIA E COMPULSÃO ALIMENTAR",
+  "PSICOLOGIA E REEDUCAÇÃO ALIMENTAR",
+  "PSICOLOGIA NUTRICIONAL",
+  "QUÍMICA DE ALIMENTOS",
+  "REAPROVEITAMENTO DE ALIMENTOS",
+  "RESTAURANTE POPULAR E INCLUSÃO SOCIAL",
+  "SALGADEIRO",
+  "SAÚDE DO RECÉM-NASCIDO",
+  "SEGURANÇA ALIMENTAR E NUTRICIONAL",
+  "SÍNDROME DE PICA",
+  "SÍNDROME DO COMER NOTURNO",
+  "SOMMELIER DE CERVEJA",
+  "SOMMELIER DE VINHO",
+  "TEMPEROS E CONDIMENTOS",
+  "TERAPIA NUTRICIONAL",
+  "TERAPIA ORTOMOLECULAR",
+  "TRANSTORNOS ALIMENTARES",
+  "TRANSTORNOS ALIMENTARES NO ESPORTE",
+  "VEGANISMO",
+  "VEGETARIANISMO"
+];
+
+const cursosNutricaoAlimentacao = nomesNutricaoAlimentacao.map((nome) => ({
+  nome,
+  categoria: categoriaNutricaoAlimentacao,
+  conteudo: conteudoPadrao
+}));
+
+async function seedCursosNutricaoAlimentacao() {
+  console.log(` Iniciando seed da categoria ${categoriaNutricaoAlimentacao}...`);
+
+  try {
+    const dataSource = await initializeDataSource();
+    const cursoRepository = dataSource.getRepository(Cursos);
+
+    console.log(" Verificando cursos existentes...");
+
+    for (const cursoData of cursosNutricaoAlimentacao) {
+      const existente = await cursoRepository.findOne({
+        where: { nome: cursoData.nome }
+      });
+
+      if (existente) {
+        console.log(`  Curso já existe: ${cursoData.nome}`);
+        continue;
+      }
+
+      const curso = cursoRepository.create(cursoData);
+      await cursoRepository.save(curso);
+      console.log(` Criado curso: ${cursoData.nome}`);
+    }
+
+    console.log(`\n Categoria ${categoriaNutricaoAlimentacao} criada com sucesso!`);
+    console.log(` ${cursosNutricaoAlimentacao.length} cursos adicionados!`);
+    process.exit(0);
+  } catch (error) {
+    console.error(" Erro ao criar cursos:", error);
+    process.exit(1);
+  }
+}
+
+seedCursosNutricaoAlimentacao();
