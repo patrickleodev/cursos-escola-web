@@ -21,6 +21,9 @@ export class Afiliadas {
   @Column({ length: 20 })
   whatsapp: string;
 
+  @Column({ type: 'boolean', default: false })
+  destaque: boolean;
+
   @CreateDateColumn()
   criadoEm: Date;
 

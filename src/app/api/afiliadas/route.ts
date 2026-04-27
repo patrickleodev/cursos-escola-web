@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
       where.nome = Like(`%${busca}%`);
     }
     
-    const list = await repo.find({ where, order: { nome: 'ASC' } });
+    const list = await repo.find({ where, order: { destaque: 'DESC', nome: 'ASC' } });
     return NextResponse.json(list);
   } catch (error) {
     console.error('GET /api/afiliadas error:', error);

@@ -8,6 +8,7 @@ interface Afiliada {
     nome: string;
     foto?: string;
     whatsapp: string;
+    destaque?: boolean;
 }
 
 interface AfiliadaListProps {
@@ -25,6 +26,11 @@ export default function AfiliadaList({ afiliadas, onEdit, onDelete }: AfiliadaLi
                     className="flex items-center justify-between bg-gradient-to-r from-stone-50 to-amber-50 rounded-xl border border-stone-200 p-5 hover:shadow-md transition"
                 >
                     <div className="flex items-center gap-4 flex-1">
+                        {afiliada.destaque && (
+                            <div className="rounded-full bg-yellow-100 text-yellow-700 px-3 py-1 text-xs font-semibold flex items-center gap-1">
+                                ⭐ Destaque
+                            </div>
+                        )}
                         {afiliada.foto && (
                             <img 
                                 src={afiliada.foto} 

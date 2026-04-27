@@ -17,6 +17,7 @@ interface Afiliada {
     nome: string;
     foto?: string;
     whatsapp: string;
+    destaque?: boolean;
 }
 
 function getApiUrl(path: string) {
@@ -29,6 +30,7 @@ export default function GerenciarAfiliadas() {
     const [nome, setNome] = useState("");
     const [foto, setFoto] = useState("");
     const [whatsapp, setWhatsapp] = useState("");
+    const [destaque, setDestaque] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [busca, setBusca] = useState("");
     const [loading, setLoading] = useState(true);
@@ -66,7 +68,8 @@ export default function GerenciarAfiliadas() {
         const payload = { 
             nome, 
             foto: foto || undefined,
-            whatsapp: whatsapp.replace(/\D/g, '') 
+            whatsapp: whatsapp.replace(/\D/g, ''),
+            destaque
         };
 
         try {
@@ -99,6 +102,7 @@ export default function GerenciarAfiliadas() {
         setNome("");
         setFoto("");
         setWhatsapp("");
+        setDestaque(false);
         setEditingId(null);
         // Limpar o input file
         const fileInput = document.getElementById('file-upload') as HTMLInputElement;
@@ -109,6 +113,7 @@ export default function GerenciarAfiliadas() {
         setNome(afiliada.nome);
         setFoto(afiliada.foto || "");
         setWhatsapp(afiliada.whatsapp);
+        setDestaque(afiliada.destaque || false);
         setEditingId(afiliada.id);
     }
 
@@ -190,11 +195,13 @@ export default function GerenciarAfiliadas() {
                             nome={nome}
                             foto={foto}
                             whatsapp={whatsapp}
+                            destaque={destaque}
                             editingId={editingId}
                             saving={saving}
                             dragActive={dragActive}
                             onNomeChange={setNome}
                             onWhatsappChange={setWhatsapp}
+                            onDestaqueChange={setDestaque}
                             onImageChange={handleImageChange}
                             onDrag={handleDrag}
                             onDrop={handleDrop}

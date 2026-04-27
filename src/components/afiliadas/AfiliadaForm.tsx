@@ -8,11 +8,13 @@ interface AfiliadaFormProps {
     nome: string;
     foto: string;
     whatsapp: string;
+    destaque: boolean;
     editingId: string | null;
     saving: boolean;
     dragActive: boolean;
     onNomeChange: (value: string) => void;
     onWhatsappChange: (value: string) => void;
+    onDestaqueChange: (value: boolean) => void;
     onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onDrag: (e: React.DragEvent) => void;
     onDrop: (e: React.DragEvent) => void;
@@ -21,8 +23,8 @@ interface AfiliadaFormProps {
 }
 
 export default function AfiliadaForm({
-    nome, foto, whatsapp, editingId, saving, dragActive,
-    onNomeChange, onWhatsappChange, onImageChange, onDrag, onDrop,
+    nome, foto, whatsapp, destaque, editingId, saving, dragActive,
+    onNomeChange, onWhatsappChange, onDestaqueChange, onImageChange, onDrag, onDrop,
     onSubmit, onCancel
 }: AfiliadaFormProps) {
     return (
@@ -80,6 +82,19 @@ export default function AfiliadaForm({
                     />
                 </div>
             )}
+            <div className="sm:col-span-3 flex items-center gap-3">
+                <input 
+                    type="checkbox"
+                    id="destaque-checkbox"
+                    checked={destaque}
+                    onChange={(e) => onDestaqueChange(e.target.checked)}
+                    disabled={saving}
+                    className="w-5 h-5 rounded border-stone-300 text-amber-400 cursor-pointer"
+                />
+                <label htmlFor="destaque-checkbox" className="text-sm font-medium text-stone-700 cursor-pointer flex items-center gap-2">
+                    ⭐ Marcar como afiliada destaque
+                </label>
+            </div>
             <div className="sm:col-span-3 flex gap-3">
                 <button 
                     disabled={saving} 
