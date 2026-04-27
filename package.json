@@ -36,6 +36,8 @@
     "seed:psicologia": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-cursos-psicologia-psicopedagogia.ts",
     "seed:fisioterapia": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-cursos-fisioterapia-pilates.ts",
     "seed:nutricao-alimentacao": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-cursos-nutricao-alimentacao.ts",
+    "check:nutricao": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/check-nutricao.ts",
+    "fix:empty-categoria": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/fix-empty-categoria.ts",
     "consolidar:enfermagem": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/consolidar-enfermagem.ts",
     "check:fisioterapia": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/check-fisioterapia.ts"
   },
