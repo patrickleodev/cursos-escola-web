@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { NextRequest, NextResponse } from "next/server";
-import { ILike, Not } from "typeorm";
+import { ILike, Not, FindOperator } from "typeorm";
 import { Cursos } from "../../../database/entities/cursos.entity";
 import { initializeDataSource } from "../../../lib/data-source";
 
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     const busca = searchParams.get("busca");
     const categoria = searchParams.get("categoria");
 
-    const where: { nome?: ReturnType<typeof ILike>; categoria?: string } = {};
+    const where: { nome?: FindOperator<string>; categoria?: string } = {};
     if (busca) {
       where.nome = ILike(`%${busca}%`);
     }
