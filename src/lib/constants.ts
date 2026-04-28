@@ -30,4 +30,5 @@ export const CATEGORIAS = [
   'VENDAS',
   'AUTOAJUDA',
   'ESPECIALIZA\u00c7\u00c3O T\u00c9CNICA',
+  'IND\u00cdGENA',
 ];
