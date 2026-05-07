@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ILike, Not, FindOperator } from "typeorm";
 import { Cursos } from "../../../database/entities/cursos.entity";
 import { initializeDataSource } from "../../../lib/data-source";
+import { normalizeCategoria } from "../../../lib/constants";
 
 type CursoPayloadInput = {
   id?: string;
@@ -16,7 +17,10 @@ function normalizeCursoPayload(data: CursoPayloadInput) {
   return {
     ...data,
     nome: typeof data?.nome === "string" ? data.nome.trim() : "",
-    categoria: typeof data?.categoria === "string" ? data.categoria.trim() : "",
+    categoria:
+      typeof data?.categoria === "string"
+        ? normalizeCategoria(data.categoria)
+        : "",
     conteudo: typeof data?.conteudo === "string" ? data.conteudo.trim() : data?.conteudo,
   };
 }
@@ -35,11 +39,16 @@ export async function GET(req: NextRequest) {
       where.nome = ILike(`%${busca}%`);
     }
     if (categoria && categoria !== "todas") {
-      where.categoria = categoria;
+      where.categoria = normalizeCategoria(categoria);
     }
 
     const list = await repo.find({ where });
-    return NextResponse.json(list);
+    const normalizedList = list.map((curso) => ({
+      ...curso,
+      categoria: normalizeCategoria(curso.categoria ?? ""),
+    }));
+
+    return NextResponse.json(normalizedList);
   } catch (error) {
     console.error("GET /api/cursos error:", error);
     const message = error instanceof Error ? error.message : JSON.stringify(error);

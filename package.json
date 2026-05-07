@@ -19,6 +19,7 @@
     "seed:thays": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-add-thays.ts",
     "update:thays-foto": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/update-thays-foto.ts",
     "update:educacao-linguas": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/update-educacao-linguas.ts",
+    "update:estatuto": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/update-estatuto-category.ts",
     "seed:enfermagem": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-cursos-enfermagem.ts",
     "check:cursos": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/check-cursos.ts",
     "seed:enfermagem-faltantes": "ts-node -O {\\\"module\\\":\\\"commonjs\\\",\\\"esModuleInterop\\\":true} scripts/seed-enfermagem-faltantes.ts",

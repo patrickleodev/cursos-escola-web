@@ -1,4 +1,14 @@
-export const CATEGORIAS = [
+const CATEGORIA_CORRECOES: Record<string, string> = {
+  STATUTO: "ESTATUTO",
+};
+
+export function normalizeCategoria(categoria: string): string {
+  const categoriaTrim = categoria.trim();
+  const categoriaUpper = categoriaTrim.toLocaleUpperCase("pt-BR");
+  return CATEGORIA_CORRECOES[categoriaUpper] ?? categoriaTrim;
+}
+
+const CATEGORIAS_BASE = [
   'EDUCA\u00c7\u00c3O',
   'EDUCA\u00c7\u00c3O ESPECIAL',
   'EDUCA\u00c7\u00c3O E PEDAGOGIA',
@@ -32,3 +42,7 @@ export const CATEGORIAS = [
   'ESPECIALIZA\u00c7\u00c3O T\u00c9CNICA',
   'IND\u00cdGENA',
 ];
+
+export const CATEGORIAS = Array.from(
+  new Set(CATEGORIAS_BASE.map(normalizeCategoria))
+);
