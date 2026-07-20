@@ -24,12 +24,25 @@ interface Props {
 }
 
 export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, selectedFont, fontScale, isTechnicalCertificate = false, saving, saveDates, saveDuracao, removeCurso, randomizeNotaFalta = false }: Props) {
+  const isCursoTecnico = (categoria?: string) => {
+    const normalized = (categoria ?? "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    return normalized.includes("especializacao") && normalized.includes("tecnica");
+  };
+
+  const matriculasFiltradas = (aluno.matriculas ?? []).filter((matricula) =>
+    isTechnicalCertificate ? isCursoTecnico(matricula.curso.categoria) : !isCursoTecnico(matricula.curso.categoria)
+  );
+
   return (
     <div className="lg:ml-80 lg:pl-6 lg:min-w-0">
       <style>{certificadoStyles}</style>
 
-      {aluno.matriculas && aluno.matriculas.length > 0 ? (
-        aluno.matriculas.map((matricula, index) => {
+      {matriculasFiltradas.length > 0 ? (
+        matriculasFiltradas.map((matricula, index) => {
           const duracaoFinal = matricula.duracaoCustomizada ?? matricula.curso.duracao;
           const dataInicio = new Date(matricula.dataInicio).toLocaleDateString("pt-BR", { timeZone: "UTC" });
           const dataFim = new Date(matricula.dataFim).toLocaleDateString("pt-BR", { timeZone: "UTC" });
@@ -138,11 +151,11 @@ export default function CertificadoPrintArea({ aluno, qrCodeUrl, selectedModel, 
         </div>
       )}
 
-      {aluno.matriculas && aluno.matriculas.length > 0 && (
+      {matriculasFiltradas.length > 0 && (
         <div className="mt-8 print:hidden" style={{ maxWidth: "297mm", margin: "2rem auto 0" }}>
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h2 className="text-2xl font-semibold text-stone-800 mb-6">Editar Certificado</h2>
-            {aluno.matriculas.map((matricula) => (
+            {matriculasFiltradas.map((matricula) => (
               <CursoEditForm
                 key={matricula.id}
                 matricula={matricula}
