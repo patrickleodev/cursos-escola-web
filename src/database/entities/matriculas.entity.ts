@@ -20,10 +20,10 @@ export class Matriculas {
   curso: any;
 
   @Column({ type: "date" })
-  dataInicio: Date;
+  dataInicio: string;
 
   @Column({ type: "date" })
-  dataFim: Date;
+  dataFim: string;
 
   @Column({ type: "int", nullable: true })
   duracaoCustomizada?: number;
