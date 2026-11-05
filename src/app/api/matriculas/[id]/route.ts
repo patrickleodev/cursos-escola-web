@@ -16,8 +16,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: 'Matrícula não encontrada' }, { status: 404 });
     }
 
-    if (body.dataInicio) matricula.dataInicio = new Date(body.dataInicio);
-    if (body.dataFim) matricula.dataFim = new Date(body.dataFim);
+    if (body.dataInicio) matricula.dataInicio = body.dataInicio;
+    if (body.dataFim) matricula.dataFim = body.dataFim;
     if (body.duracaoCustomizada !== undefined) matricula.duracaoCustomizada = body.duracaoCustomizada;
 
     const saved = await repo.save(matricula);

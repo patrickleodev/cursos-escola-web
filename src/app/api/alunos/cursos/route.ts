@@ -4,48 +4,72 @@ import { initializeDataSource } from '../../../../lib/data-source';
 import { Alunos } from '../../../../database/entities/alunos.entity';
 import { Cursos } from '../../../../database/entities/cursos.entity';
 import { Matriculas } from '../../../../database/entities/matriculas.entity';
+import { In } from 'typeorm';
 
 export async function POST(req: NextRequest) {
   try {
     const { alunoId, cursoIds } = await req.json();
-    
+
+    if (!alunoId || !Array.isArray(cursoIds)) {
+      return NextResponse.json({ error: 'Aluno e lista de cursos são obrigatórios' }, { status: 400 });
+    }
+
+    const alunoIdString = String(alunoId);
+    const normalizedCursoIds = [...new Set(cursoIds.map((id: unknown) => String(id)).filter(Boolean))];
     const ds = await initializeDataSource();
-    const alunosRepo = ds.getRepository(Alunos);
     const cursosRepo = ds.getRepository(Cursos);
-    const matriculasRepo = ds.getRepository(Matriculas as any);
-    
-    const aluno = await alunosRepo.findOneBy({ id: String(alunoId) });
+    const cursos = normalizedCursoIds.length > 0
+      ? await cursosRepo.findBy({ id: In(normalizedCursoIds) })
+      : [];
 
-    if (!aluno) {
-      return NextResponse.json({ error: 'Aluno não encontrado' }, { status: 404 });
+    if (cursos.length !== normalizedCursoIds.length) {
+      return NextResponse.json({ error: 'Um ou mais cursos não foram encontrados' }, { status: 400 });
     }
 
-    // Remove todas as matrículas existentes do aluno
-    const existingMatriculas = await matriculasRepo.find({ 
-      where: { aluno: { id: String(alunoId) } } 
-    });
-    
-    if (existingMatriculas.length > 0) {
-      await matriculasRepo.remove(existingMatriculas);
-    }
+    await ds.transaction(async (manager) => {
+      const alunosRepo = manager.getRepository(Alunos);
+      const matriculasRepo = manager.getRepository(Matriculas as any);
+      const aluno = await alunosRepo.findOneBy({ id: alunoIdString });
 
-    // Cria novas matrículas apenas para os cursos selecionados
-    if (cursoIds && cursoIds.length > 0) {
-      const cursos = await cursosRepo.findByIds(cursoIds);
-
-      for (const curso of cursos) {
-        const m = matriculasRepo.create({
-          aluno: aluno,
-          curso: curso,
-          dataInicio: new Date(),
-          dataFim: new Date(),
-        });
-        await matriculasRepo.save(m);
+      if (!aluno) {
+        throw new Error('Aluno não encontrado');
       }
-    }
 
-    // Return updated aluno with derived cursos
-    const updated = await alunosRepo.findOne({ where: { id: String(alunoId) }, relations: ['matriculas', 'matriculas.curso'] });
+      const existingMatriculas = await matriculasRepo.find({
+        where: { aluno: { id: alunoIdString } },
+      });
+      const selectedCursoIds = new Set(normalizedCursoIds);
+      const matriculasToRemove = existingMatriculas.filter(
+        (matricula: any) => !selectedCursoIds.has(String(matricula.curso.id))
+      );
+      const existingCursoIds = new Set(
+        existingMatriculas.map((matricula: any) => String(matricula.curso.id))
+      );
+
+      if (matriculasToRemove.length > 0) {
+        await matriculasRepo.remove(matriculasToRemove);
+      }
+
+      const today = new Date().toISOString().slice(0, 10);
+      const matriculasToAdd = cursos
+        .filter((curso) => !existingCursoIds.has(String(curso.id)))
+        .map((curso) => matriculasRepo.create({
+          aluno,
+          curso,
+          dataInicio: today,
+          dataFim: today,
+        }));
+
+      if (matriculasToAdd.length > 0) {
+        await matriculasRepo.save(matriculasToAdd);
+      }
+    });
+
+    const alunosRepo = ds.getRepository(Alunos);
+    const updated = await alunosRepo.findOne({
+      where: { id: alunoIdString },
+      relations: ['matriculas', 'matriculas.curso'],
+    });
     const mapped = {
       ...updated,
       cursos: updated?.matriculas ? updated.matriculas.map((m: any) => m.curso) : [],
@@ -54,6 +78,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('POST /api/alunos/cursos error:', error);
     const message = error instanceof Error ? error.message : JSON.stringify(error);
-    return NextResponse.json({ error: message }, { status: 500 });
+    const status = message === 'Aluno não encontrado' ? 404 : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 }

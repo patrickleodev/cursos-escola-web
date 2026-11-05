@@ -80,7 +80,8 @@ export default function CertificadoTecnico() {
         const data = await res.json();
         setAluno(data);
 
-        const qrData = `${process.env.NEXT_PUBLIC_BASE_URL || window.location.origin}/aluno/${id}`;
+        const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || window.location.origin).replace(/\/+$/, "");
+        const qrData = `${baseUrl}/aluno/${encodeURIComponent(String(id))}`;
         const qr = await QRCode.toDataURL(qrData);
         setQrCodeUrl(qr);
       } catch (err) {
